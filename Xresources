@@ -1,0 +1,270 @@
+
+! ---------------------------------------------------------------------
+! color theme
+! ---------------------------------------------------------------------
+
+! Black
+*color0:      #202020
+*color8:      #707575
+! Red
+*color1:      #b01828
+*color9:      #e54949
+! Green
+*color2:      #52ce18
+*color10:     #76d538
+! Yellow
+*color3:      #edd400
+*color11:     #f5c025
+! Blue
+*color4:      #3f6fb4
+*color12:     #7090cf
+! Magenta
+*color5:      #af50c2
+*color13:     #ad7fa8
+! Cyan
+*color6:      #00AAAA
+*color14:     #55FFFF
+! White
+*color7:      #EDEDED
+*color15:     #FFFFFF
+
+
+xft.antialias: true
+xft.hinting:   true
+!xft.dpi:       96
+!xft.rgba:      rgb
+
+
+
+! ---------------------------------------------------------------------
+! xterm
+! ---------------------------------------------------------------------
+XTerm*.foreground: black
+XTerm*.background: white
+XTerm*.geometry:   80x25
+XTerm*.saveLines:  16384
+
+!XTerm*.font:       -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
+XTerm*.renderFont: true
+XTerm*.faceName: ProggySquare
+XTerm*.faceSize: 10
+
+XTerm*.showBlinkAsBold: true
+XTerm*.utf8: 1
+
+XTerm*.jumpScroll:  true
+XTerm*.multiScroll: true
+
+!! Ne pas revenir a la derniere ligne quand la sortie change
+!XTerm*.scrollTtyOutput:         false
+!XTerm*.scrollKey:               true
+
+!! double click selection
+XTerm*.cutNewline:              false
+!XTerm*.cutToBeginningOfLine:    false
+
+XTerm*.toolBar: false
+XTerm*.visualBell: false
+
+
+
+! ---------------------------------------------------------------------
+! urxvt
+! ---------------------------------------------------------------------
+URxvt.background:   black
+URxvt.foreground:   #EDEDED
+URxvt.cursorColor:  #e0e0a0
+URxvt.reverseVideo: False
+URxvt.tintColor:    grey20
+URxvt.fading:       25
+URxvt.transparent:true
+
+!! with recent urxvt+fluxbox, a borderLess terminal will not even start
+!!URxvt.borderLess:      true
+URxvt.internalBorder:   4
+URxvt.externalBorder:   0
+
+URxvt.geometry:   79x26
+URxvt.mouseWheelScrollPage:  False
+URxvt.saveLines:  8192
+URxvt.scrollBar:    false
+
+URxvt.jumpScroll: true
+URxvt.skipScroll: true
+!Rxvt*scrollTtyKeypress:   True
+!Rxvt*scrollWithBuffer:    False
+
+URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
+!URxvt.font:            xft:DejaVu Sans Mono-10
+!URxvt.boldFont:        xft:DejaVu Sans Mono-10:bold
+!URxvt.italicFont:      xft:DejaVu Sans Mono-10:italic
+!URxvt.boldItalicFont:  xft:DejaVu Sans Mono-10:bold:italic
+
+
+!! <C>-, <C>= and <C>+ switch to resp. small, medium and big font size
+URxvt.keysym.C-minus: command:\033]710;-*-terminus-medium-*-*-*-14-*-*-*-*-*-u\007
+URxvt.keysym.C-equal: command:\033]710;-*-terminus-medium-*-*-*-20-*-*-*-*-*-u\007
+URxvt.keysym.C-plus:  command:\033]710;-*-terminus-medium-*-*-*-28-*-*-*-*-*-u\007
+
+!! Perl extensions. Needs 'perl' USE flag.
+URxvt.perl-ext-common:  matcher,searchable-scrollback<M-s>,selection-autotransform
+URxvt.urlLauncher:      firefox
+URxvt.matcher.button:   1
+!! transform output like gcc warnings into something usable after 'vi' or ':e'
+! file:line:col: (gcc >=4.5 and clang output) (we drop 'col' information, vim cannot use it)
+URxvt.selection-autotransform.0: s/^([^:[:space:]]+):(\\d+):(\\d+):?$/ +$2 $1/
+! file:line: (gcc <4.5 output)
+URxvt.selection-autotransform.1: s/^([^:[:space:]]+):(\\d+):?$/ +$2 $1/
+! file: (remove trailing ':' for grep)
+URxvt.selection-autotransform.2: s/^([^:[:space:]]+):?$/$1/
+
+! matcher:
+!   Clickable URLs. Opened with urlLauncher when clicked with matcher.button.
+!   Additional patterns can be created so:
+!       URxvt.matcher.pattern.2:  \\B(/\\S+?):(\\d+)(?=:|$)
+!       URxvt.matcher.launcher.2: vim +$2 $1
+!   Add \\x0d fo carriage return.
+! searchable-scrollback:
+!   Alt-s searches in scrollback buffer.
+!   Up/Down for prev/next.
+!   Shift-Enter to retain the match.
+! readline:
+!   Shift-click to move the cursor on the current line.
+! tabbed:
+!   Shift-Left and Shift-Right to navigate tabs, Shift-Down to create one.
+
+
+!! secondaryScroll for integration with 'screen'
+!URxvt.scrollstyle:      plain
+!URxvt.secondaryScroll:  true
+
+!! Hint : multiple configurations
+!! use '-name totor' and resources like 'totor.background: black'
+
+
+
+! ---------------------------------------------------------------------
+! xcalc
+! ---------------------------------------------------------------------
+xcalc.geometry: 250x340
+xcalc.ti.Command.foreground: White
+xcalc.ti.Command.background: #777777
+xcalc.ti.button5.background: Orange3
+xcalc.ti.button19.background: #611161
+xcalc.ti.button18.background: #611161
+xcalc.ti.button20.background: #611111
+xcalc.ti.button25.background: #722222
+xcalc.ti.button30.background: #833333
+xcalc.ti.button35.background: #944444
+xcalc.ti.button40.background: #a55555
+xcalc.ti.button22.background: #222262
+xcalc.ti.button23.background: #222262
+xcalc.ti.button24.background: #222272
+xcalc.ti.button27.background: #333373
+xcalc.ti.button28.background: #333373
+xcalc.ti.button29.background: #333373
+xcalc.ti.button32.background: #444484
+xcalc.ti.button33.background: #444484
+xcalc.ti.button34.background: #444484
+xcalc.ti.button37.background: #555595
+xcalc.ti.button38.background: #555595
+xcalc.ti.button39.background: #555595
+
+
+
+! ---------------------------------------------------------------------
+! mouse cursors
+! ---------------------------------------------------------------------
+! Good themes: Gold, gentoo, gentoo-silver, gentoo-blue, Obsidian
+!              pCircle24, pCircle32, idem w/ pTux, pGentoo...
+! Good sizes:  24, 32, 48
+Xcursor.theme: pCircle-24
+Xcursor.size: 24
+
+
+
+! ---------------------------------------------------------------------
+! nedit
+! ---------------------------------------------------------------------
+nedit.findReplaceUsesSelection: false
+nedit.text.autoWrapPastedText: true
+
+
+
+! ---------------------------------------------------------------------
+! xdvi
+! ---------------------------------------------------------------------
+xdvi.shrinkFactor: 7
+!xdvi.Hush: true
+xdvi.Margin: 2cm
+
+
+
+! ---------------------------------------------------------------------
+! xpdf
+! ---------------------------------------------------------------------
+xpdf.paperColor: snow
+xpdf.urlCommand: firefox '%s'
+xpdf.initialZoom: width
+
+
+
+! ---------------------------------------------------------------------
+! xmessage
+! ---------------------------------------------------------------------
+xmessage.form.okay.shapeStyle: rectangle
+xmessage.form.okay.background: #777777
+xmessage.form.okay.foreground: snow
+xmessage.message.background: snow
+xmessage.defaultButton: okay
+xmessage.form.message.Scroll:  WhenNeeded
+
+
+
+! ---------------------------------------------------------------------
+! xfontsel
+! ---------------------------------------------------------------------
+xfontsel.menu.showUnselectable: false
+xfontsel.MenuButton.shadowWidth: 0
+xfontsel.Toggle.ToggleStyle:    check
+xfontsel.MenuButton.Justify:    left
+xfontsel.MenuButton.MenuButtonStyle: select
+xfontsel.pane.commandBox.quitButton.background: #777777
+xfontsel.pane.commandBox.quitButton.foreground: snow
+xfontsel.pane.commandBox.ownButton.background:  orange3
+xfontsel.pane.commandBox.ownButton.foreground:  snow
+xfontsel.pane.commandBox.countLabel.background: snow
+xfontsel.pane.fieldBox.field0.background: #777777
+xfontsel.pane.fieldBox.field0.foreground: snow
+xfontsel.pane.fieldBox.field1.background: #777777
+xfontsel.pane.fieldBox.field1.foreground: snow
+xfontsel.pane.fieldBox.field2.background: #777777
+xfontsel.pane.fieldBox.field2.foreground: snow
+xfontsel.pane.fieldBox.field3.background: #777777
+xfontsel.pane.fieldBox.field3.foreground: snow
+xfontsel.pane.fieldBox.field4.background: #777777
+xfontsel.pane.fieldBox.field4.foreground: snow
+xfontsel.pane.fieldBox.field5.background: #777777
+xfontsel.pane.fieldBox.field5.foreground: snow
+xfontsel.pane.fieldBox.field6.background: #777777
+xfontsel.pane.fieldBox.field6.foreground: snow
+xfontsel.pane.fieldBox.field7.background: #777777
+xfontsel.pane.fieldBox.field7.foreground: snow
+xfontsel.pane.fieldBox.field8.background: #777777
+xfontsel.pane.fieldBox.field8.foreground: snow
+xfontsel.pane.fieldBox.field9.background: #777777
+xfontsel.pane.fieldBox.field9.foreground: snow
+xfontsel.pane.fieldBox.field10.background: #777777
+xfontsel.pane.fieldBox.field10.foreground: snow
+xfontsel.pane.fieldBox.field11.background: #777777
+xfontsel.pane.fieldBox.field11.foreground: snow
+xfontsel.pane.fieldBox.field12.background: #777777
+xfontsel.pane.fieldBox.field12.foreground: snow
+xfontsel.pane.fieldBox.field13.background: #777777
+xfontsel.pane.fieldBox.field13.foreground: snow
+xfontsel.pane.fieldBox.foreground: #000000
+xfontsel.pane.fieldBox.MenuButton.borderWidth:    1
+xfontsel.pane.fieldBox.MenuButton.internalHeight: 1
+xfontsel.pane.fieldBox.MenuButton.internalWidth:  2
+xfontsel.pane.fieldBox.MenuButton.shapeStyle: rectangle
+
