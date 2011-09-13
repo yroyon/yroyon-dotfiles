@@ -71,6 +71,7 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
 export GREP_COLOR=32
+export GREP_OPTIONS='--color=auto --exclude="tags" --exclude-dir=.git --exclude-dir=.svn --exclude-dir=CVS'
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152

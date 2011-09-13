@@ -500,6 +500,8 @@ map <silent> g[ :cs find 3 <C-R>=expand("<cword>")<CR><CR>
 " Assume the shell is Bash (:help sh.vim)
 let g:is_bash=1
 
+let g:c_gnu=1
+
 " .tex defaults to LaTeX instead of ConTeXt
 let g:tex_flavor = "latex"
 
