@@ -1,4 +1,7 @@
 ! Make lock behave like esc
 remove Lock = Caps_Lock
-keysym Caps_Lock = Escape
-!keycode 66 = Escape
+keycode 66 = Escape
+!keysym Caps_Lock = Escape
+
+!see keymaps(5), loadkeys(1), dumpkeys(1), showkey(1), xmodmap(1)
+

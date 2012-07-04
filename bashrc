@@ -14,17 +14,25 @@ alias    lsd="/bin/ls --color -d */"
 alias  lsdir="tree -d -L 1 -i -A"
 alias lsdirs="tree -d -A"
 
-dirsize() {
+## grep family
+alias grepc="grep -r --include=*.{java,c,C,cc,CC,cpp,h,H,sh,scala,hs,rb,py,pl,properties}"
+alias grepd="grep -r --include=*.{txt,html,htm,tex,bib}"
+alias grepb="grep -r --include=*.{mk,am,ac,in,m4,sh,xml,properties} --include=*akefile --include=*configure* --include=GNUmake*"
+alias grepwhite="grep '[[:space:]]\+$' -r ."
+alias g=grepc
+
+function dirsize() {
     find ${1-.} -maxdepth 1 -type d -exec du -hs '{}' \;
 }
 
-lsize() {
+function lsize() {
     du -b --max-depth 1 ${1} | sort -nr | perl -pe \
         's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
 }
 
 ## default options to common commands
 alias diff="colordiff -NrbB"
+# Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias grep="/bin/grep --color"
 alias rm="rm -i"
 alias boswars="boswars -W"
@@ -45,14 +53,18 @@ alias traceroute="grc traceroute"
 ## new commands
 alias dvdplay="mplayer -nocache dvdnav://"
 alias emptytrash="rm -rf ~/.local/share/Trash/*"
-alias g="grepcode"
 alias loffice="libreoffice"
-alias manga="thunar &>/dev/null &"
+#alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
-alias quickweb='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
+alias perf="/usr/src/linux/tools/perf/perf"
+alias quickweb='python2 -m SimpleHTTPServer'
+alias qweb='python3 -m http.server'
 ## for some TERM issues
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
+alias xpdf="zathura"
+## no need for uxterm. Just do NOT set XTerm.utf8 in ~/.Xresources.
+#alias xterm="uxterm"
 
 #alias hd='od -Ax -tx1z -v'
 #alias realpath='readlink -f'
@@ -71,15 +83,16 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
 export GREP_COLOR=32
-export GREP_OPTIONS='--color=auto --exclude="tags" --exclude-dir=.git --exclude-dir=.svn --exclude-dir=CVS'
+export GREP_OPTIONS='--color=auto --exclude="tags" --exclude-dir=.git --exclude-dir=.svn --exclude-dir=CVS --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=_darcs --binary-files=without-match'
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
 export LESS="$LESS --ignore-case"
+export MANPAGER=vimmanpager
 export PATH+=":${HOME}/scripts"
 [ -d "${HOME}"/scripts/games ] && export PATH+=":${HOME}/scripts/games"
 
-export JAVA_HOME=/opt/sun-jdk
+export JAVA_HOME=/opt/java
 export JAVAC="${JAVA_HOME}"/bin/javac
 
 ## VMware segfaults @work without this:

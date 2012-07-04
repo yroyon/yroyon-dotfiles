@@ -25,12 +25,12 @@ set diffcontext 3
 set selectbgcolor gray85
 set extdifftool meld
 set perfile_attrs 0
-set geometry(main) 1247x751+298+188
+set geometry(main) 1261x834+602+31
 set geometry(state) normal
-set geometry(topwidth) 1247
-set geometry(topheight) 210
-set geometry(pwsash0) "431 1"
-set geometry(pwsash1) "647 1"
-set geometry(botwidth) 538
-set geometry(botheight) 536
+set geometry(topwidth) 1261
+set geometry(topheight) 267
+set geometry(pwsash0) "461 1"
+set geometry(pwsash1) "935 1"
+set geometry(botwidth) 544
+set geometry(botheight) 562
 set permviews {}
