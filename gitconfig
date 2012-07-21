@@ -1,0 +1,35 @@
+[alias]
+    vimdiff = difftool --tool=vimdiff
+    diffgui = difftool --tool=meld
+    undo = reset --soft HEAD^
+    todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
+        -e XXX -e TODO -e FIXME -e @bug -e @todo
+        # per-file hits:  -c  (appendable on CLI)
+    l = log --graph --abbrev-commit --date=relative \
+        --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+[color]
+    ui = auto
+[core]
+    excludesfile = /home/yroyon/.gitignore_global
+    gitProxy = git-http-proxy
+[diff]
+    tool = vimdiff
+    guitool = meld
+[difftool]
+    prompt = false
+[diff "odf"]
+    textconv = odt2txt
+[diff "pdf"]
+    textconv = ps2ascii
+[diff "zip"]
+    textconv = unzip -c -a
+[github]
+	user = yroyon
+	token = fed6b8add696d67e89487310f418932a
+[rerere]
+    enabled = 1
+[svn]
+    rmdir = true
+[user]
+    name = Yvan Royon
+    email = yvan.royon@gmail.com

@@ -1,0 +1,5 @@
+*.bak
+.*.swp
+.ant-targets-build.xml
+cscope.out
+tags
