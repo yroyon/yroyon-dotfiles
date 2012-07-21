@@ -1,0 +1,126 @@
+background no
+
+use_xft yes
+#xftfont Bitstream Vera Sans Mono:size=8
+xftfont Terminus:size=12
+xftalpha 1
+
+update_interval 2.0
+
+own_window yes
+# normal, desktop, dock, panel or override
+own_window_type override
+own_window_transparent yes
+#own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+double_buffer yes
+
+default_color white
+
+draw_shades no
+default_shade_color black
+draw_outline yes
+default_outline_color black
+draw_borders no
+stippled_borders 8
+border_width 1
+
+maximum_width 350
+alignment top_left
+gap_x 30
+gap_y 30
+use_spacer right
+
+no_buffers yes
+cpu_avg_samples 4
+net_avg_samples 5
+
+
+TEXT
+${color #99aabb}Today:  ${color }${time %A %e %B %G, %H:%M} ${time %Z}
+${color #99aabb}Uptime: ${color }$uptime
+${color #99aabb}Kernel: ${color }$kernel
+
+
+${color #99aabb}CPU:    ${color }$cpu%                         ${freq} MHz
+${cpugraph 20,350 254090 7f8ed3 -l}
+
+${color #99aabb}MEM:    ${color }$memperc%             ($mem / $memmax)
+${membar 4,350}
+
+${color #99aabb}SWAP:    ${color }$swapperc%             ($swap / $swapmax)
+${swapbar 4,350}
+
+
+${color #99aabb}Highest CPU:
+${color orange} ${top name 1}${top cpu 1}
+${color lightgrey} ${top name 2}${top cpu 2}
+${color lightgrey} ${top name 3}${top cpu 3}
+${color lightgrey} ${top name 4}${top cpu 4}
+
+${color #99aabb}Highest MEM:
+${color orange} ${top_mem name 1}${top_mem mem 1}
+${color lightgrey} ${top_mem name 2}${top_mem mem 2}
+${color lightgrey} ${top_mem name 3}${top_mem mem 3}
+${color lightgrey} ${top_mem name 4}${top_mem mem 4}
+
+${color #99aabb}Highest I/O:
+${color orange} ${top_io name 1}${top_io io_perc 1}
+${color lightgrey} ${top_io name 2}${top_io io_perc 2}
+${color lightgrey} ${top_io name 3}${top_io io_perc 3}
+${color lightgrey} ${top_io name 4}${top_io io_perc 4}
+
+
+${color #99aabb}Storage:
+${color #99aabb}/                         ${color }${fs_used /} / ${fs_size /}
+${fs_bar 4,350 /}#
+${if_mounted /home}
+${color #99aabb}/home                     ${color }${fs_used /home} / ${fs_size /home}
+${fs_bar 4,350 /home}$endif#
+${if_mounted /mnt/windows}
+${color #99aabb}/mnt/windows              ${color }${fs_used /mnt/windows} / ${fs_size /mnt/windows}
+${fs_bar 4,350 /mnt/windows}$endif#
+${if_mounted /mnt/usb}
+${color #99aabb}/mnt/usb                  ${color }${fs_used /mnt/usb} / ${fs_size /mnt/usb}
+${fs_bar 4,350 /mnt/usb}$endif#
+${if_mounted /mnt/reiserdisk}
+${color #99aabb}/mnt/reiserdisk           ${color }${fs_used /mnt/reiserdisk} / ${fs_size /mnt/reiserdisk}
+${fs_bar 4,350 /mnt/reiserdisk}$endif#
+${if_mounted /mnt/olddisk}
+${color #99aabb}/mnt/olddisk              ${color }${fs_used /mnt/olddisk} / ${fs_size /mnt/olddisk}
+${fs_bar 4,350 /mnt/olddisk}$endif#
+${if_mounted /mnt/ipod}
+${color #99aabb}/mnt/ipod                 ${color }${fs_used /mnt/ipod} / ${fs_size /mnt/ipod}
+${fs_bar 4,350 /mnt/ipod}$endif#
+${if_mounted /mnt/reader}
+${color #99aabb}/mnt/reader               ${color }${fs_used /mnt/reader} / ${fs_size /mnt/reader}
+${fs_bar 4,350 /mnt/reader}$endif#
+${if_mounted /usr/portage}
+${color #99aabb}/usr/portage              ${color }${fs_used /usr/portage} / ${fs_size /usr/portage}
+${fs_bar 4,350 /usr/portage}$endif#
+${if_mounted /var/tmp/portage}
+${color #99aabb}/var/tmp/portage          ${color }${fs_used /var/tmp/portage} / ${fs_size /var/tmp/portage}
+${fs_bar 4,350 /var/tmp/portage}$endif#
+
+${diskiograph 20,350 000000 7f8ed3}
+
+
+${color #99aabb}NET:
+${color} Up: ${upspeed eth0}/s           Down: ${downspeed eth0}/s
+${upspeedgraph eth0 20,165 000000 ff0000}  ${downspeedgraph eth0 20,165 000000 00ff00}
+
+
+${color #99aabb}MPD: ${alignc}${color #80ff80}Now $mpd_status$color$if_mpd_playing
+ ${alignc} $mpd_artist
+ ${alignc} $mpd_title
+ ${alignc} Volume: $mpd_vol - Bitrate: $mpd_bitrate kbps$endif
+${color #ccddff}$mpd_bar
+
+Entropy:
+${color}${entropy_bar 6,350}
+
+${color #99aabb}Portage:$color
+ Last Sync        ${color #7f8ed3}${execi 600 ~/scripts/emerge-lastsync.pl}$color
+ Current Progress ${color #7f8ed3}${execibar 30 ~/scripts/emerge-progress.sh}$color
+ Current Package  ${color #7f8ed3}${execi 30 ~/scripts/emerge-current.sh}$color
+ Current Status   ${color #7f8ed3}${execi 30 ~/scripts/emerge-status.sh}$color
