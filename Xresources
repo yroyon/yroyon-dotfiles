@@ -19,8 +19,6 @@
 *color12:     #7090cf
 ! Magenta
 *color5:      #af50c2
-!*color13:     #ad7fa8
-!*color13:     #d65d9c
 *color13:     #993399
 ! Cyan
 *color6:      #00AAAA
@@ -49,7 +47,9 @@ XTerm*.faceName: ProggySquare
 XTerm*.faceSize: 10
 
 XTerm*.showBlinkAsBold: true
-XTerm*.utf8: 1
+
+!! Do NOT set. Leave utf8 to default.
+!XTerm*.utf8: 2
 
 XTerm*.jumpScroll:  true
 XTerm*.multiScroll: true

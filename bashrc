@@ -62,13 +62,12 @@ alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
 alias perf="/usr/src/linux/tools/perf/perf"
 alias quickweb='python2 -m SimpleHTTPServer'
-alias quickweb3='python3 -m http.server'
+alias qweb3='python3 -m http.server'
 ## for some TERM issues
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
 alias xpdf="epdfview"
 #alias xpdf="zathura"
-
 
 #alias hd='od -Ax -tx1z -v'
 #alias realpath='readlink -f'
@@ -92,6 +91,7 @@ export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
 export LESS="$LESS --ignore-case"
+export MANPAGER=vimmanpager
 export PATH+=":${HOME}/scripts"
 [ -d "${HOME}"/scripts/games ] && export PATH+=":${HOME}/scripts/games"
 

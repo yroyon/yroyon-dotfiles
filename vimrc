@@ -31,6 +31,7 @@ let g:secure_modelines_verbose=0
 let g:secure_modelines_modelines=15
 
 set encoding=utf-8
+set fileencoding=utf-8
 set fileencodings=utf-8,iso-8859-15,default
 
 " Syntax when printing
@@ -107,6 +108,19 @@ nnoremap <C-n> :call NumberToggle()<cr>
 "autocmd InsertLeave * :set relativenumber
 
 
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
+"autocmd InsertEnter * :set number              " TODO
+"autocmd InsertLeave * :set relativenumber
+
 " Highlight current position
 map  <F8> :set invcursorline<CR>
 imap <F8> <Esc>:set invcursorline<CR>a
@@ -172,7 +186,7 @@ endfunction
 
 " me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce 
 let s:schemes_gvim = "wombat256:inkpot:vibrantink:molokai:desert256:bluegreen:default"
-let s:schemes_term256 = "molokai_y:wombatterm_y:inkpot:vibrantink:desert256_y:desert256:desert"
+let s:schemes_term256 = "wombatterm_y:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
 if has('gui')
     call LoadColourScheme(s:schemes_gvim)
@@ -286,6 +300,20 @@ imap <silent> <end> <C-o>g<end>
 " paste mode for text/code: toggle 'smart' indent
 map <F11> :set invpaste<CR>
 set pastetoggle=<F11>  " also work in insert mode
+"" p and P to match target indentation level (instead of just preserving
+"" original indent level, like with pastetoggle)
+"nnoremap p p'[v']=
+"nnoremap P P'[v']=
+"" Alt-p and Alt-P to behave like original p and P
+"nnoremap <leader>p p
+"nnoremap <leader>P P
+
+" 'ac' toggles always/auto center (vertically)
+nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
+function! ToggleAlwaysCenter()
+    let &scrolloff=999-&scrolloff
+endfunction
+command! ToggleAlwaysCenter call ToggleAlwaysCenter()
 
 "" p and P to match target indentation level (instead of just preserving
 "" original indent level, like with pastetoggle)
@@ -330,6 +358,8 @@ set showmatch  " briefly highlight matching parens while typing
 noremap <silent> * :let @/='\<'.expand('<cword>').'\>'<bar>:set hls<CR>
 " g* searches for partial words
 noremap <silent> g* :let @/=expand('<cword>')<bar>:set hls<CR>
+
+map µ <Esc>:set invhlsearch<CR>
 
 " center screen on search matches
 nnoremap N Nzz
