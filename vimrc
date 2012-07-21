@@ -45,7 +45,6 @@ set printoptions+=syntax:y
 "set backupdir=~/.vim/backup
 "set directory=~/.vim/backup
 
-set lazyredraw
 
 "-----------------------------------------------------------
 "                      user interface
@@ -82,8 +81,31 @@ set sidescrolloff=2
 
 " Line numbers
 set numberwidth=3
-map  <F10> :set invnumber<CR>
-imap <F10> <Esc>:set invnumber<CR>a
+"map  <F10> :set invnumber<CR>
+"imap <F10> <Esc>:set invnumber<CR>a
+" Switch between absolute line numbers, relative numbers and no numbers
+noremap <F10> :set <c-r>={'00':'','01':'r','10':'nor'}[&rnu.&nu]<CR>nu<CR>
+inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor'}[&rnu.&nu]<CR>nu<CR>a
+" Other impls:
+" " Toggle relative/absolute line numbers
+" map <Leader>na :se <c-r>=&nu?"no":""<CR>nu<CR>
+" map <Leader>nr :se <c-r>=&rnu?"no":""<CR>rnu<CR>
+" " Or
+" nnoremap <Leader>n :se <c-r>=&rnu?"":"r"<CR>nu<CR>
+
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
+"autocmd InsertEnter * :set number              " TODO
+"autocmd InsertLeave * :set relativenumber
+
 
 " Highlight current position
 map  <F8> :set invcursorline<CR>
@@ -93,6 +115,9 @@ imap <F7> <Esc>:set invcursorcolumn<CR>a
 
 " Make backspace delete lots of things
 set backspace=indent,eol,start
+
+" Wrap on <Left> and <Right> in all 4 modes
+"set whichwrap+=<,>,[,]
 
 map  <F1> :make!<CR><CR>
 imap <F1> <Esc>:make!<CR><CR>a
@@ -127,6 +152,9 @@ endif
 if &t_Co == 88
     set t_Co=256
 endif
+
+" If you use the solarized vim scheme, but not the solarized Xdefaults
+let g:solarized_termcolors=256
 
 " Try to load a nice colourscheme (from ciaranm)
 function! LoadColourScheme(schemes)
@@ -194,6 +222,19 @@ set shiftround    " use multiples of 'shiftwidth'
 set expandtab     " write spaces instead of tabs
 set softtabstop=4 " backspace deletes x spaces (1 tab) instead of 1
 
+" TODO test
+" Toggle the 'a' option (automatic formatting) in formatoptions.
+"nnoremap <silent> <leader>fa :call ToggleAutoFormatting()<CR>
+function! ToggleAutoFormatting()
+    if &formatoptions=~'a'
+        let &l:formatoptions = substitute(&fo, 'a', '', '')
+        echo 'Format options: ' . &fo
+    else
+        let &l:formatoptions.= 'a'
+        echo 'Format options: ' . &fo
+    endif
+endfunction
+
 
 "-----------------------------------------------------------
 "                    typos & errors
@@ -246,9 +287,27 @@ imap <silent> <end> <C-o>g<end>
 map <F11> :set invpaste<CR>
 set pastetoggle=<F11>  " also work in insert mode
 
-" Q wraps paragraph lines up to col 79. See gqap, gq}
+"" p and P to match target indentation level (instead of just preserving
+"" original indent level, like with pastetoggle)
+"nnoremap p p'[v']=
+"nnoremap P P'[v']=
+"" Alt-p and Alt-P to behave like original p and P
+"nnoremap <leader>p p
+"nnoremap <leader>P P
+
+" 'ac' toggles always/auto center (vertically)
+nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
+function! ToggleAlwaysCenter()
+    let &scrolloff=999-&scrolloff
+endfunction
+command! ToggleAlwaysCenter call ToggleAlwaysCenter()
+
+" Q wraps paragraph lines up to col 79. See gqap and gq}
 nnoremap Q gwap
-" Reverse operation: J
+" Reverse operation, to unwrap (Join) lines: J
+" To split a line under the cursor:
+" (normal S is covered by cc, no problem overriding it)
+nnoremap S i<cr><esc><right>
 
 " % reacts to more delimiters, such as closing XML tags
 runtime! macros/matchit.vim
@@ -265,12 +324,20 @@ set incsearch  " show the `best match so far'
 
 set showmatch  " briefly highlight matching parens while typing
 
+"map µ <Esc>:set invhlsearch<CR>
+
 " pressing * shouldn't take you to the next match
 noremap <silent> * :let @/='\<'.expand('<cword>').'\>'<bar>:set hls<CR>
 " g* searches for partial words
 noremap <silent> g* :let @/=expand('<cword>')<bar>:set hls<CR>
 
-"map µ <Esc>:set invhlsearch<CR>
+" center screen on search matches
+nnoremap N Nzz
+nnoremap n nzz
+" make zz/zt/zb center blocks (instead of current line) with visual selections
+vnoremap <silent> zz :<C-u>call setpos('.',[0,(line("'>")-line("'<"))/2+line("'<"),0,0])<Bar>normal! zzgv<CR>
+vnoremap <silent> zt :<C-u>call setpos('.',[0,line("'<"),0,0])<Bar>normal! ztgv<CR>
+vnoremap <silent> zb :<C-u>call setpos('.',[0,line("'>"),0,0])<Bar>normal! zbgv<CR>
 
 noremap ;; :%s:::g<Left><Left><Left>
 
@@ -318,6 +385,9 @@ map <Space> i<Space><Esc>l
 
 " Incrementing (ctrl-a, ctrl-x) accepts decimal, hexa and chars (but not octal)
 set nrformats="alpha,hex"
+
+" Invoke sudo to write into current open file
+command! W w !sudo tee > /dev/null %
 
 
 "-----------------------------------------------------------
@@ -511,6 +581,20 @@ let g:java_allow_cpp_keywords = 0
 " Num of previous lines used to synchronize highlighting (default 10)
 "let java_minlines = 50
 
+" Haskellmode  http://projects.haskell.org/haskellmode-vim
+" let haskell_indent_case=4 " (default 5)
+" let haskell_indent_if=2   " (default 3)
+" let g:haddock_browser="/usr/bin/elinks"
+" let g:haddock_browser_callformat="%s file://%s >/dev/null 2>&1 &"
+" au BufEnter *.hs compiler ghc
+
+" Haskell conceal  https://github.com/Twinside/vim-haskellConceal
+" TODO Disable for now: bg color is ugly, I have to change it, like so:
+"   hi conceal ctermfg=DarkBlue ctermbg=none guifg=DarkBlue guibg=none
+let g:no_haskell_conceal = 1
+
+let g:haddock_browser="/usr/bin/firefox"
+
 " :TOhtml
 let g:html_number_lines=1  " 0/1, don't/show line numbers
 let g:html_use_css=1
@@ -519,16 +603,11 @@ let g:use_xhtml=1
 " Help files: make <Return> behave like <C-]> (jump to tag)
 autocmd FileType help nmap <buffer> <Return> <C-]>
 
-" TODO *.txt seem to be asciidoc by default... I'd prefer txt (for my videos.txt)
-"
 " Additional file extensions
 augroup y_extrafileexts
     au!
     au BufRead,BufNewFile *.pom                  setfiletype xml
-    au BufRead,BufNewFile *.howto,howto,HOWTO    setfiletype asciidoc
-    au BufRead,BufNewFile *.readme,readme,README setfiletype asciidoc
-    au BufRead,BufNewFile *.todo,todo,TODO       setfiletype asciidoc
-    au BufRead,BufNewFile *.info                 setfiletype asciidoc
+    au BufRead,BufNewFile *.scala                setfiletype scala
 augroup END
 
 augroup y_modeline
@@ -632,10 +711,11 @@ set grepprg=grep\ -nH\ $*
 "map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
 
-"try
-"    call pathogen#runtime_append_all_bundles()
-"catch
-"endtry
+try
+    call pathogen#helptags()
+    call pathogen#runtime_append_all_bundles()
+catch
+endtry
 
 
 " -------------------------

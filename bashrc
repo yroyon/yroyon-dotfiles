@@ -14,6 +14,13 @@ alias    lsd="/bin/ls --color -d */"
 alias  lsdir="tree -d -L 1 -i -A"
 alias lsdirs="tree -d -A"
 
+## grep family
+alias grepc="grep -r --include=*.{java,c,C,cc,CC,cpp,h,H,sh,scala,hs,rb,py,pl,properties}"
+alias grepd="grep -r --include=*.{txt,html,htm,tex,bib,asciidoc,md,markdown,rst}"
+alias grepb="grep -r --include=*.{mk,am,ac,in,m4,sh,xml,properties} --include=*akefile --include=*configure* --include=GNUmake*"
+alias grepwhite="grep '[[:space:]]\+$' -r ."
+alias g=grepc
+
 dirsize() {
     find ${1-.} -maxdepth 1 -type d -exec du -hs '{}' \;
 }
@@ -23,17 +30,22 @@ lsize() {
         's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
 }
 
+histostats() {
+    history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
+}
+
 ## default options to common commands
 alias diff="colordiff -NrbB"
+# Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias grep="/bin/grep --color"
 alias rm="rm -i"
-alias boswars="boswars -W"
 alias tree="/usr/bin/tree --dirsfirst"
 
 ## locale issues
+alias calibre="LC_ALL=en_US calibre"
 alias git="LC_ALL=fr_FR@euro git"
 alias glade="LC_ALL=en_US glade-3"
-alias calibre="LC_ALL=en_US calibre"
+alias wicd-curses="LC_ALL=C wicd-curses"
 
 ## colours
 alias cvs="grc cvs"
@@ -45,14 +57,18 @@ alias traceroute="grc traceroute"
 ## new commands
 alias dvdplay="mplayer -nocache dvdnav://"
 alias emptytrash="rm -rf ~/.local/share/Trash/*"
-alias g="grepcode"
 alias loffice="libreoffice"
 alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
-alias quickweb='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
+alias perf="/usr/src/linux/tools/perf/perf"
+alias quickweb='python2 -m SimpleHTTPServer'
+alias quickweb3='python3 -m http.server'
 ## for some TERM issues
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
+alias xpdf="epdfview"
+#alias xpdf="zathura"
+
 
 #alias hd='od -Ax -tx1z -v'
 #alias realpath='readlink -f'
@@ -71,7 +87,7 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
 export GREP_COLOR=32
-export GREP_OPTIONS='--color=auto --exclude="tags" --exclude-dir=.git --exclude-dir=.svn --exclude-dir=CVS'
+export GREP_OPTIONS="--color=auto --exclude="tags" --exclude-dir=CVS --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=_darcs --binary-files=without-match"
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
@@ -79,7 +95,7 @@ export LESS="$LESS --ignore-case"
 export PATH+=":${HOME}/scripts"
 [ -d "${HOME}"/scripts/games ] && export PATH+=":${HOME}/scripts/games"
 
-export JAVA_HOME=/opt/sun-jdk
+export JAVA_HOME=$(java-config -o)
 export JAVAC="${JAVA_HOME}"/bin/javac
 
 ## VMware segfaults @work without this:
@@ -92,12 +108,6 @@ export EGL_DRIVER=/usr/lib/egl/egl_glx.so
 ##   (ServerName in /etc/cups/client.conf).
 ## => set to any non-empty value:
 export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
-
-## Home'Bank setup
-[ -d /opt/HomeBank ] && {
-    export HB_HOME=/opt/HomeBank
-    export PATH+=":${HB_HOME}"
-}
 
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
@@ -112,83 +122,6 @@ case $TERM in
 		;;
 esac
 export PS1
-
-
-# TODO from ciaranm
-#mktar() {
-#    tar jcvf "${1%%/}.tar.bz2" "${1%%/}/"
-#}
-#
-#ps_scm_f() {
-#    local s=
-#    if [[ -d ".svn" ]] ; then
-#        local r=$(svn info | sed -n -e '/^Revision: \([0-9]*\).*$/s//\1/p' )
-#        s="(r$r$(svn status | grep -q -v '^?' && echo -n "*" ))"
-#    else
-#        local d=$(git rev-parse --git-dir 2>/dev/null) b= r= a= c= e= f= g=
-#        if [[ -n "${d}" ]] ; then
-#            if [[ -d "${d}/../.dotest" ]] ; then
-#                if [[ -f "${d}/../.dotest/rebase" ]] ; then
-#                    r="rebase"
-#                elif [[ -f "${d}/../.dotest/applying" ]] ; then
-#                    r="am"
-#                else
-#                    r="???"
-#                fi
-#                b=$(git symbolic-ref HEAD 2>/dev/null )
-#            elif [[ -f "${d}/.dotest-merge/interactive" ]] ; then
-#                r="rebase-i"
-#                b=$(<${d}/.dotest-merge/head-name)
-#            elif [[ -d "${d}/../.dotest-merge" ]] ; then
-#                r="rebase-m"
-#                b=$(<${d}/.dotest-merge/head-name)
-#            elif [[ -f "${d}/MERGE_HEAD" ]] ; then
-#                r="merge"
-#                b=$(git symbolic-ref HEAD 2>/dev/null )
-#            elif [[ -f "${d}/BISECT_LOG" ]] ; then
-#                r="bisect"
-#                b=$(git symbolic-ref HEAD 2>/dev/null )"???"
-#            else
-#                r=""
-#                b=$(git symbolic-ref HEAD 2>/dev/null )
-#            fi
-#
-#            if git status | grep -q '^# Changes not staged' ; then
-#                a="${a}*"
-#            fi
-#
-#            if git status | grep -q '^# Changes to be committed:' ; then
-#                a="${a}+"
-#            fi
-#
-#            if git status | grep -q '^# Untracked files:' ; then
-#                a="${a}?"
-#            fi
-#
-#            e=$(git status | sed -n -e '/^# Your branch is /s/^.*\(ahead\|behind\).* by \(.*\) commit.*/\1 \2/p' )
-#            if [[ -n ${e} ]] ; then
-#                f=${e#* }
-#                g=${e% *}
-#                if [[ ${g} == "ahead" ]] ; then
-#                    e="+${f}"
-#                else
-#                    e="-${f}"
-#                fi
-#            else
-#                e=
-#            fi
-#
-#            b=${b#refs/heads/}
-#            b=${b// }
-#            [[ -n "${b}" ]] && c="$(git config "branch.${b}.remote" 2>/dev/null )"
-#            [[ -n "${r}${b}${c}${a}" ]] && s="(${r:+${r}:}${b}${c:+@${c}}${e}${a:+ ${a}})"
-#        fi
-#    fi
-#    s="${s}${ACTIVE_COMPILER}"
-#    s="${s:+${s} }"
-#    echo -n "$s"
-#}
-
 
 [ -f /etc/profile.d/bash-completion ]     && source /etc/profile.d/bash-completion
 [ -f /etc/profile.d/bash-completion.sh ]  && source /etc/profile.d/bash-completion.sh

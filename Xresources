@@ -1,4 +1,3 @@
-
 ! ---------------------------------------------------------------------
 ! color theme
 ! ---------------------------------------------------------------------
@@ -20,7 +19,9 @@
 *color12:     #7090cf
 ! Magenta
 *color5:      #af50c2
-*color13:     #ad7fa8
+!*color13:     #ad7fa8
+!*color13:     #d65d9c
+*color13:     #993399
 ! Cyan
 *color6:      #00AAAA
 *color14:     #55FFFF
@@ -28,12 +29,10 @@
 *color7:      #EDEDED
 *color15:     #FFFFFF
 
-
 xft.antialias: true
 xft.hinting:   true
 !xft.dpi:       96
 !xft.rgba:      rgb
-
 
 
 ! ---------------------------------------------------------------------
@@ -65,7 +64,6 @@ XTerm*.cutNewline:              false
 
 XTerm*.toolBar: false
 XTerm*.visualBell: false
-
 
 
 ! ---------------------------------------------------------------------
@@ -100,7 +98,13 @@ URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
 !URxvt.italicFont:      xft:DejaVu Sans Mono-10:italic
 !URxvt.boldItalicFont:  xft:DejaVu Sans Mono-10:bold:italic
 
+!! color man pages
+!URxvt*colorBDMode:  true
+!URxvt*colorULMode:  true
+!URxvt*colorBD:      #7090cf
+!URxvt*colorUL:      #e54949
 
+!! keyboard shortcuts
 !! <C>-, <C>= and <C>+ switch to resp. small, medium and big font size
 URxvt.keysym.C-minus: command:\033]710;-*-terminus-medium-*-*-*-14-*-*-*-*-*-u\007
 URxvt.keysym.C-equal: command:\033]710;-*-terminus-medium-*-*-*-20-*-*-*-*-*-u\007
@@ -133,14 +137,9 @@ URxvt.selection-autotransform.2: s/^([^:[:space:]]+):?$/$1/
 ! tabbed:
 !   Shift-Left and Shift-Right to navigate tabs, Shift-Down to create one.
 
-
 !! secondaryScroll for integration with 'screen'
 !URxvt.scrollstyle:      plain
 !URxvt.secondaryScroll:  true
-
-!! Hint : multiple configurations
-!! use '-name totor' and resources like 'totor.background: black'
-
 
 
 ! ---------------------------------------------------------------------
@@ -171,7 +170,6 @@ xcalc.ti.button38.background: #555595
 xcalc.ti.button39.background: #555595
 
 
-
 ! ---------------------------------------------------------------------
 ! mouse cursors
 ! ---------------------------------------------------------------------
@@ -182,13 +180,11 @@ Xcursor.theme: pCircle-24
 Xcursor.size: 24
 
 
-
 ! ---------------------------------------------------------------------
 ! nedit
 ! ---------------------------------------------------------------------
 nedit.findReplaceUsesSelection: false
 nedit.text.autoWrapPastedText: true
-
 
 
 ! ---------------------------------------------------------------------
@@ -197,16 +193,6 @@ nedit.text.autoWrapPastedText: true
 xdvi.shrinkFactor: 7
 !xdvi.Hush: true
 xdvi.Margin: 2cm
-
-
-
-! ---------------------------------------------------------------------
-! xpdf
-! ---------------------------------------------------------------------
-xpdf.paperColor: snow
-xpdf.urlCommand: firefox '%s'
-xpdf.initialZoom: width
-
 
 
 ! ---------------------------------------------------------------------
@@ -218,7 +204,6 @@ xmessage.form.okay.foreground: snow
 xmessage.message.background: snow
 xmessage.defaultButton: okay
 xmessage.form.message.Scroll:  WhenNeeded
-
 
 
 ! ---------------------------------------------------------------------
