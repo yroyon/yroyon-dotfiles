@@ -21,16 +21,16 @@ alias grepb="grep -r --include=*.{mk,am,ac,in,m4,sh,xml,properties} --include=*a
 alias grepwhite="grep '[[:space:]]\+$' -r ."
 alias g=grepc
 
-dirsize() {
+function dirsize() {
     find ${1-.} -maxdepth 1 -type d -exec du -hs '{}' \;
 }
 
-lsize() {
+function lsize() {
     du -b --max-depth 1 ${1} | sort -nr | perl -pe \
         's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
 }
 
-histostats() {
+function histostats() {
     history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
@@ -82,6 +82,7 @@ shopt -s globstar
 
 complete -cf sudo
 
+export BROWSER="firefox '%s' &"
 export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
@@ -90,18 +91,17 @@ export GREP_OPTIONS="--color=auto --exclude="tags" --exclude-dir=CVS --exclude-d
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
+export JAVA_HOME=$(java-config -o)
+export JAVAC="${JAVA_HOME}"/bin/javac
 export LESS="$LESS --ignore-case"
 export MANPAGER=vimmanpager
 export PATH+=":${HOME}/scripts"
 [ -d "${HOME}"/scripts/games ] && export PATH+=":${HOME}/scripts/games"
 
-export JAVA_HOME=$(java-config -o)
-export JAVAC="${JAVA_HOME}"/bin/javac
-
 ## VMware segfaults @work without this:
 export VMWARE_USE_SHIPPED_GTK=force
 
-## For JOGL (it seems the default is missing .so)
+## For JOGL (it seems the default is missing ".so")
 export EGL_DRIVER=/usr/lib/egl/egl_glx.so
 
 ## ooffice is veeery slow to start if the print server is unreachable
