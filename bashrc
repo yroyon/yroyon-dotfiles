@@ -62,7 +62,7 @@ alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
 alias perf="/usr/src/linux/tools/perf/perf"
 alias quickweb='python2 -m SimpleHTTPServer'
-alias qweb3='python3 -m http.server'
+alias qweb='python3 -m http.server'
 ## for some TERM issues
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
@@ -87,7 +87,7 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
 export GREP_COLOR=32
-export GREP_OPTIONS="--color=auto --exclude="tags" --exclude-dir=CVS --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=_darcs --binary-files=without-match"
+export GREP_OPTIONS="--color=auto --exclude=tags --exclude-dir=CVS --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=_darcs --binary-files=without-match"
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152

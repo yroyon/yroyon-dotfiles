@@ -107,20 +107,6 @@ nnoremap <C-n> :call NumberToggle()<cr>
 "autocmd InsertEnter * :set number              " TODO
 "autocmd InsertLeave * :set relativenumber
 
-
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set number
-    else
-        set relativenumber
-    endif
-endfunc
-
-nnoremap <C-n> :call NumberToggle()<cr>
-
-"autocmd InsertEnter * :set number              " TODO
-"autocmd InsertLeave * :set relativenumber
-
 " Highlight current position
 map  <F8> :set invcursorline<CR>
 imap <F8> <Esc>:set invcursorline<CR>a
@@ -135,7 +121,6 @@ set backspace=indent,eol,start
 
 map  <F1> :make!<CR><CR>
 imap <F1> <Esc>:make!<CR><CR>a
-
 
 " TODO statusbar
 set laststatus=2
@@ -282,6 +267,7 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 " TODO make 'spell' use my WhiteSpaceEOL style instead of a red bgcolor for
 " errors (blue for caps errors, purple for ??)
 
+
 "-----------------------------------------------------------
 "                    moving around
 "-----------------------------------------------------------
@@ -300,21 +286,6 @@ imap <silent> <end> <C-o>g<end>
 " paste mode for text/code: toggle 'smart' indent
 map <F11> :set invpaste<CR>
 set pastetoggle=<F11>  " also work in insert mode
-"" p and P to match target indentation level (instead of just preserving
-"" original indent level, like with pastetoggle)
-"nnoremap p p'[v']=
-"nnoremap P P'[v']=
-"" Alt-p and Alt-P to behave like original p and P
-"nnoremap <leader>p p
-"nnoremap <leader>P P
-
-" 'ac' toggles always/auto center (vertically)
-nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
-function! ToggleAlwaysCenter()
-    let &scrolloff=999-&scrolloff
-endfunction
-command! ToggleAlwaysCenter call ToggleAlwaysCenter()
-
 "" p and P to match target indentation level (instead of just preserving
 "" original indent level, like with pastetoggle)
 "nnoremap p p'[v']=
@@ -351,8 +322,6 @@ set smartcase  " unless they contain upper-case characters
 set incsearch  " show the `best match so far'
 
 set showmatch  " briefly highlight matching parens while typing
-
-"map µ <Esc>:set invhlsearch<CR>
 
 " pressing * shouldn't take you to the next match
 noremap <silent> * :let @/='\<'.expand('<cword>').'\>'<bar>:set hls<CR>
@@ -773,4 +742,3 @@ endtry
 "
 "   Pasting from OS clipboard into Vim:  ?+gP
 "
-
