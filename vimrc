@@ -125,6 +125,9 @@ imap <F1> <Esc>:make!<CR><CR>a
 " TODO statusbar
 set laststatus=2
 set statusline=
+"set statusline+=%#warningmsg#                 " TODO syntastic plugin stuff
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 set statusline+=%f\                            " file name
 set statusline+=\[ 
 set statusline+=%{strlen(&ft)?&ft:'none'},     " filetype
@@ -239,6 +242,9 @@ endfunction
 "                    typos & errors
 "-----------------------------------------------------------
 
+" XXX TODO FIXME The :hi line is rendered ineffective somewhere.
+"                It works if I type it in an open vim session.
+"                Putting it in ~/.vim/plugin/WhiteSpaceEOL.vim is KO.
 " Highlight spaces that should not be there
 highlight WhiteSpaceEOL ctermfg=darkred cterm=underline
 match WhiteSpaceEOL /\s\+$/
@@ -565,17 +571,17 @@ map <silent> g[ :cs find 3 <C-R>=expand("<cword>")<CR><CR>
 "-----------------------------------------------------------
 "                   app-specific settings
 "-----------------------------------------------------------
+"   (Those generally must be in .vimrc, not under .vim/)
 
 " Assume the shell is Bash (:help sh.vim)
 let g:is_bash=1
 
 let g:c_gnu=1
 
-" .tex defaults to LaTeX instead of ConTeXt
+" Default .tex to LaTeX instead of ConTeXt
 let g:tex_flavor = "latex"
 
 " Java : do not highlight 'delete' and such as errors.
-" (this must be in .vimrc; it doesn't work if in .vim/ftplugin/java/)
 let g:java_allow_cpp_keywords = 0
 " Num of previous lines used to synchronize highlighting (default 10)
 "let java_minlines = 50
