@@ -1,17 +1,25 @@
 [alias]
     vimdiff = difftool --tool=vimdiff
     diffgui = difftool --tool=meld
-    undo = reset --soft HEAD^
+    wdiff   = diff --no-ext-diff --word-diff
+    restore = checkout --
+    unstage = reset HEAD --
+    undo = reset --soft HEAD^ --
     todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
         -e XXX -e TODO -e FIXME -e @bug -e @todo
         # per-file hits:  -c  (appendable on CLI)
-    l = log --graph --abbrev-commit --date=relative \
-        --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    l  = log --date=relative --decorate \
+        --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
+    lg = log --graph --date=short --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
+[blame]
+    date = short
 [color]
     ui = auto
 [core]
     excludesfile = /home/yroyon/.gitignore_global
     gitProxy = git-http-proxy
+[credential]
+    helper = cache --timeout=3600
 [diff]
     tool = vimdiff
     guitool = meld
@@ -24,12 +32,16 @@
 [diff "zip"]
     textconv = unzip -c -a
 [github]
-	user = yroyon
-	token = fed6b8add696d67e89487310f418932a
+    user = yroyon
+    token = fed6b8add696d67e89487310f418932a
+[http]
+    proxy = bluecoat-be02.alcatel.fr:1080
+[push]
+	default = tracking
 [rerere]
     enabled = 1
 [svn]
     rmdir = true
 [user]
     name = Yvan Royon
-    email = yvan.royon@gmail.com
+    email = yvan.royon@alcatel-lucent.com
