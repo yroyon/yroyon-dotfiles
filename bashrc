@@ -1,25 +1,29 @@
 ## This file should generate no output or it will break the scp | rcp commands.
 
-source /etc/profile
+. /etc/profile
 ## If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 [ -f "${HOME}"/.dir_colors ] && eval $(dircolors -b "${HOME}"/.dir_colors)
 
-## ls family
-alias      d="/bin/ls --color"
+## ls family new commands
+alias      d="/bin/ls --color --group-directories-first"
 alias      l="/bin/ls --color --group-directories-first -FX"
 alias     ll="/bin/ls --color --group-directories-first -FXAlh"
 alias llsize="/bin/ls --color --group-directories-first -FXAlh --sort=size"
 alias    lsd="/bin/ls --color -d */"
-alias  lsdir="tree -d -L 1 -i -A"
-alias lsdirs="tree -d -A"
+alias  lsdir="/usr/bin/tree -d -L 1 -i"
+alias lsdirs="/usr/bin/tree -d"
 
-## grep family
-alias grepc="grep -r --include=*.{java,c,C,cc,CC,cpp,h,H,sh,scala,hs,rb,py,pl,properties}"
-alias grepd="grep -r --include=*.{txt,html,htm,tex,bib,asciidoc,md,markdown,rst}"
-alias grepb="grep -r --include=*.{mk,am,ac,in,m4,sh,xml,properties} --include=*akefile --include=*configure* --include=GNUmake*"
-alias grepwhite="grep '[[:space:]]\+$' -r ."
+## grep family new commands
+alias grepc="grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,scala,sh}"
+alias grepd="grep -R --exclude=* --include=*.{asciidoc,bib,howto,info,markdown,md,txt,htm,html,rst,tex,todo,txt,wip}"
+alias grepb="grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include=*akefile --include=*configure* --include=GNUmake*"
+alias grepwhite="grep '[[:space:]]\+$' -R"
 alias g=grepc
+
+## git family new commands
+alias gdiff="git diff | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'"
+alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 
 function dirsize() {
     find ${1-.} -maxdepth 1 -type d -exec du -hs '{}' \;
@@ -34,10 +38,20 @@ function histostats() {
     history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
+function font_test() {
+    echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+    echo -e "             abcdefghijklmnopqrstuvwxyz "
+    echo -e "        Num: 0123456789 "
+    echo -e "   Brackets: () [] {} <> "
+    echo -e "     Quotes: \"foo\" 'bar' "
+    echo -e "Punctuation: , . : ; _ ! ? "
+    echo -e "    Symbols: ~  @ # $ % ^ & * - + = | / \` \\ "
+    echo -e "  Ambiguity: iI1lL oO0 "
+}
+
 ## default options to common commands
 alias diff="colordiff -NrbB"
 # Patching: git diff > patchfile  ;  patch -p1 < patchfile
-alias grep="/bin/grep --color"
 alias rm="rm -i"
 alias tree="/usr/bin/tree --dirsfirst"
 
@@ -66,7 +80,7 @@ alias qweb='python3 -m http.server'
 ## for some TERM issues
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
-alias xpdf="epdfview"
+alias xpdf="qpdfview"
 #alias xpdf="zathura"
 
 #alias hd='od -Ax -tx1z -v'
@@ -84,10 +98,12 @@ complete -cf sudo
 
 export BROWSER="firefox '%s' &"
 export CVS_RSH=/usr/bin/ssh
+export DISPLAY=:0.0
 export EDITOR=/usr/bin/vim
 export FIGNORE=".svn:CVS"
 export GREP_COLOR=32
-export GREP_OPTIONS="--color=auto --exclude=tags --exclude-dir=CVS --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=_darcs --binary-files=without-match"
+export GREP_OPTIONS="--color=auto --exclude=tags --exclude=cscope.out --binary-files=without-match \
+ --exclude-dir=CVS --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=_darcs"
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
