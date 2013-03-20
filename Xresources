@@ -112,7 +112,7 @@ URxvt.keysym.C-plus:  command:\033]710;-*-terminus-medium-*-*-*-28-*-*-*-*-*-u\0
 
 !! Perl extensions. Needs 'perl' USE flag.
 URxvt.perl-ext-common:  matcher,searchable-scrollback<M-s>,selection-autotransform
-URxvt.urlLauncher:      firefox
+URxvt.url-launcher:      firefox
 URxvt.matcher.button:   1
 !! transform output like gcc warnings into something usable after 'vi' or ':e'
 ! file:line:col: (gcc >=4.5 and clang output) (we drop 'col' information, vim cannot use it)
