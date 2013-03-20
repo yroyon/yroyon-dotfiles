@@ -237,6 +237,8 @@ function! ToggleAutoFormatting()
     endif
 endfunction
 
+" nremap > to >gv  and < to <gv ?? (gv restores previous visual selection)
+"
 
 "-----------------------------------------------------------
 "                    typos & errors
@@ -272,6 +274,19 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 
 " TODO make 'spell' use my WhiteSpaceEOL style instead of a red bgcolor for
 " errors (blue for caps errors, purple for ??)
+
+"" TODO
+"highlight YTodoGroup ctermbg=green guibg=green
+"highlight YTodoGroup ctermfg=darkred cterm=underline
+"augroup HighlightTODO
+"    autocmd!
+"    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', '@todo')
+"augroup END
+"augroup HighlightTODO
+"    autocmd!
+"    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO', -1, 24)
+"augroup END
+"" put that in ~/.vim/after/common_syntax.vim ?
 
 
 "-----------------------------------------------------------
@@ -439,79 +454,6 @@ inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
 
 
 "-----------------------------------------------------------
-"                         folding (FIXME)
-"-----------------------------------------------------------
-
-"func! HideAll()
-"  syn region myFold start="{" end="}" transparent fold
-"  syn sync fromstart
-"  set foldnestmax=1
-"  set foldmethod=syntax
-"endfunc
-"autocmd FileType c,cxx,cpp call HideAll()
-
-"set foldmethod=manual
-map + v%zf
-
-function! ToggleFold()
-    if foldlevel('.') == 0
-        " No fold exists at the current line,
-        " so create a fold based on indentation
-
-        let l_min = line('.')   " the current line number
-        let l_max = line('$')   " the last line number
-        let i_min = indent('.') " the indentation of the current line
-        let l = l_min + 1
-
-        " Search downward for the last line whose indentation > i_min
-        while l <= l_max
-        " if this line is not blank ...
-        if strlen(getline(l)) > 0 && getline(l) !~ '^\s*$'
-            if indent(l) <= i_min
-                " we've gone too far
-                let l = l - 1    " backtrack one line
-                break
-            endif
-        endif
-        let l = l + 1
-        endwhile
-
-        " Clamp l to the last line
-        if l > l_max
-        let l = l_max
-        endif
-
-        " Backtrack to the last non-blank line
-        while l > l_min
-        if strlen(getline(l)) > 0 && getline(l) !~ '^\s*$'
-            break
-        endif
-        let l = l - 1
-        endwhile
-
-        "execute "normal i" . l_min . "," . l . " fold"   " print debug info
-
-        if l > l_min
-        " Create the fold from l_min to l
-        execute l_min . "," . l . " fold"
-        endif
-    else
-        " Delete the fold on the current line
-        normal zd
-    endif
-endfunction
-
-" broken
-"nmap <F2> :call ToggleFold()<CR>
-
-" Enable folds XXX
-"if has("folding")
-"    set foldenable
-"    set foldmethod=indent
-"endif
-
-
-"-----------------------------------------------------------
 "                          ctags
 "-----------------------------------------------------------
 
@@ -577,6 +519,9 @@ map <silent> g[ :cs find 3 <C-R>=expand("<cword>")<CR><CR>
 let g:is_bash=1
 
 let g:c_gnu=1
+
+" For clang-complete
+"let g:clang_use_library = 1
 
 " Default .tex to LaTeX instead of ConTeXt
 let g:tex_flavor = "latex"
@@ -732,7 +677,7 @@ endtry
 "
 " K    to reach the man page for the current word
 " g Ctrl-G       to count words
-" \i<CR>         to split a line at the cursor's position
+" \i<CR>         to split a line at the cursor's position (similar to S)
 "
 " gd,  gD        go to var definition (local/global)
 " *,  g*         search (exact word/containing word)
