@@ -157,6 +157,8 @@ endif
 
 " If you use the solarized vim scheme, but not the solarized Xdefaults
 let g:solarized_termcolors=256
+" If you use molokai from https://github.com/tomasr/molokai/
+let g:rehash256 = 1
 
 " Try to load a nice colourscheme (from ciaranm)
 function! LoadColourScheme(schemes)
