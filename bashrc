@@ -90,6 +90,10 @@ function font_test() {
     echo -e "  Ambiguity: iI1lL oO0 "
 }
 
+if [ -x "${HOME}/scripts/clippy.sh" ] ; then
+    function command_not_found_handle { ${HOME}/scripts/clippy.sh $1 ; }
+    export COWPATH="${HOME}/scripts/cows"
+fi
 
 shopt -s checkwinsize
 shopt -s dotglob
