@@ -34,6 +34,8 @@ alias diff="colordiff -NrbB"
 alias rm="rm -i"
 alias tree="/usr/bin/tree --dirsfirst"
 
+[[ -f /usr/bin/time ]] && alias time="/usr/bin/time"
+
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
 alias git="LC_ALL=fr_FR@euro git"
@@ -53,7 +55,6 @@ alias emptytrash="rm -rf ~/.local/share/Trash/*"
 alias loffice="libreoffice"
 alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
-alias perf="/usr/src/linux/tools/perf/perf"
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
 ## for some TERM issues
@@ -64,7 +65,6 @@ alias xpdf="qpdfview"
 
 #alias hd='od -Ax -tx1z -v'
 #alias realpath='readlink -f'
-
 
 function dirsize() {
     find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \;
@@ -98,7 +98,6 @@ shopt -s histappend
 shopt -s no_empty_cmd_completion
 shopt -s globstar
 
-
 export BROWSER="firefox '%s' &"
 export CVS_RSH=/usr/bin/ssh
 export DISPLAY=:0.0
@@ -111,11 +110,11 @@ export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=4096
 export HISTFILESIZE=2097152
 export JAVA_HOME=$(java-config -o)
-export JAVAC="${JAVA_HOME}"/bin/javac
+export JAVAC="${JAVA_HOME}/bin/javac"
 export LESS="$LESS --ignore-case"
 export MANPAGER=vimmanpager
 export PATH+=":${HOME}/scripts"
-[ -d "${HOME}"/scripts/games ] && export PATH+=":${HOME}/scripts/games"
+[[ -d "${HOME}/scripts/games" ]] && export PATH+=":${HOME}/scripts/games"
 
 ## bash 4: trim (nested) dirnames that are too long
 #PROMPT_DIRTRIM=2
@@ -133,7 +132,6 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 ## VMware segfaults @work without this:
 export VMWARE_USE_SHIPPED_GTK=force
 
-
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ ${EUID} == 0 ]] ; then
@@ -149,11 +147,9 @@ else
 fi
 c3='\[\033[01;34m\]'      # bold blue
 cx='\[\033[00m\]'         # white
-
 ## Mix double quotes (for variables, must be expanded)
 ## and single quotes (for subshells, must not be expanded)
 PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
-
 case $TERM in
 	xterm*|rxvt*)
 		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
@@ -166,8 +162,8 @@ esac
 export PS1
 unset c1 c2 c3 cx id pr
 
-[ -f /etc/profile.d/bash-completion ]     && source /etc/profile.d/bash-completion
-[ -f /etc/profile.d/bash-completion.sh ]  && source /etc/profile.d/bash-completion.sh
-[ -f /usr/share/compleat/compleat_setup ] && source /usr/share/compleat/compleat_setup
-[ -f /usr/bin/ssh-askpass-fullscreen ]    && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen
+[[ -f /etc/profile.d/bash-completion ]]     && source /etc/profile.d/bash-completion
+[[ -f /etc/profile.d/bash-completion.sh ]]  && source /etc/profile.d/bash-completion.sh
+[[ -f /usr/share/compleat/compleat_setup ]] && source /usr/share/compleat/compleat_setup
+[[ -f /usr/bin/ssh-askpass-fullscreen ]]    && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen
 

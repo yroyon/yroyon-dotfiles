@@ -129,7 +129,7 @@ set statusline=
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
 set statusline+=%f\                            " file name
-set statusline+=\[ 
+set statusline+=\[
 set statusline+=%{strlen(&ft)?&ft:'none'},     " filetype
 set statusline+=%{&encoding},                  " encoding
 set statusline+=%{&fileformat}                 " file format
@@ -149,8 +149,8 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-" Hack: force 256 colours. OK for patched urxvt (default is 88).
-" Console has 8 colours; forcing 256 looks horrible.
+" If the terminal is in 88 colors (urxvt default), force to 256.
+" Console supports 8, looks ugly with >8.
 if &t_Co == 88
     set t_Co=256
 endif
@@ -172,7 +172,7 @@ function! LoadColourScheme(schemes)
     endwhile
 endfunction
 
-" me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce 
+" me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce
 let s:schemes_gvim = "wombat256:inkpot:vibrantink:molokai:desert256:bluegreen:default"
 let s:schemes_term256 = "wombatterm_y:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
@@ -186,10 +186,10 @@ else
             \ else |
             \     call LoadColourScheme(s:schemes_term) |
             \ endif
-    else 
+    else
         if &t_Co == 88 || &t_Co == 256
             call LoadColourScheme(s:schemes_term256)
-        else 
+        else
             call LoadColourScheme(s:schemes_term)
         endif
     endif
@@ -349,7 +349,7 @@ noremap <silent> * :let @/='\<'.expand('<cword>').'\>'<bar>:set hls<CR>
 " g* searches for partial words
 noremap <silent> g* :let @/=expand('<cword>')<bar>:set hls<CR>
 
-map µ <Esc>:set invhlsearch<CR>
+map Âµ <Esc>:set invhlsearch<CR>
 
 " center screen on search matches
 nnoremap N Nzz
