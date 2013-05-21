@@ -31,8 +31,8 @@ let g:secure_modelines_verbose=0
 let g:secure_modelines_modelines=15
 
 set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8,iso-8859-15,default
+"set fileencoding=utf-8
+"set fileencodings=utf-8,iso-8859-15,default
 
 " Syntax when printing
 set printoptions+=syntax:y
