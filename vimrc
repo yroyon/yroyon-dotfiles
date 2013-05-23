@@ -1,4 +1,18 @@
 scriptencoding utf-8
+
+" F1  : run makeprg silently
+" F2  :
+" F3  :
+" F4  :
+" F5  : trim trailing white spaces
+" F6  :
+" F7  : toggle cursor column highlight
+" F8  : toggle cursor line highlight
+" F9  :
+" F10 : toggle line numbers
+" F11 : toggle paste mode
+" F12 :
+
 "-----------------------------------------------------------
 "                     terminal setup
 "-----------------------------------------------------------
@@ -22,6 +36,11 @@ endif
 "-----------------------------------------------------------
 
 set nocompatible
+
+set encoding=utf-8
+"set fileencoding=utf-8
+"set fileencodings=utf-8,iso-8859-15,default
+
 set history=200
 set textwidth=0   " disable auto-wrapping and adding EOL
 
@@ -29,10 +48,6 @@ set textwidth=0   " disable auto-wrapping and adding EOL
 set nomodeline
 let g:secure_modelines_verbose=0
 let g:secure_modelines_modelines=15
-
-set encoding=utf-8
-"set fileencoding=utf-8
-"set fileencodings=utf-8,iso-8859-15,default
 
 " Syntax when printing
 set printoptions+=syntax:y
@@ -51,25 +66,10 @@ set printoptions+=syntax:y
 "                      user interface
 "-----------------------------------------------------------
 
-" F1  : run makeprg silently
-" F2  : toggle folding
-" F3  :
-" F4  :
-" F5  : trim trailing white spaces
-" F6  :
-" F7  : toggle cursor column highlight
-" F8  : toggle cursor line highlight
-" F9  :
-" F10 : toggle line numbers
-" F11 : toggle paste mode
-" F12 :
-
 set ruler
 set laststatus=2               " bottom status bar, 2=always
 set virtualedit=block          " visual block mode (ctrl-v) goes past EOL
 set wildmode=list:longest,full " <Tab> completion behaviour in ex mode
-
-" Enhance tab completion according to wildmode
 set wildmenu
 set wildignore+=*.o,*~,*.class,*.pyc,*.rbc,.svn,.git
 " During tab completion, give those files lower priority
@@ -93,16 +93,6 @@ inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor'}[&rnu.&nu]<CR>nu<CR>
 " map <Leader>nr :se <c-r>=&rnu?"no":""<CR>rnu<CR>
 " " Or
 " nnoremap <Leader>n :se <c-r>=&rnu?"":"r"<CR>nu<CR>
-
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set number
-    else
-        set relativenumber
-    endif
-endfunc
-
-nnoremap <C-n> :call NumberToggle()<cr>
 
 "autocmd InsertEnter * :set number              " TODO
 "autocmd InsertLeave * :set relativenumber
@@ -240,7 +230,7 @@ function! ToggleAutoFormatting()
 endfunction
 
 " nremap > to >gv  and < to <gv ?? (gv restores previous visual selection)
-"
+
 
 "-----------------------------------------------------------
 "                    typos & errors
@@ -295,6 +285,9 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 "                    moving around
 "-----------------------------------------------------------
 
+" when pasting code or text, toggle off smartindent
+set pastetoggle=<F11>
+
 " Move between visible lines and not between real lines
 map <silent> <Up> gk
 map <silent> <Down> gj
@@ -305,17 +298,6 @@ map <silent> <end> g<end>
 "imap <silent> <Down> <C-o>gj
 imap <silent> <home> <C-o>g<home>
 imap <silent> <end> <C-o>g<end>
-
-" paste mode for text/code: toggle 'smart' indent
-map <F11> :set invpaste<CR>
-set pastetoggle=<F11>  " also work in insert mode
-"" p and P to match target indentation level (instead of just preserving
-"" original indent level, like with pastetoggle)
-"nnoremap p p'[v']=
-"nnoremap P P'[v']=
-"" Alt-p and Alt-P to behave like original p and P
-"nnoremap <leader>p p
-"nnoremap <leader>P P
 
 " 'ac' toggles always/auto center (vertically)
 nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
@@ -339,10 +321,9 @@ runtime! macros/matchit.vim
 "                  search and replace
 "-----------------------------------------------------------
 
+set incsearch  " show the `best match so far'
 set ignorecase " make searches case-insensitive
 set smartcase  " unless they contain upper-case characters
-
-set incsearch  " show the `best match so far'
 
 set showmatch  " briefly highlight matching parens while typing
 
@@ -449,67 +430,38 @@ function! CleverTab()
     endif
 endfunction
 
-"inoremap <Tab> <C-R>=CleverTab()<CR>
-"inoremap <S-Tab> <C-P>
-"inoremap <expr> <Tab> CleverTab()
 inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
 
 
 "-----------------------------------------------------------
-"                          ctags
+"                      ctags, cscope
 "-----------------------------------------------------------
 
-command! TagRenew call RenewCtags()
-
-" FIXME I don't use that, it sucks.
-"  -> Call ctags directly instead of using make.
-"  -> Should I force creation of tags file? (have 2 functions?)
-"  -> Way to add "system" tags files, for Java, Python etc. Through env, like
-"  below for cscope?
-"
-" Re-create a tags file.
-" 1) vim must be run from the location of the current tags file
-" 2) this location must contain a Makefile with a 'tags' target
-function! RenewCtags()
-    if filereadable("./tags")
-        silent !make tags
-        redraw!
-        set tags=tags
-    else
-        echohl WarningMsg | echo "failed to run 'make tags' in " $PWD | echohl None
+if has("cscope")
+    set cscopeprg=cscope
+    set cscopetagorder=0
+    " Make :tag, Ctrl-] etc use cscope+ctags instead of just ctags
+    "set cscopetag
+    set nocscopeverbose
+    " Add any database in current directory
+    if filereadable("cscope.out")
+        cscope add cscope.out
     endif
-endfunction
+    " Add database pointed to by environment
+    if $CSCOPE_DB != ""
+        cscope add $CSCOPE_DB
+    endif
+    set cscopeverbose
+endif
 
-" Shortcuts:
+" Shortcuts: (ctags)
 " Ctrl-]   Goes to function declaration (signature)
 "            Same as :tag
 " g-]      Goes to function definition (implementation)
 "            Same as :ts
 
-
-"-----------------------------------------------------------
-"                          cscope
-"-----------------------------------------------------------
-
-if has("cscope")
-    set csprg=cscope
-    set csto=0
-    " Make :tag, Ctrl-] etc use cscope+ctags instead of just ctags
-    "set cst
-    set nocsverb
-    " Add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-    endif
-    " Add database pointed to by environment
-    if $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-    set csverb
-endif
-
 "map <C-}> :cstag <C-R>=expand("<cword>")<CR><CR>  " => same as <C-]>
-map <silent> g[ :cs find 3 <C-R>=expand("<cword>")<CR><CR>
+map <silent> g[ :cscope find 3 <C-R>=expand("<cword>")<CR><CR>
 
 
 "-----------------------------------------------------------
@@ -558,8 +510,8 @@ autocmd FileType help nmap <buffer> <Return> <C-]>
 " Additional file extensions
 augroup y_extrafileexts
     au!
-    au BufRead,BufNewFile *.pom                  setfiletype xml
-    au BufRead,BufNewFile *.scala                setfiletype scala
+    au BufRead,BufNewFile *.pom    setfiletype xml
+    au BufRead,BufNewFile *.scala  setfiletype scala
 augroup END
 
 augroup y_modeline
@@ -657,11 +609,8 @@ endfunction
 "                           misc
 "-----------------------------------------------------------
 
-set grepprg=grep\ -nH\ $*
-
 " Toggle the NERD_tree plugin
 "map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
-
 
 try
     call pathogen#helptags()
