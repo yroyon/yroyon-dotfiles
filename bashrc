@@ -33,6 +33,7 @@ alias diff="colordiff -NrbB"
 # Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias rm="rm -i"
 alias tree="/usr/bin/tree --dirsfirst"
+alias vi="vim"
 
 [[ -f /usr/bin/time ]] && alias time="/usr/bin/time"
 
@@ -41,6 +42,9 @@ alias calibre="LC_ALL=en_US calibre"
 alias git="LC_ALL=fr_FR@euro git"
 alias glade="LC_ALL=en_US glade-3"
 alias wicd-curses="LC_ALL=C wicd-curses"
+## TERM issues
+alias rxvt="urxvt"
+alias rxvt-unicode="urxvt"
 
 ## colours
 alias cvs="grc cvs"
@@ -57,9 +61,6 @@ alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
-## for some TERM issues
-alias rxvt="urxvt"
-alias rxvt-unicode="urxvt"
 alias xpdf="qpdfview"
 #alias xpdf="zathura"
 
