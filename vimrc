@@ -1,8 +1,8 @@
 scriptencoding utf-8
 
 " F1  : run makeprg silently
-" F2  :
-" F3  :
+" F2  : toggle git diff highlight
+" F3  : toggle Tagbar
 " F4  :
 " F5  : trim trailing white spaces
 " F6  :
@@ -127,6 +127,10 @@ set statusline+=%H%W%R%M                       " flags
 set statusline+=]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l,%c%V%)\ %<%P          " offset
+
+" https://github.com/mhinz/vim-startify
+let g:startify_bookmarks = [ '~/.vimrc' ]
+let g:startify_enable_special = 1
 
 
 "-----------------------------------------------------------
@@ -462,6 +466,27 @@ endif
 
 "map <C-}> :cstag <C-R>=expand("<cword>")<CR><CR>  " => same as <C-]>
 map <silent> g[ :cscope find 3 <C-R>=expand("<cword>")<CR><CR>
+
+" http://majutsushi.github.io/tagbar/
+nmap <F3> :TagbarToggle<CR>
+imap <F3> <Esc>:TagbarToggle<CR>a
+
+
+"-----------------------------------------------------------
+"                      git integration
+"-----------------------------------------------------------
+
+" https://github.com/airblade/vim-gitgutter
+map  <F2> ::GitGutterLineHighlightsToggle<CR>
+imap <F2> <Esc>::GitGutterLineHighlightsToggle<CR>a
+"let g:gitgutter_sign_added = '⇒'
+"let g:gitgutter_sign_modified = '⇔'
+"let g:gitgutter_sign_removed = '⇐'
+"let g:gitgutter_sign_modified_removed = '⇔'
+let g:gitgutter_escape_grep = 1              " vanilla grep
+"let g:gitgutter_enabled = 0                 " disable by default
+"let g:gitgutter_highlight_lines = 1         " line highlight by default
+"let g:gitgutter_eager = 0                   " be faster but less up-to-date
 
 
 "-----------------------------------------------------------
