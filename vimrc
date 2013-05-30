@@ -204,6 +204,7 @@ syntax sync fromstart
 "syntax sync minlines=50
 "syntax sync maxlines=200
 
+set foldmethod=marker
 
 "-----------------------------------------------------------
 "                indentation, tabulations
