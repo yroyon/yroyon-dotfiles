@@ -1,4 +1,5 @@
 [alias]
+    ctags = !.git/hooks/ctags
     vimdiff = difftool --tool=vimdiff
     diffgui = difftool --tool=meld
     wdiff   = diff --no-ext-diff --word-diff
@@ -38,8 +39,10 @@
     token = fed6b8add696d67e89487310f418932a
 [http]
     proxy = bluecoat-be02.alcatel.fr:1080
+[init]
+    templatedir = ~/.git_template
 [push]
-	default = tracking
+    default = tracking
 [rerere]
     enabled = 1
 [svn]
