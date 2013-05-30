@@ -613,8 +613,8 @@ endfunction
 "map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
 try
+    call pathogen#incubate()
     call pathogen#helptags()
-    call pathogen#runtime_append_all_bundles()
 catch
 endtry
 
