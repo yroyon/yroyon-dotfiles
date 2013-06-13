@@ -2,6 +2,8 @@
 --tag-relative=yes
 --exclude=.git
 
+--c-kinds=+lpx
+
 --langdef=scala
 --langmap=scala:.scala
 --regex-scala=/^[ \t]*class[ \t]+([a-zA-Z0-9_]+)/\1/c,classes/
