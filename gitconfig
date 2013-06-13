@@ -1,5 +1,5 @@
 [alias]
-    ctags = !.git/hooks/ctags
+    ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
     vimdiff = difftool --tool=vimdiff
     diffgui = difftool --tool=meld
     wdiff   = diff --no-ext-diff --word-diff
@@ -28,6 +28,8 @@
     guitool = meld
 [difftool]
     prompt = false
+[diff "image"]
+    textconv = identify
 [diff "odf"]
     textconv = odt2txt
 [diff "pdf"]
