@@ -14,7 +14,7 @@ scriptencoding utf-8
 " F12 :
 
 "-----------------------------------------------------------
-"                     terminal setup
+"                     terminal setup {{{
 "-----------------------------------------------------------
 
 if (&term =~ "rxvt") || (&term =~ "xterm")
@@ -30,9 +30,11 @@ if (&term =~ "rxvt") || (&term =~ "xterm")
     endif
 endif
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                        settings
+"                        settings {{{
 "-----------------------------------------------------------
 
 set nocompatible
@@ -61,9 +63,11 @@ set printoptions+=syntax:y
 "set backupdir=~/.vim/backup
 "set directory=~/.vim/backup
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                      user interface
+"                      user interface {{{
 "-----------------------------------------------------------
 
 set ruler
@@ -132,9 +136,11 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P          " offset
 let g:startify_bookmarks = [ '~/.vimrc' ]
 let g:startify_enable_special = 1
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                     fonts & colours
+"                     fonts & colours {{{
 "-----------------------------------------------------------
 
 " Highlight syntax, but only if the terminal has colours
@@ -191,9 +197,11 @@ else
     endif
 endif
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                    detect filetypes
+"                    detect filetypes {{{
 "-----------------------------------------------------------
 
 filetype on
@@ -206,8 +214,11 @@ syntax sync fromstart
 
 set foldmethod=marker
 
+" }}}
 "-----------------------------------------------------------
-"                indentation, tabulations
+"
+"-----------------------------------------------------------
+"                indentation, tabulations {{{
 "-----------------------------------------------------------
 
 " TODO move to cindent
@@ -236,9 +247,11 @@ endfunction
 
 " nremap > to >gv  and < to <gv ?? (gv restores previous visual selection)
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                    typos & errors
+"                    typos & errors {{{
 "-----------------------------------------------------------
 
 " XXX TODO FIXME The :hi line is rendered ineffective somewhere.
@@ -285,9 +298,11 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 "augroup END
 "" put that in ~/.vim/after/common_syntax.vim ?
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                    moving around
+"                    moving around {{{
 "-----------------------------------------------------------
 
 " when pasting code or text, toggle off smartindent
@@ -321,9 +336,11 @@ nnoremap S i<cr><esc><right>
 " % reacts to more delimiters, such as closing XML tags
 runtime! macros/matchit.vim
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                  search and replace
+"                  search and replace {{{
 "-----------------------------------------------------------
 
 set incsearch  " show the `best match so far'
@@ -349,9 +366,11 @@ vnoremap <silent> zb :<C-u>call setpos('.',[0,line("'>"),0,0])<Bar>normal! zbgv<
 
 noremap ;; :%s:::g<Left><Left><Left>
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                        comments
+"                        comments {{{
 "-----------------------------------------------------------
 
 " TODO: Loses search pattern, cursor position. should restore them. see TrimWhiteSpace above.
@@ -383,9 +402,11 @@ map <silent> ,< :s/^\(.*\)$/<!-- \1 -->/<CR><Esc>:nohlsearch<CR>
 " uncomment (cursor anywhere in the line), keep indentation:
 map <silent> ,u :s:\(^\s*\)\([/(]\*\\|<!--\) \(.*\) \(\*[/)]\\|-->\)$:\1\3:e<CR><Esc>:nohlsearch<CR>
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                      normal mode
+"                      normal mode {{{
 "-----------------------------------------------------------
 
 " Spacebar creates spaces in normal mode:
@@ -397,9 +418,11 @@ set nrformats="alpha,hex"
 " Invoke sudo to write into current open file
 command! W w !sudo tee > /dev/null %
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"               completion in insert mode (FIXME)
+"               completion in insert mode (FIXME) {{{
 "-----------------------------------------------------------
 
 " XXX
@@ -437,9 +460,11 @@ endfunction
 
 inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                      ctags, cscope
+"                      ctags, cscope {{{
 "-----------------------------------------------------------
 
 if has("cscope")
@@ -473,8 +498,11 @@ nmap <F3> :TagbarToggle<CR>
 imap <F3> <Esc>:TagbarToggle<CR>a
 
 
+" }}}
 "-----------------------------------------------------------
-"                      git integration
+
+"-----------------------------------------------------------
+"                      git integration {{{
 "-----------------------------------------------------------
 
 " https://github.com/airblade/vim-gitgutter
@@ -489,9 +517,11 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "let g:gitgutter_highlight_lines = 1         " line highlight by default
 "let g:gitgutter_eager = 0                   " be faster but less up-to-date
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                   app-specific settings
+"                   app-specific settings {{{
 "-----------------------------------------------------------
 "   (Those generally must be in .vimrc, not under .vim/)
 
@@ -574,9 +604,11 @@ augroup LargeFile
         \ endif
 augroup END
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                       hex editing
+"                       hex editing {{{
 "-----------------------------------------------------------
 
 " vim -b : edit binary using xxd-format
@@ -630,23 +662,29 @@ function! ToggleHex()
     let &readonly=l:oldreadonly
 endfunction
 
+" }}}
+"-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                           misc
+"                           misc {{{
 "-----------------------------------------------------------
 
 " Toggle the NERD_tree plugin
 "map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
+" }}}
+"-----------------------------------------------------------
+
+" pathogen {{{
 try
     call pathogen#incubate()
     call pathogen#helptags()
 catch
 endtry
-
+" }}}
 
 " -------------------------
-" shortcuts you should know:
+" shortcuts you should know {{{
 " -------------------------
 "
 " Ctrl-A and Ctrl-X   to increment/decrement
@@ -670,3 +708,5 @@ endtry
 "
 "   Pasting from OS clipboard into Vim:  ?+gP
 "
+" }}}
+" -------------------------

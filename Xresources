@@ -1,5 +1,5 @@
 ! ---------------------------------------------------------------------
-! color theme
+! color theme {{{
 ! ---------------------------------------------------------------------
 
 ! Black
@@ -32,9 +32,11 @@ xft.hinting:   true
 !xft.dpi:       96
 !xft.rgba:      rgb
 
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! xterm
+! xterm {{{
 ! ---------------------------------------------------------------------
 XTerm*.foreground: black
 XTerm*.background: white
@@ -65,9 +67,11 @@ XTerm*.cutNewline:              false
 XTerm*.toolBar: false
 XTerm*.visualBell: false
 
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! urxvt
+! urxvt {{{
 ! ---------------------------------------------------------------------
 URxvt.background:   black
 URxvt.foreground:   #EDEDED
@@ -141,9 +145,11 @@ URxvt.selection-autotransform.2: s/^([^:[:space:]]+):?$/$1/
 !URxvt.scrollstyle:      plain
 !URxvt.secondaryScroll:  true
 
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! xcalc
+! xcalc {{{
 ! ---------------------------------------------------------------------
 xcalc.geometry: 250x340
 xcalc.ti.Command.foreground: White
@@ -168,35 +174,39 @@ xcalc.ti.button34.background: #444484
 xcalc.ti.button37.background: #555595
 xcalc.ti.button38.background: #555595
 xcalc.ti.button39.background: #555595
-
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! mouse cursors
+! mouse cursors {{{
 ! ---------------------------------------------------------------------
 ! Good themes: Gold, gentoo, gentoo-silver, gentoo-blue, Obsidian
 !              pCircle24, pCircle32, idem w/ pTux, pGentoo...
 ! Good sizes:  24, 32, 48
 Xcursor.theme: pCircle-24
 Xcursor.size: 24
-
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! nedit
+! nedit {{{
 ! ---------------------------------------------------------------------
 nedit.findReplaceUsesSelection: false
 nedit.text.autoWrapPastedText: true
-
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! xdvi
+! xdvi {{{
 ! ---------------------------------------------------------------------
 xdvi.shrinkFactor: 7
 !xdvi.Hush: true
 xdvi.Margin: 2cm
-
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! xmessage
+! xmessage {{{
 ! ---------------------------------------------------------------------
 xmessage.form.okay.shapeStyle: rectangle
 xmessage.form.okay.background: #777777
@@ -204,10 +214,11 @@ xmessage.form.okay.foreground: snow
 xmessage.message.background: snow
 xmessage.defaultButton: okay
 xmessage.form.message.Scroll:  WhenNeeded
-
+! }}}
+! ---------------------------------------------------------------------
 
 ! ---------------------------------------------------------------------
-! xfontsel
+! xfontsel {{{
 ! ---------------------------------------------------------------------
 xfontsel.menu.showUnselectable: false
 xfontsel.MenuButton.shadowWidth: 0
@@ -252,4 +263,6 @@ xfontsel.pane.fieldBox.MenuButton.borderWidth:    1
 xfontsel.pane.fieldBox.MenuButton.internalHeight: 1
 xfontsel.pane.fieldBox.MenuButton.internalWidth:  2
 xfontsel.pane.fieldBox.MenuButton.shapeStyle: rectangle
+! }}}
+! ---------------------------------------------------------------------
 
