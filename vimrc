@@ -497,6 +497,10 @@ map <silent> g[ :cscope find 3 <C-R>=expand("<cword>")<CR><CR>
 nmap <F3> :TagbarToggle<CR>
 imap <F3> <Esc>:TagbarToggle<CR>a
 
+" hg clone https://bitbucket.org/abudden/taghighlight
+" TagHighlight will highlight ctags from your project and from the standard
+" library from your language impl. Problem: scope pollution, it includes JDK
+" internal functions even outside their class.
 
 " }}}
 "-----------------------------------------------------------
@@ -541,7 +545,7 @@ let g:java_allow_cpp_keywords = 0
 " Num of previous lines used to synchronize highlighting (default 10)
 "let java_minlines = 50
 
-" Haskellmode  http://projects.haskell.org/haskellmode-vim
+" TODO Haskellmode  http://projects.haskell.org/haskellmode-vim
 " let haskell_indent_case=4 " (default 5)
 " let haskell_indent_if=2   " (default 3)
 " let g:haddock_browser="/usr/bin/elinks"
@@ -549,27 +553,20 @@ let g:java_allow_cpp_keywords = 0
 " au BufEnter *.hs compiler ghc
 
 " Haskell conceal  https://github.com/Twinside/vim-haskellConceal
-" TODO Disable for now: bg color is ugly, I have to change it, like so:
-"   hi conceal ctermfg=DarkBlue ctermbg=none guifg=DarkBlue guibg=none
-let g:no_haskell_conceal = 1
+" Uncomment to disable.
+"let g:no_haskell_conceal = 1
 
 let g:haddock_browser="/usr/bin/firefox"
+
+" TagBar
+let g:tagbar_autofocus = 1
 
 " :TOhtml
 let g:html_number_lines=1  " 0/1, don't/show line numbers
 let g:html_use_css=1
 let g:use_xhtml=1
 
-" Help files: make <Return> behave like <C-]> (jump to tag)
-autocmd FileType help nmap <buffer> <Return> <C-]>
-
-" Additional file extensions
-augroup y_extrafileexts
-    au!
-    au BufRead,BufNewFile *.pom    setfiletype xml
-    au BufRead,BufNewFile *.scala  setfiletype scala
-augroup END
-
+" Modelines : show as comments, no syntax highlight.
 augroup y_modeline
 try
     autocmd Syntax *
@@ -581,28 +578,15 @@ catch
 endtry
 augroup END
 
-" Compressed files
-augroup lzma
-    au!
-    au BufReadPre,FileReadPre       *.lzma setlocal bin
-    au BufReadPost,FileReadPost     *.lzma call gzip#read("lzma -d")
-    au BufWritePost,FileWritePost   *.lzma call gzip#write("lzma")
-    au FileAppendPre                *.lzma call gzip#appre("lzma -d")
-    au FileAppendPost               *.lzma call gzip#write("lzma")
-augroup END
-
-" Large files: do not highlight, swap, buffer in memory, write, or support undo
-" A file is considered large if bigger than 10 MiB
-let g:LargeFile = 1024 * 1024 * 10
-augroup LargeFile
-    autocmd BufReadPre * let f=expand("<afile>") |
-        \ if getfsize(f) > g:LargeFile           |
-        \     set eventignore+=FileType          |
-        \     setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 |
-        \ else                                   |
-        \     set eventignore-=FileType          |
-        \ endif
-augroup END
+" TODO Compressed files
+"augroup lzma
+"    au!
+"    au BufReadPre,FileReadPre       *.lzma setlocal bin
+"    au BufReadPost,FileReadPost     *.lzma call gzip#read("lzma -d")
+"    au BufWritePost,FileWritePost   *.lzma call gzip#write("lzma")
+"    au FileAppendPre                *.lzma call gzip#appre("lzma -d")
+"    au FileAppendPost               *.lzma call gzip#write("lzma")
+"augroup END
 
 " }}}
 "-----------------------------------------------------------
