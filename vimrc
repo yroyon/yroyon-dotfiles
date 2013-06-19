@@ -130,7 +130,7 @@ set statusline+=%{&fileformat}                 " file format
 set statusline+=%H%W%R%M                       " flags
 set statusline+=]
 set statusline+=%=                             " right align
-set statusline+=%-14.(%l,%c%V%)\ %<%P          " offset
+set statusline+=%-14.(%l/%L,%c%V%)\ %<%P       " offset
 
 " https://github.com/mhinz/vim-startify
 let g:startify_bookmarks = [ '~/.vimrc' ]
@@ -175,8 +175,8 @@ function! LoadColourScheme(schemes)
 endfunction
 
 " me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce
-let s:schemes_gvim = "wombat256:inkpot:vibrantink:molokai:desert256:bluegreen:default"
-let s:schemes_term256 = "wombatterm_y:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
+let s:schemes_gvim = "wombat256:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
+let s:schemes_term256 = "wombat_y:luna-term:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
 if has('gui')
     call LoadColourScheme(s:schemes_gvim)
@@ -212,6 +212,7 @@ syntax sync fromstart
 "syntax sync minlines=50
 "syntax sync maxlines=200
 
+set foldenable
 set foldmethod=marker
 
 " }}}
@@ -527,10 +528,11 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "-----------------------------------------------------------
 "                   app-specific settings {{{
 "-----------------------------------------------------------
-"   (Those generally must be in .vimrc, not under .vim/)
+"   (Those must not be under .vim/after/)
 
 " Assume the shell is Bash (:help sh.vim)
 let g:is_bash=1
+let g:sh_fold_enabled=3
 
 let g:c_gnu=1
 
