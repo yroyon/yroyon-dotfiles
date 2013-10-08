@@ -30,6 +30,17 @@ if (&term =~ "rxvt") || (&term =~ "xterm")
     endif
 endif
 
+if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
+    let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
+    let &fillchars = "vert:\u259a,fold:\u00b7"
+else
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<
+endif
+
+" prevents delays on statusbar color changes triggered by mode change
+set ttimeoutlen=50
+set timeoutlen=500
+
 " }}}
 "-----------------------------------------------------------
 
@@ -43,8 +54,9 @@ set encoding=utf-8
 "set fileencoding=utf-8
 "set fileencodings=utf-8,iso-8859-15,default
 
-set history=200
+set history=50
 set textwidth=0   " disable auto-wrapping and adding EOL
+set viminfo='100,<50,s10,h
 
 " Use secure modelines (needs securemodelines.vim)
 set nomodeline
@@ -75,10 +87,11 @@ set laststatus=2               " bottom status bar, 2=always
 set virtualedit=block          " visual block mode (ctrl-v) goes past EOL
 set wildmode=list:longest,full " <Tab> completion behaviour in ex mode
 set wildmenu
-set wildignore+=*.o,*~,*.class,*.pyc,*.rbc,.svn,.git
+set wildignore+=*.o,*~,*.class,*.pyc,*.rbc,.svn,.git,tags
 " During tab completion, give those files lower priority
-set suffixes+=.info,.aux,.log,.dvi,.bbl,.out,.o,.lo
-set suffixes+=.in,.a
+set suffixes=.info,.aux,.log,.dvi,.bbl
+set suffixes+=.in,.a,.out,.o,.lo
+set suffixes+=tags
 
 " Try to show x lines/y cols of context when scrolling
 set scrolloff=3
@@ -123,12 +136,12 @@ set statusline=
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
 set statusline+=%f\                            " file name
-set statusline+=\[
+set statusline+=\[                             " [
 set statusline+=%{strlen(&ft)?&ft:'none'},     " filetype
 set statusline+=%{&encoding},                  " encoding
 set statusline+=%{&fileformat}                 " file format
 set statusline+=%H%W%R%M                       " flags
-set statusline+=]
+set statusline+=]                              " ]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%V%)\ %<%P       " offset
 
@@ -214,6 +227,8 @@ syntax sync fromstart
 
 set foldenable
 set foldmethod=marker
+set foldminlines=3
+set foldnestmax=3
 
 " }}}
 "-----------------------------------------------------------
@@ -232,6 +247,7 @@ set shiftwidth=4  " 1 indent == x spaces
 set shiftround    " use multiples of 'shiftwidth'
 set expandtab     " write spaces instead of tabs
 set softtabstop=4 " backspace deletes x spaces (1 tab) instead of 1
+set smarttab
 
 " TODO test
 " Toggle the 'a' option (automatic formatting) in formatoptions.
@@ -246,7 +262,19 @@ function! ToggleAutoFormatting()
     endif
 endfunction
 
-" nremap > to >gv  and < to <gv ?? (gv restores previous visual selection)
+" Keep visual selections when indenting text
+vnoremap <M-<> <gv
+vnoremap <M->> >gv
+vnoremap <Space> I<Space><Esc>gv
+
+" TODO try
+"" p and P to match target indentation level (instead of just preserving
+"" original indent level, like with pastetoggle)
+"nnoremap p p'[v']=
+"nnoremap P P'[v']=
+"" Alt-p and Alt-P to behave like original p and P
+"nnoremap <leader>p p
+"nnoremap <leader>P P
 
 " }}}
 "-----------------------------------------------------------
@@ -254,6 +282,8 @@ endfunction
 "-----------------------------------------------------------
 "                    typos & errors {{{
 "-----------------------------------------------------------
+
+let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
 
 " XXX TODO FIXME The :hi line is rendered ineffective somewhere.
 "                It works if I type it in an open vim session.
@@ -285,6 +315,10 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 
 " TODO make 'spell' use my WhiteSpaceEOL style instead of a red bgcolor for
 " errors (blue for caps errors, purple for ??)
+
+" TODO test (tpope)
+" Merge consecutive empty lines and clean up trailing whitespace
+" map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 
 "" TODO
 "highlight YTodoGroup ctermbg=green guibg=green
@@ -427,7 +461,7 @@ command! W w !sudo tee > /dev/null %
 "-----------------------------------------------------------
 
 " XXX
-set dictionary=/usr/share/dict/words
+set dictionary+=/usr/share/dict/words
 
 " Show full tags when doing search completion (works only moderately well)
 set showfulltag
@@ -460,6 +494,37 @@ function! CleverTab()
 endfunction
 
 inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
+
+" NeoSnippet: https://github.com/Shougo/neosnippet.vim
+" Works better with neocomplcache
+" Alternatives for snippets:
+"   manual   http://stackoverflow.com/a/13133097
+"   snipmate https://github.com/garbas/vim-snipmate
+"
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+"
+" SuperTab-like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: "\<TAB>"
+"
+" For snippet_complete marker.
+if has('conceal')
+    set conceallevel=2 concealcursor=i
+endif
+"
+" Enable snipMate compatibility feature.
+"let g:neosnippet#enable_snipmate_compatibility = 1
+" Tell Neosnippet about the other snippets
+"let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+"
+" See repo of snippets: https://github.com/honza/vim-snippets
 
 " }}}
 "-----------------------------------------------------------
@@ -560,6 +625,9 @@ let g:java_allow_cpp_keywords = 0
 
 let g:haddock_browser="/usr/bin/firefox"
 
+" Syntastic
+let g:syntastic_auto_loc_list=1
+
 " TagBar
 let g:tagbar_autofocus = 1
 
@@ -568,12 +636,20 @@ let g:html_number_lines=1  " 0/1, don't/show line numbers
 let g:html_use_css=1
 let g:use_xhtml=1
 
+" When editing a file, always jump to the last cursor position
+augroup from_gentoo
+    autocmd BufReadPost *
+        \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+        \     exe "normal g'\"" |
+        \ endif
+augroup END
+
 " Modelines : show as comments, no syntax highlight.
 augroup y_modeline
 try
     autocmd Syntax *
-            \ syn match VimModelineLine /^.\{-1,}vim:[^:]\{-1,}:.*/ contains=VimModeline |
-            \ syn match VimModeline contained /vim:[^:]\{-1,}:/
+        \ syn match VimModelineLine /^.\{-1,}vim:[^:]\{-1,}:.*/ contains=VimModeline |
+        \ syn match VimModeline contained /vim:[^:]\{-1,}:/
     hi def link VimModelineLine comment
     hi def link VimModeline     special
 catch
@@ -655,6 +731,8 @@ endfunction
 "                           misc {{{
 "-----------------------------------------------------------
 
+set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude=tags
+
 " Toggle the NERD_tree plugin
 "map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
@@ -663,7 +741,7 @@ endfunction
 
 " pathogen {{{
 try
-    call pathogen#incubate()
+    call pathogen#infect()
     call pathogen#helptags()
 catch
 endtry
