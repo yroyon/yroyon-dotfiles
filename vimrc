@@ -596,6 +596,7 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "   (Those must not be under .vim/after/)
 
 " Assume the shell is Bash (:help sh.vim)
+set shell=/bin/bash
 let g:is_bash=1
 let g:sh_fold_enabled=3
 
