@@ -132,6 +132,9 @@ export EGL_DRIVER=/usr/lib/egl/egl_glx.so
 ## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
 export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 
+## Tell konsole it can use 256 colors. Konsole is not very smart.
+[ -n "$KONSOLE_PROFILE_NAME" ] && export TERM=konsole-256color
+
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
 
@@ -157,7 +160,7 @@ cx='\[\033[00m\]'         # white
 ## and single quotes (for subshells, must not be expanded)
 PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
 case $TERM in
-	xterm*|rxvt*)
+	xterm*|rxvt*|konsole*)
 		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
 		;;
 	screen*)
