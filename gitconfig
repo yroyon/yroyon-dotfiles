@@ -20,7 +20,7 @@
     ui = auto
 [core]
     excludesfile = /home/yroyon/.gitignore_global
-    gitProxy = git-http-proxy
+#    gitProxy = git-http-proxy
 [credential]
     helper = cache --timeout=3600
 [diff]
@@ -40,8 +40,8 @@
     user = yroyon
     token = fed6b8add696d67e89487310f418932a
 [http]
-    proxy = bluecoat-be02.alcatel.fr:1080
-    sslverify = false
+#    proxy = bluecoat-be02.alcatel.fr:1080
+#    sslverify = false
 [init]
     templatedir = ~/.git_template
 [push]
@@ -52,4 +52,4 @@
     rmdir = true
 [user]
     name = Yvan Royon
-    email = yvan.royon@alcatel-lucent.com
+    email = yvan.royon@gmail.com

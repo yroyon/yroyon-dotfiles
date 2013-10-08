@@ -61,7 +61,8 @@ alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
-alias xpdf="qpdfview"
+alias xpdf="okular"
+#alias xpdf="qpdfview"
 #alias xpdf="zathura"
 
 #alias hd='od -Ax -tx1z -v'
