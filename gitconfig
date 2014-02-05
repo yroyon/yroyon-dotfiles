@@ -17,10 +17,11 @@
 [blame]
     date = short
 [color]
-    ui = auto
+    ui = true
 [core]
     excludesfile = /home/yroyon/.gitignore_global
 #    gitProxy = git-http-proxy
+    pager = less -FRSX
 [credential]
     helper = cache --timeout=3600
 [diff]
@@ -41,9 +42,13 @@
     token = fed6b8add696d67e89487310f418932a
 [http]
 #    proxy = bluecoat-be02.alcatel.fr:1080
+#    proxy = http://www-proxy.exu.ericsson.se:8080
 #    sslverify = false
 [init]
     templatedir = ~/.git_template
+[merge]
+    tool = vimdiff
+    #tool = meld
 [push]
     default = tracking
 [rerere]

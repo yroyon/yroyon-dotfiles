@@ -102,8 +102,8 @@ set numberwidth=3
 "map  <F10> :set invnumber<CR>
 "imap <F10> <Esc>:set invnumber<CR>a
 " Switch between absolute line numbers, relative numbers and no numbers
-noremap <F10> :set <c-r>={'00':'','01':'r','10':'nor'}[&rnu.&nu]<CR>nu<CR>
-inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor'}[&rnu.&nu]<CR>nu<CR>a
+noremap <F10> :set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>
+inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>a
 " Other impls:
 " " Toggle relative/absolute line numbers
 " map <Leader>na :se <c-r>=&nu?"no":""<CR>nu<CR>
@@ -755,7 +755,7 @@ endtry
 " Ctrl-A and Ctrl-X   to increment/decrement
 " Ctrl-N and Ctrl-P   to auto-complete (ins mode)
 "
-" K    to reach the man page for the current word
+" K              to reach the man page for the current word
 " g Ctrl-G       to count words
 " \i<CR>         to split a line at the cursor's position (similar to S)
 "

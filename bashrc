@@ -1,15 +1,36 @@
 ## This file should generate no output or it will break the scp | rcp commands.
 
 . /etc/profile
+
 ## If not running interactively, don't do anything
-[[ -z "$PS1" ]] && return
+[[ -t 1 ]] || return
+#[[ -z "$PS1" ]] && return
+#[[ $- =~ i ]] || return
+
+# ---------- evals {{{
 [[ -f "${HOME}"/.dir_colors ]] && eval $(dircolors -b "${HOME}"/.dir_colors)
 
+# TODO ugly, and pdftotext not invoked porperly:
+#[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+
+#[[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
+#/usr/bin/keychain $HOME/.ssh/id_rsa
+#source $HOME/.keychain/$HOSTNAME-sh
+# }}}
+
+# ---------- readline {{{
+## PageUp and PageDown browse through bash history
+bind '"\e[5~": history-search-backward'
+bind '"\e[6~": history-search-forward'
+# }}}
+
+# ---------- aliases  {{{
 ## ls family new commands
 alias      d="/bin/ls --color --group-directories-first"
 alias      l="/bin/ls --color --group-directories-first -FX"
 alias     ll="/bin/ls --color --group-directories-first -FXAlh"
 alias llsize="/bin/ls --color --group-directories-first -FXAlh --sort=size"
+alias    lsa="/bin/ls --color --group-directories-first -FXAh"
 alias    lsd="/bin/ls --color -d */"
 alias  lsdir="/usr/bin/tree -d -L 1 -i"
 alias lsdirs="/usr/bin/tree -d"
@@ -29,13 +50,14 @@ alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 alias sudo='sudo '
 
 ## default options to common commands
-alias diff="colordiff -NrbB"
+alias diff="colordiff -NrbB -x .git"
 # Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias rm="rm -i"
 alias tree="/usr/bin/tree --dirsfirst"
 alias vi="vim"
 
-[[ -f /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
@@ -46,12 +68,14 @@ alias wicd-curses="LC_ALL=C wicd-curses"
 alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
 
-## colours
-alias cvs="grc cvs"
-alias netstat="grc netstat"
-alias ping="grc ping"
-alias svn="grc svn"
-alias traceroute="grc traceroute"
+## colors
+[[ -f /usr/bin/grc ]] && {
+    alias cvs="grc cvs"
+    alias netstat="grc netstat"
+    alias ping="grc ping"
+    alias svn="grc svn"
+    alias traceroute="grc traceroute"
+}
 
 ## new commands
 alias dvdplay="mplayer -nocache dvdnav://"
@@ -62,12 +86,21 @@ alias path='echo -e ${PATH//:/\\n}'
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
 alias xpdf="okular"
+#alias xpdf="mupdf"
+#alias xpdf="pdf-presenter-console"
+#alias xpdf="pdfcube"
 #alias xpdf="qpdfview"
 #alias xpdf="zathura"
 
 #alias hd='od -Ax -tx1z -v'
-#alias realpath='readlink -f'
+alias realpath='readlink -f'
 
+## shortcut to KDE display settings (2nd monitor...)
+alias kdisplay="kcmshell4 display"
+alias xdisplay="kcmshell4 display"
+# }}}1
+
+# ---------- functions {{{
 function dirsize() {
     find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \;
 }
@@ -96,31 +129,53 @@ if [ -x "${HOME}/scripts/clippy.sh" ] ; then
     function command_not_found_handle { ${HOME}/scripts/clippy.sh $1 ; }
     export COWPATH="${HOME}/scripts/cows"
 fi
+# }}}
 
+# ---------- shopts {{{
 shopt -s checkwinsize
 shopt -s dotglob
 shopt -s extglob
 shopt -s histappend
 shopt -s no_empty_cmd_completion
 shopt -s globstar
+# }}}
+
+# ---------- environment {{{1
+FIGNORE=".git:.svn:CVS"
+HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
+HISTSIZE=4096
+HISTFILESIZE=2097152
 
 export BROWSER="firefox '%s' &"
+
 export CVS_RSH=/usr/bin/ssh
-export DISPLAY=:0.0
+
+[[ -z "$DISPLAY" ]] && export DISPLAY=:0.0
+
 export EDITOR=/usr/bin/vim
-export FIGNORE=".svn:CVS"
+
 export GREP_COLOR=32
 export GREP_OPTIONS="--color=auto --exclude=tags --exclude=cscope.out --binary-files=without-match \
  --exclude-dir=CVS --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=_darcs"
-export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
-export HISTSIZE=4096
-export HISTFILESIZE=2097152
-export JAVA_HOME=$(java-config -o)
-export JAVAC="${JAVA_HOME}/bin/javac"
-export LESS="$LESS --ignore-case"
+
+case $(cat /etc/*release) in
+    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
+    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
+    *) ;;
+esac
+[ ! -z $JAVA_HOME ] && export JAVAC="${JAVA_HOME}/bin/javac"
+
+export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
+
+export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
+
 export MANPAGER=vimmanpager
-export PATH+=":${HOME}/scripts"
-[[ -d "${HOME}/scripts/games" ]] && export PATH+=":${HOME}/scripts/games"
+
+PATH+=":/sbin:/usr/sbin:/usr/local/sbin"
+[[ -d ${HOME}/bin ]] && PATH+=":${HOME}/bin"
+[[ -d ${HOME}/scripts ]] && PATH+=":${HOME}/scripts"
+[[ -d ${HOME}/scripts/games ]] && PATH+=":${HOME}/scripts/games"
+export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
 #PROMPT_DIRTRIM=2
@@ -141,6 +196,11 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 ## VMware segfaults @work without this:
 export VMWARE_USE_SHIPPED_GTK=force
 
+[[ -x /usr/bin/ssh-askpass ]] && export SSH_ASKPASS=/usr/bin/ssh-askpass
+[[ -x /usr/bin/ssh-askpass-fullscreen ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen
+# See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
+
+# ---------- ---------- Prompts {{{2
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ ${EUID} == 0 ]] ; then
@@ -170,9 +230,17 @@ case $TERM in
 esac
 export PS1
 unset c1 c2 c3 cx id pr
+# }}}2 }}}1
 
-[[ -f /etc/profile.d/bash-completion ]]     && source /etc/profile.d/bash-completion
-[[ -f /etc/profile.d/bash-completion.sh ]]  && source /etc/profile.d/bash-completion.sh
-[[ -f /usr/share/compleat/compleat_setup ]] && source /usr/share/compleat/compleat_setup
-[[ -f /usr/bin/ssh-askpass-fullscreen ]]    && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen
+# ---------- sources {{{
+for src in \
+    /etc/profile.d/proxy.sh \
+    /etc/profile.d/bash-completion \
+    /etc/profile.d/bash-completion.sh \
+    /usr/share/compleat/compleat_setup \
+; do
+    [[ -f "${src}" ]] && source "${src}"
+done
+# }}}
 
+# vim: fdm=marker
