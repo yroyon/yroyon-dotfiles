@@ -8,7 +8,7 @@
 #[[ $- =~ i ]] || return
 
 # ---------- evals {{{
-[[ -f "${HOME}"/.dir_colors ]] && eval $(dircolors -b "${HOME}"/.dir_colors)
+[[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 
 # TODO ugly, and pdftotext not invoked porperly:
 #[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -57,7 +57,6 @@ alias tree="/usr/bin/tree --dirsfirst"
 alias vi="vim"
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
-[[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
@@ -114,6 +113,12 @@ function histostats() {
     history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
+function append_to_path() {
+    if [[ -d $1 ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
+        PATH+=:$1
+    fi
+}
+
 function font_test() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
     echo -e "             abcdefghijklmnopqrstuvwxyz "
@@ -125,8 +130,8 @@ function font_test() {
     echo -e "  Ambiguity: iI1lL oO0 "
 }
 
-if [ -x "${HOME}/scripts/clippy.sh" ] ; then
-    function command_not_found_handle { ${HOME}/scripts/clippy.sh $1 ; }
+if [[ -x ${HOME}/scripts/clippy.sh ]] ; then
+    function command_not_found_handle { "${HOME}/scripts/clippy.sh" $1 ; }
     export COWPATH="${HOME}/scripts/cows"
 fi
 # }}}
@@ -150,7 +155,7 @@ export BROWSER="firefox '%s' &"
 
 export CVS_RSH=/usr/bin/ssh
 
-[[ -z "$DISPLAY" ]] && export DISPLAY=:0.0
+[[ -z $DISPLAY ]] && export DISPLAY=:0.0
 
 export EDITOR=/usr/bin/vim
 
@@ -163,7 +168,7 @@ case $(cat /etc/*release) in
     *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
     *) ;;
 esac
-[ ! -z $JAVA_HOME ] && export JAVAC="${JAVA_HOME}/bin/javac"
+[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
 
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
 
@@ -171,10 +176,18 @@ export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
 export MANPAGER=vimmanpager
 
-PATH+=":/sbin:/usr/sbin:/usr/local/sbin"
-[[ -d ${HOME}/bin ]] && PATH+=":${HOME}/bin"
-[[ -d ${HOME}/scripts ]] && PATH+=":${HOME}/scripts"
-[[ -d ${HOME}/scripts/games ]] && PATH+=":${HOME}/scripts/games"
+extra_pathdirs="
+/usr/local/sbin
+/usr/sbin
+/sbin
+${HOME}/bin
+${HOME}/scripts
+${HOME}/scripts/games
+"
+for dir in $extra_pathdirs ; do
+    append_to_path "$dir"
+done
+unset extra_pathdirs
 export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
@@ -188,7 +201,7 @@ export EGL_DRIVER=/usr/lib/egl/egl_glx.so
 export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 
 ## Tell konsole it can use 256 colors. Konsole is not very smart.
-[ -n "$KONSOLE_PROFILE_NAME" ] && export TERM=konsole-256color
+[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
 
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
@@ -239,7 +252,7 @@ for src in \
     /etc/profile.d/bash-completion.sh \
     /usr/share/compleat/compleat_setup \
 ; do
-    [[ -f "${src}" ]] && source "${src}"
+    [[ -f ${src} ]] && source "${src}"
 done
 # }}}
 
