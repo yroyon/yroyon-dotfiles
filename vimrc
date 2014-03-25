@@ -146,7 +146,10 @@ set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%V%)\ %<%P       " offset
 
 " https://github.com/mhinz/vim-startify
-let g:startify_bookmarks = [ '~/.vimrc' ]
+let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
+let g:startify_bookmarks  = ['~/.vimrc', '~/.bashrc', '~/TODO']
+let g:startify_skiplist   = ['.*.swp']
+let g:startify_files_number   = 5
 let g:startify_enable_special = 1
 
 " }}}
@@ -191,6 +194,7 @@ endfunction
 let s:schemes_gvim = "wombat256:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
 let s:schemes_term256 = "wombat_y:luna-term:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
+let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui')
     call LoadColourScheme(s:schemes_gvim)
 else
@@ -210,6 +214,11 @@ else
     endif
 endif
 
+if &diff
+    " TODO luna-term drops syntax coloring inside the diff sections.
+    " Otherwise, its diff colors are nicely clear.
+    call LoadColourScheme(s:schemes_diff)
+endif
 " }}}
 "-----------------------------------------------------------
 
@@ -762,7 +771,7 @@ endtry
 " gd,  gD        go to var definition (local/global)
 " *,  g*         search (exact word/containing word)
 "
-" :Explore,  :Ex,  :n .   to explore the opened file's directory
+" :Ex    :n .    :e .     to explore the opened file's directory
 " :retab                  to convert tabs to spaces
 "
 " In Insert mode: Ctrl-R=<some simple math like 2+2><CR>

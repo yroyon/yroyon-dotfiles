@@ -19,7 +19,7 @@
 [color]
     ui = true
 [core]
-    excludesfile = /home/yroyon/.gitignore_global
+    excludesfile = ~/.gitignore_global
 #    gitProxy = git-http-proxy
     pager = less -FRSX
 [credential]

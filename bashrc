@@ -4,16 +4,16 @@
 
 ## If not running interactively, don't do anything
 [[ -t 1 ]] || return
-#[[ -z "$PS1" ]] && return
+#[[ -z $PS1 ]] && return
 #[[ $- =~ i ]] || return
 
 # ---------- evals {{{
 [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 
 # TODO ugly, and pdftotext not invoked porperly:
-#[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
-#[[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
+[[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
 #/usr/bin/keychain $HOME/.ssh/id_rsa
 #source $HOME/.keychain/$HOSTNAME-sh
 # }}}
@@ -57,6 +57,7 @@ alias tree="/usr/bin/tree --dirsfirst"
 alias vi="vim"
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
@@ -68,7 +69,7 @@ alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
 
 ## colors
-[[ -f /usr/bin/grc ]] && {
+[[ -x /usr/bin/grc ]] && {
     alias cvs="grc cvs"
     alias netstat="grc netstat"
     alias ping="grc ping"
@@ -95,17 +96,19 @@ alias xpdf="okular"
 alias realpath='readlink -f'
 
 ## shortcut to KDE display settings (2nd monitor...)
-alias kdisplay="kcmshell4 display"
-alias xdisplay="kcmshell4 display"
+[[ -x /usr/bin/kcmshell4 ]] && {
+    alias kdisplay="kcmshell4 display"
+    alias xdisplay="kcmshell4 display"
+}
 # }}}1
 
 # ---------- functions {{{
 function dirsize() {
-    find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \;
+    find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
 }
 
 function lsize() {
-    du -b --max-depth 1 -- $* | sort -nr | perl -pe \
+    du -b --max-depth 1 -- $* 2>/dev/null | sort -nr | perl -pe \
         's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
 }
 
@@ -146,7 +149,8 @@ shopt -s globstar
 # }}}
 
 # ---------- environment {{{1
-FIGNORE=".git:.svn:CVS"
+## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
+#FIGNORE=".git:.svn:CVS"
 HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 HISTSIZE=4096
 HISTFILESIZE=2097152
@@ -176,18 +180,10 @@ export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
 export MANPAGER=vimmanpager
 
-extra_pathdirs="
-/usr/local/sbin
-/usr/sbin
-/sbin
-${HOME}/bin
-${HOME}/scripts
-${HOME}/scripts/games
-"
-for dir in $extra_pathdirs ; do
-    append_to_path "$dir"
-done
-unset extra_pathdirs
+PATH+=":/sbin:/usr/sbin:/usr/local/sbin"
+[[ -d ${HOME}/bin ]] && PATH+=":${HOME}/bin"
+[[ -d ${HOME}/scripts ]] && PATH+=":${HOME}/scripts"
+[[ -d ${HOME}/scripts/games ]] && PATH+=":${HOME}/scripts/games"
 export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
@@ -216,7 +212,7 @@ export VMWARE_USE_SHIPPED_GTK=force
 # ---------- ---------- Prompts {{{2
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
-if [[ ${EUID} == 0 ]] ; then
+if [[ $EUID == 0 ]] ; then
     c1='\[\033[00;31m\]'  # red
     c2='\[\033[01;31m\]'  # bold red
     id='\h'
@@ -252,7 +248,7 @@ for src in \
     /etc/profile.d/bash-completion.sh \
     /usr/share/compleat/compleat_setup \
 ; do
-    [[ -f ${src} ]] && source "${src}"
+    [[ -f $src ]] && source "$src"
 done
 # }}}
 

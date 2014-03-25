@@ -243,6 +243,16 @@
             <desktop>4</desktop>
         </action>
     </keybind>
+    <keybind key="A-5">
+        <action name="Desktop">
+            <desktop>5</desktop>
+        </action>
+    </keybind>
+    <keybind key="A-6">
+        <action name="Desktop">
+            <desktop>6</desktop>
+        </action>
+    </keybind>
     <keybind key="C-A-d">
         <action name="ToggleShowDesktop"/>
     </keybind>
@@ -280,12 +290,12 @@
     <keybind key="A-F5">
         <action name="ToggleMaximizeFull"/>
     </keybind>
-    <keybind key="A-F6">
+    <keybind key="A-F7">
         <action name="ToggleMaximize">
             <direction>horizontal</direction>
         </action>
     </keybind>
-    <keybind key="A-F7">
+    <keybind key="A-F6">
         <action name="ToggleMaximizeVert"/>
     </keybind>
     <!-- Keybindings for running applications -->
