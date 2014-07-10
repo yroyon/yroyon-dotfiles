@@ -11,7 +11,7 @@
 [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 
 # TODO ugly, and pdftotext not invoked porperly:
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+#[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 [[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
 #/usr/bin/keychain $HOME/.ssh/id_rsa
@@ -61,7 +61,7 @@ alias vi="vim"
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
-alias git="LC_ALL=fr_FR@euro git"
+#alias git="LC_ALL=fr_FR@euro git"
 alias glade="LC_ALL=en_US glade-3"
 alias wicd-curses="LC_ALL=C wicd-curses"
 ## TERM issues
@@ -174,7 +174,9 @@ case $(cat /etc/*release) in
 esac
 [[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
 
-export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
+export MAVEN_OPTS="-Xmx1024m"
+#export M2_HOME=/usr/local/maven
+#export M2=$M2_HOME/bin
 
 export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
@@ -184,6 +186,7 @@ PATH+=":/sbin:/usr/sbin:/usr/local/sbin"
 [[ -d ${HOME}/bin ]] && PATH+=":${HOME}/bin"
 [[ -d ${HOME}/scripts ]] && PATH+=":${HOME}/scripts"
 [[ -d ${HOME}/scripts/games ]] && PATH+=":${HOME}/scripts/games"
+[[ -d $M2 ]] && PATH="$M2:$PATH"
 export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
@@ -204,6 +207,9 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 
 ## VMware segfaults @work without this:
 export VMWARE_USE_SHIPPED_GTK=force
+
+## Go lang: if present, set env
+#[[ $(type go &>/dev/null ; echo $?) -eq 0 ]] && export GOROOT=$(go env GOROOT)
 
 [[ -x /usr/bin/ssh-askpass ]] && export SSH_ASKPASS=/usr/bin/ssh-askpass
 [[ -x /usr/bin/ssh-askpass-fullscreen ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen

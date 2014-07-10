@@ -45,6 +45,7 @@ XTerm*.saveLines:  16384
 
 !XTerm*.font:       -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
 XTerm*.renderFont: true
+!XTerm*.faceName: Droid Sans Mono for Powerline
 XTerm*.faceName: ProggySquare
 XTerm*.faceSize: 10
 
@@ -109,7 +110,8 @@ URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
 !URxvt*colorUL:      #e54949
 
 !! keyboard shortcuts
-!! <C>-, <C>= and <C>+ switch to resp. small, medium and big font size
+!! <C>-0, <C>-, <C>= and <C>+ switch to resp. small, normal, big and bigger font size
+URxvt.keysym.C-0:     command:\033]710;-*-terminus-medium-*-*-*-12-*-*-*-*-*-u\007
 URxvt.keysym.C-minus: command:\033]710;-*-terminus-medium-*-*-*-14-*-*-*-*-*-u\007
 URxvt.keysym.C-equal: command:\033]710;-*-terminus-medium-*-*-*-20-*-*-*-*-*-u\007
 URxvt.keysym.C-plus:  command:\033]710;-*-terminus-medium-*-*-*-28-*-*-*-*-*-u\007

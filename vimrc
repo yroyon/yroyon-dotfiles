@@ -143,7 +143,7 @@ set statusline+=%{&fileformat}                 " file format
 set statusline+=%H%W%R%M                       " flags
 set statusline+=]                              " ]
 set statusline+=%=                             " right align
-set statusline+=%-14.(%l/%L,%c%V%)\ %<%P       " offset
+set statusline+=%-14.(%l/%L,%c%)\ %<%P       " offset
 
 " https://github.com/mhinz/vim-startify
 let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
@@ -167,7 +167,7 @@ endif
 
 " If the terminal is in 88 colors (urxvt default), force to 256.
 " Console supports 8, looks ugly with >8.
-if &t_Co == 88
+if &t_Co == 88 || (&term =~ "xterm")
     set t_Co=256
 endif
 
@@ -198,6 +198,7 @@ let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui')
     call LoadColourScheme(s:schemes_gvim)
 else
+    " I had the autocmd commented out on devious. Why?
     if has("autocmd")
         autocmd VimEnter *
             \ if &t_Co == 88 || &t_Co == 256 |
@@ -771,8 +772,10 @@ endtry
 " gd,  gD        go to var definition (local/global)
 " *,  g*         search (exact word/containing word)
 "
-" :Ex    :n .    :e .     to explore the opened file's directory
-" :retab                  to convert tabs to spaces
+" :Ex            to explore the opened file's directory
+" :n . and :e .  to explore the shell's PWD
+"
+" :retab         to convert tabs to spaces
 "
 " In Insert mode: Ctrl-R=<some simple math like 2+2><CR>
 "

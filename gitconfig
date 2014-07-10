@@ -1,19 +1,19 @@
 [alias]
     ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
-    vimdiff = difftool --tool=vimdiff
     diffgui = difftool --tool=meld
-    wdiff   = diff --no-ext-diff --word-diff
+    filehist = log --patch --stat --follow
+    ignored = ls-files --directory -o
+    l  = log --date=relative --decorate --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
+    lg = log --date=short --graph --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
     restore = checkout --
-    unstage = reset HEAD --
-    undo = reset --soft HEAD^ --
+    sattus = status
     todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
         -e XXX -e TODO -e FIXME -e @bug -e @todo
         # per-file hits:  -c  (appendable on CLI)
-    filehist = log --patch --stat --follow
-    ignored = ls-files --directory -o
-    l  = log --date=relative --decorate \
-        --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
-    lg = log --graph --date=short --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
+    unstage = reset HEAD --
+    undo = reset --soft HEAD^ --
+    vimdiff = difftool --tool=vimdiff
+    wdiff   = diff --no-ext-diff --word-diff
 [blame]
     date = short
 [color]
