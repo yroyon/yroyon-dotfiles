@@ -36,10 +36,12 @@ alias  lsdir="/usr/bin/tree -d -L 1 -i"
 alias lsdirs="/usr/bin/tree -d"
 
 ## grep family new commands
-alias grepc="grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
-alias grepd="grep -R --exclude=* --include=*.{asciidoc,bib,howto,info,markdown,md,txt,htm,html,rst,tex,todo,txt,wip}"
-alias grepb="grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include=*akefile --include=*configure* --include=GNUmake*"
-alias grepwhite="grep '[[:space:]]\+$' -R"
+alias grep="\grep --color=auto --exclude=tags --exclude=cscope.out --binary-files=without-match \
+    --exclude-dir=CVS --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=_darcs"
+alias grepc="\grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
+alias grepd="\grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
+alias grepb="\grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include=*akefile --include=*configure* --include=GNUmake*"
+alias grepwhite="\grep '[[:space:]]\+$' -R"
 alias g=grepc
 
 ## git family new commands
@@ -164,8 +166,6 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 
 export GREP_COLOR=32
-export GREP_OPTIONS="--color=auto --exclude=tags --exclude=cscope.out --binary-files=without-match \
- --exclude-dir=CVS --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=_darcs"
 
 case $(cat /etc/*release) in
     *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;

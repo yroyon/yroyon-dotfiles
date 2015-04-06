@@ -2,10 +2,7 @@
 " Last Change:	February 18, 2010
 " yroyon 2010-02-20:
 "     added cterm colors (based on http://gist.github.com/307848)
-"     darker ctermbg for Normal => almost-black (black is 232)
-" yroyon 2014-06-04:
-"     darker ctermbg for NonText (end of file) 235 => 234
-"     darker ctermbg for Fold*                 237 => 236
+"     changed Normal ctermbg to almost-black (black is 232)
 
 set background=dark
 
@@ -36,13 +33,13 @@ endif
 hi Cursor 		  guifg=NONE    guibg=#55A096 gui=none   ctermbg=73
 hi Normal 		  guifg=#dfeff6 guibg=#102235 gui=none   ctermfg=195 ctermbg=233
  " e.g. tildes at the end of file
-hi NonText 		  guifg=#96defa guibg=#122538 gui=none   ctermfg=117 ctermbg=234
+hi NonText 		  guifg=#96defa guibg=#122538 gui=none   ctermfg=117 ctermbg=235
 hi LineNr 		  guifg=#2F577C guibg=#0C1926 gui=none   ctermfg=24  ctermbg=234
 hi StatusLine 	guifg=#96defa guibg=#0C1926 gui=italic ctermfg=117 ctermbg=234
 hi StatusLineNC guifg=#68CEE8 guibg=#0C1926 gui=none   ctermfg=80  ctermbg=234
 hi VertSplit 	  guifg=#1A3951 guibg=#1A3951 gui=none   ctermfg=237 ctermbg=237
-hi Folded 		  guifg=#68CEE8 guibg=#1A3951 gui=none   ctermfg=80  ctermbg=236
-hi FoldColumn   guifg=#1E415E guibg=#1A3951 gui=none   ctermfg=23  ctermbg=236
+hi Folded 		  guifg=#68CEE8 guibg=#1A3951 gui=none   ctermfg=80  ctermbg=237
+hi FoldColumn   guifg=#1E415E guibg=#1A3951 gui=none   ctermfg=23  ctermbg=237
 hi Title		    guifg=#dfeff6 guibg=NONE	  gui=bold   ctermfg=195
  " Selected text color
 hi Visual		    guifg=#dfeff6 guibg=#24557A gui=none   ctermfg=195 ctermbg=24
@@ -69,4 +66,4 @@ hi PreProc 		guifg=#EF6145 gui=none ctermfg=203
 hi Number		  guifg=#96defa gui=none ctermfg=117
 hi Special		guifg=#DFEFF6 gui=none ctermfg=195
 
-" vim:ts=2
+

@@ -19,6 +19,7 @@
 [color]
     ui = true
 [core]
+    abbrev = 9
     excludesfile = ~/.gitignore_global
 #    gitProxy = git-http-proxy
     pager = less -FRSX
@@ -58,3 +59,4 @@
 [user]
     name = Yvan Royon
     email = yvan.royon@gmail.com
+# vim: set ft=gitconfig

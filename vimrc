@@ -1,9 +1,9 @@
 scriptencoding utf-8
 
 " F1  : run makeprg silently
-" F2  : toggle git diff highlight
-" F3  : toggle Tagbar
-" F4  :
+" F2  : git: toggle diff highlight
+" F3  : git: go to next hunk
+" F4  : toggle Tagbar
 " F5  : trim trailing white spaces
 " F6  :
 " F7  : toggle cursor column highlight
@@ -143,7 +143,7 @@ set statusline+=%{&fileformat}                 " file format
 set statusline+=%H%W%R%M                       " flags
 set statusline+=]                              " ]
 set statusline+=%=                             " right align
-set statusline+=%-14.(%l/%L,%c%)\ %<%P       " offset
+set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 
 " https://github.com/mhinz/vim-startify
 let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
@@ -570,8 +570,8 @@ endif
 map <silent> g[ :cscope find 3 <C-R>=expand("<cword>")<CR><CR>
 
 " http://majutsushi.github.io/tagbar/
-nmap <F3> :TagbarToggle<CR>
-imap <F3> <Esc>:TagbarToggle<CR>a
+nmap <F4> :TagbarToggle<CR>
+imap <F4> <Esc>:TagbarToggle<CR>a
 
 " hg clone https://bitbucket.org/abudden/taghighlight
 " TagHighlight will highlight ctags from your project and from the standard
@@ -588,6 +588,8 @@ imap <F3> <Esc>:TagbarToggle<CR>a
 " https://github.com/airblade/vim-gitgutter
 map  <F2> ::GitGutterLineHighlightsToggle<CR>
 imap <F2> <Esc>::GitGutterLineHighlightsToggle<CR>a
+map  <F3> ::GitGutterNextHunk<CR>
+imap <F3> <Esc>::GitGutterNextHunk<CR>i
 "let g:gitgutter_sign_added = '⇒'
 "let g:gitgutter_sign_modified = '⇔'
 "let g:gitgutter_sign_removed = '⇐'
@@ -604,6 +606,12 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "                   app-specific settings {{{
 "-----------------------------------------------------------
 "   (Those must not be under .vim/after/)
+
+" https://github.com/embear/vim-localvimrc/
+let g:localvimrc_name=[ ".vimrc.local" ]
+"let g:localvimrc_ask=0 
+let g:localvimrc_persistent=2
+"let g:localvimrc_whitelist='/home/user/projects/\(foo\|bar\)/.*'
 
 " Assume the shell is Bash (:help sh.vim)
 set shell=/bin/bash
