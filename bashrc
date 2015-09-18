@@ -116,6 +116,7 @@ alias sudo='sudo '
 
 ## default options to common commands
 alias diff="colordiff -NrbB -x .git"
+[[ $os_mac ]] && alias pstree="pstree -w -g3"
 # Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias rm="rm -i"
 alias tree="tree --dirsfirst"
@@ -211,13 +212,20 @@ export MAVEN_OPTS="-Xmx1024m"
 
 export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
-export MANPAGER=vimmanpager
+is_command vimmanpager && export MANPAGER=vimmanpager
+# For Mac OS X with 'brew install coreutils':
+#d="/usr/local/opt/coreutils/libexec/gnuman"
+#[[ -d "$d" ]] && export MANPATH="$d:$MANPATH"
 
-PATH+=":/sbin:/usr/sbin:/usr/local/sbin"
-[[ -d ${HOME}/bin ]] && PATH+=":${HOME}/bin"
-[[ -d ${HOME}/scripts ]] && PATH+=":${HOME}/scripts"
-[[ -d ${HOME}/scripts/games ]] && PATH+=":${HOME}/scripts/games"
-[[ -d $M2 ]] && PATH="$M2:$PATH"
+append_to_path "/sbin"
+append_to_path "/usr/sbin"
+append_to_path "/usr/local/sbin"
+append_to_path "${HOME}/bin"
+append_to_path "${HOME}/scripts"
+append_to_path "${HOME}/scripts/games"
+prepend_to_path "${M2}"
+# For Mac OS X with 'brew install coreutils':
+#prepend_to_path "/usr/local/opt/coreutils/libexec/gnubin"
 export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
