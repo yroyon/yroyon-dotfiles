@@ -460,6 +460,9 @@ noremap ;; :%s:::g<Left><Left><Left>
 "                        comments {{{
 "-----------------------------------------------------------
 
+" remove comment leader when joining lines with J:
+let &formatoptions.= 'j'
+
 " TODO: Loses search pattern, cursor position. should restore them. see TrimWhiteSpace above.
 " TODO: Move to NERDcommenter?
 
