@@ -247,7 +247,6 @@ endif
 "-----------------------------------------------------------
 "                    detect filetypes {{{
 "-----------------------------------------------------------
-
 filetype on
 filetype plugin on
 filetype indent on
@@ -282,10 +281,13 @@ endfunction
 set foldtext=NeatFoldText()
 " }}}
 "-----------------------------------------------------------
-"
+
 "-----------------------------------------------------------
 "                indentation, tabulations {{{
 "-----------------------------------------------------------
+
+" TODO check https://github.com/tpope/vim-sleuth as a dynamic way to
+" auto-generate these settings
 
 " TODO move to cindent
 " look at /usr/share/vim/<vim-version>/indent/
@@ -649,7 +651,7 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 
 " https://github.com/embear/vim-localvimrc/
 let g:localvimrc_name=[ ".vimrc.local" ]
-"let g:localvimrc_ask=0 
+"let g:localvimrc_ask=0
 let g:localvimrc_persistent=2
 "let g:localvimrc_whitelist='/home/user/projects/\(foo\|bar\)/.*'
 
