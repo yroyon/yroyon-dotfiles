@@ -1,12 +1,9 @@
-" In Vim, -4 % 3 == -1. Let's return 2 instead.
-function! s:mod(a,b)
-    if (a:a < 0 && a:b > 0 || a:a > 0 && a:b < 0) && a:a % a:b != 0
-        return (a:a % a:b) + a:b
-    else
-        return a:a % a:b
-    endif
-endfunction
+" We need https://github.com/tpope/vim-speeddating
+if !exists('g:speeddating_formats')
+    finish
+endif
 
+" New values switchable with Ctrl-A / Ctrl-X
 let s:cycles = [
             \ ['true', 'false'],
             \ ['TRUE', 'FALSE'],
@@ -17,6 +14,15 @@ let s:cycles = [
             \ ['yes', 'no'],
             \ ['YES', 'NO'],
             \ ['Yes', 'No']]
+
+" In Vim, -4 % 3 == -1. Let's return 2 instead.
+function! s:mod(a,b)
+    if (a:a < 0 && a:b > 0 || a:a > 0 && a:b < 0) && a:a % a:b != 0
+        return (a:a % a:b) + a:b
+    else
+        return a:a % a:b
+    endif
+endfunction
 
 function! KeywordIncrement(word, offset, increment)
     for set in s:cycles
@@ -29,4 +35,6 @@ function! KeywordIncrement(word, offset, increment)
 endfunction
 
 let s:handler = {'regexp': '\<\%('.join(map(copy(s:cycles),'join(v:val,"\\|")'),'\|').'\)\>', 'increment': function("KeywordIncrement")}
+
 let g:speeddating_handlers += [s:handler]
+
