@@ -129,7 +129,14 @@ set backspace=indent,eol,start
 map  <F1> :make!<CR><CR>
 imap <F1> <Esc>:make!<CR><CR>a
 
-" TODO statusbar
+" https://github.com/mhinz/vim-startify
+let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
+let g:startify_bookmarks  = ['~/.vimrc', '~/.bashrc', '~/TODO']
+let g:startify_skiplist   = ['.*.swp']
+let g:startify_files_number   = 5
+let g:startify_enable_special = 1
+
+" Status Bar
 set laststatus=2
 set statusline=
 "set statusline+=%#warningmsg#                 " TODO syntastic plugin stuff
@@ -145,12 +152,26 @@ set statusline+=]                              " ]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 
-" https://github.com/mhinz/vim-startify
-let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
-let g:startify_bookmarks  = ['~/.vimrc', '~/.bashrc', '~/TODO']
-let g:startify_skiplist   = ['.*.swp']
-let g:startify_files_number   = 5
-let g:startify_enable_special = 1
+" More statusbar, incl. patched fonts
+"
+" https://github.com/bling/vim-airline
+let g:airline_powerline_fonts = 1
+"
+" https://github.com/powerline/
+if has('gui_macvim')
+    let g:Powerline_symbols = 'fancy'
+"    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
+"    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
+"    set guifont=Inconsolata\ for\ Powerline:h13
+"    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
+    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
+endif
+
+" Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
+" Really not robust.
+if has("gui_macvim")
+    autocmd VimLeave * :!open -a iTerm
+endif
 
 " }}}
 "-----------------------------------------------------------
@@ -633,7 +654,12 @@ let g:localvimrc_persistent=2
 "let g:localvimrc_whitelist='/home/user/projects/\(foo\|bar\)/.*'
 
 " Assume the shell is Bash (:help sh.vim)
-set shell=/bin/bash
+if filereadable("/usr/local/bin/bash")
+    " Thanks Apple for the old Bash
+    set shell=/usr/local/bin/bash
+else
+    set shell=/bin/bash
+endif
 let g:is_bash=1
 let g:sh_fold_enabled=3
 
