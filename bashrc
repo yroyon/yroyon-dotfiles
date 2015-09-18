@@ -7,6 +7,69 @@
 #[[ -z $PS1 ]] && return
 #[[ $- =~ i ]] || return
 
+# ---------- detect OS {{{
+name=$(uname -s)
+if [ "$name" == "Darwin" ]; then
+    os_mac=true
+elif [ "$(expr substr $name 1 5)" == "Linux" ]; then
+    os_linux=true
+elif [ "$(expr substr $name 1 10)" == "MINGW32_NT" ]; then
+    os_windows=true
+fi
+unset name
+# }}}
+
+# ---------- functions {{{
+function dirsize() {
+    find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
+}
+
+function lsize() {
+    local du="du"
+    [[ os_mac ]] && is_command "gdu" && du="gdu"
+    ${du} -b --max-depth 1 -- $* 2>/dev/null | sort -nr | perl -pe \
+        's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
+}
+
+function histostats() {
+    history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
+}
+
+function append_to_path() {
+    if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
+        PATH+=:$1
+    fi
+}
+
+function prepend_to_path() {
+    if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
+        PATH=$1:$PATH
+    fi
+}
+
+# usage: is_command go && echo "go is installed"
+# works for functions, builtins, aliases, everything that 'type' can find.
+function is_command() {
+    $(type "$1" &> /dev/null)
+}
+
+function font_test() {
+    echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+    echo -e "             abcdefghijklmnopqrstuvwxyz "
+    echo -e "        Num: 0123456789 "
+    echo -e "   Brackets: () [] {} <> "
+    echo -e "     Quotes: \"foo\" 'bar' "
+    echo -e "Punctuation: , . : ; _ ! ? "
+    echo -e "    Symbols: ~  @ # $ % ^ & * - + = | / \` \\ "
+    echo -e "  Ambiguity: iI1lL oO0 "
+}
+
+if [[ -x ${HOME}/scripts/clippy.sh ]] ; then
+    function command_not_found_handle { "${HOME}/scripts/clippy.sh" $1 ; }
+    export COWPATH="${HOME}/scripts/cows"
+fi
+# }}}
+
 # ---------- evals {{{
 [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 
@@ -16,12 +79,6 @@
 [[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
 #/usr/bin/keychain $HOME/.ssh/id_rsa
 #source $HOME/.keychain/$HOSTNAME-sh
-# }}}
-
-# ---------- readline {{{
-## PageUp and PageDown browse through bash history
-bind '"\e[5~": history-search-backward'
-bind '"\e[6~": history-search-forward'
 # }}}
 
 # ---------- aliases  {{{
@@ -103,43 +160,6 @@ alias realpath='readlink -f'
     alias kdisplay="kcmshell4 display"
     alias xdisplay="kcmshell4 display"
 }
-# }}}1
-
-# ---------- functions {{{
-function dirsize() {
-    find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
-}
-
-function lsize() {
-    du -b --max-depth 1 -- $* 2>/dev/null | sort -nr | perl -pe \
-        's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
-}
-
-function histostats() {
-    history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
-}
-
-function append_to_path() {
-    if [[ -d $1 ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
-        PATH+=:$1
-    fi
-}
-
-function font_test() {
-    echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-    echo -e "             abcdefghijklmnopqrstuvwxyz "
-    echo -e "        Num: 0123456789 "
-    echo -e "   Brackets: () [] {} <> "
-    echo -e "     Quotes: \"foo\" 'bar' "
-    echo -e "Punctuation: , . : ; _ ! ? "
-    echo -e "    Symbols: ~  @ # $ % ^ & * - + = | / \` \\ "
-    echo -e "  Ambiguity: iI1lL oO0 "
-}
-
-if [[ -x ${HOME}/scripts/clippy.sh ]] ; then
-    function command_not_found_handle { "${HOME}/scripts/clippy.sh" $1 ; }
-    export COWPATH="${HOME}/scripts/cows"
-fi
 # }}}
 
 # ---------- shopts {{{
@@ -247,6 +267,12 @@ esac
 export PS1
 unset c1 c2 c3 cx id pr
 # }}}2 }}}1
+
+# ---------- readline {{{
+## PageUp and PageDown browse through bash history
+bind '"\e[5~": history-search-backward'
+bind '"\e[6~": history-search-forward'
+# }}}
 
 # ---------- sources {{{
 for src in \
