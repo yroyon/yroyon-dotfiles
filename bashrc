@@ -87,6 +87,7 @@ alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
+#alias suspend="pm-suspend"  # suspend is a bash builtin
 alias xpdf="okular"
 #alias xpdf="mupdf"
 #alias xpdf="pdf-presenter-console"

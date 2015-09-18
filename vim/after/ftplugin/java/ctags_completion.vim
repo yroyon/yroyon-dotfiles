@@ -1,6 +1,6 @@
 "" You need to run scripts/javatags.sh
 "" Basically this:
-" [ x"${JAVA_HOME}" != x ] || die "variable ${JAVA_HOME} is not set"
+" [ x"${JAVA_HOME}" == x ] && die "variable ${JAVA_HOME} is not set"
 " cd "${JAVA_HOME}" || die  "$JAVA_HOME is not valid"
 " [ -f src.zip ] || die "can't find $JAVA_HOME/src.zip"
 " [ -d src ] && sudo rm -rf src/

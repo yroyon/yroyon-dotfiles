@@ -102,6 +102,9 @@ URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
 !URxvt.boldFont:        xft:DejaVu Sans Mono-10:bold
 !URxvt.italicFont:      xft:DejaVu Sans Mono-10:italic
 !URxvt.boldItalicFont:  xft:DejaVu Sans Mono-10:bold:italic
+! fgo suggests:
+!URxvt*font: xft:Dejavu Sans Mono:pixelsize=12
+!URxvt.font xft:DejaVu Sans Mono:pixelsize=13,xft:Symbola:pixelsize=10
 
 !! color man pages
 !URxvt*colorBDMode:  true
