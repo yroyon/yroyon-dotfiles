@@ -1,0 +1,14 @@
+# word movement using ctrl-arrows (mac: already used for switching Spaces)
+# "\e[1;5D": backward-word
+# "\e[1;5C": forward-word
+
+# word movement using alt-arrows (iTerm2)
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+
+# OR: iTerm2 -> Preferences -> Keys
+# modify or create ("+")
+# Keyboard Shortcut: whatever, like pres alt-left
+# Action: Send Escape Sequence
+# Esc+: type in F (forward) or B (backward)
+
