@@ -234,12 +234,31 @@ filetype indent on
 syntax sync fromstart
 "syntax sync minlines=50
 "syntax sync maxlines=200
+" }}}
+"-----------------------------------------------------------
 
+"-----------------------------------------------------------
+"                        folding {{{
+"-----------------------------------------------------------
 set foldenable
 set foldmethod=marker
 set foldminlines=3
 set foldnestmax=3
 
+" When folded, show a nice line with header, nr of lines, % of file being folded.
+function! NeatFoldText()
+    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+    let lines_count = v:foldend - v:foldstart + 1
+    let lines_count_text = '|' . printf("%10s", lines_count . ' lines')
+    let foldchar = matchstr(&fillchars, 'fold:\zs.')
+    let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+    let foldtextend = lines_count_text
+    let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+    let foldpercent = printf(" | %.1f", (foldtextlength*1.0)/line("$")*100) . "% "
+    return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength-strwidth(foldpercent)-3) . foldtextend . foldpercent
+endfunction
+
+set foldtext=NeatFoldText()
 " }}}
 "-----------------------------------------------------------
 "
