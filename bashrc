@@ -71,7 +71,8 @@ fi
 # }}}
 
 # ---------- evals {{{
-[[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
+[[ $os_linux ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
+[[ $os_mac   ]] && export CLICOLOR=1
 
 # TODO ugly, and pdftotext not invoked porperly:
 #[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -83,23 +84,28 @@ fi
 
 # ---------- aliases  {{{
 ## ls family new commands
-alias      d="/bin/ls --color --group-directories-first"
-alias      l="/bin/ls --color --group-directories-first -FX"
-alias     ll="/bin/ls --color --group-directories-first -FXAlh"
-alias llsize="/bin/ls --color --group-directories-first -FXAlh --sort=size"
-alias    lsa="/bin/ls --color --group-directories-first -FXAh"
-alias    lsd="/bin/ls --color -d */"
-alias  lsdir="/usr/bin/tree -d -L 1 -i"
-alias lsdirs="/usr/bin/tree -d"
+[[ $os_linux ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
+[[ $os_mac ]]   && ls_opts="-G"
+alias      d="ls ${ls_opts}"
+alias      l="ls ${ls_opts} ${ls_sort} -F"
+alias     ll="ls ${ls_opts} ${ls_sort} -F -A -lh"
+alias    lsa="ls ${ls_opts} ${ls_sort} -F -A"
+alias    lsd="ls ${ls_opts} -d */"
+alias llsize="ls ${ls_opts} -S         -F -A -lh"
+alias  lsdir="tree -d -L 1 -i"
+alias lsdirs="tree -d"
+unset ls_opts ls_sort
 
 ## grep family new commands
-alias grep="\grep --color=auto --exclude=tags --exclude=cscope.out --binary-files=without-match \
-    --exclude-dir=CVS --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=_darcs"
-alias grepc="\grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
-alias grepd="\grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
-alias grepb="\grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include=*akefile --include=*configure* --include=GNUmake*"
-alias grepwhite="\grep '[[:space:]]\+$' -R"
-alias g=grepc
+# mac: brew tap homebrew/dupes; brew install grep
+[[ $os_mac ]] && is_command "ggrep" && grep="ggrep" || grep="\grep"
+alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
+alias grepcode="grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
+alias grepdoc="grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
+alias grepbuild="grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
+alias grepwhite="grep '[[:space:]]\+$' -R"
+alias g=grepcode
+unset grep
 
 ## git family new commands
 alias gdiff="git diff | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'"
@@ -112,8 +118,12 @@ alias sudo='sudo '
 alias diff="colordiff -NrbB -x .git"
 # Patching: git diff > patchfile  ;  patch -p1 < patchfile
 alias rm="rm -i"
-alias tree="/usr/bin/tree --dirsfirst"
+alias tree="tree --dirsfirst"
 alias vi="vim"
+[[ $os_mac ]] && {
+    alias vi="mvim -v"
+    alias vim="mvim"
+}
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
 [[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
@@ -168,7 +178,7 @@ shopt -s dotglob
 shopt -s extglob
 shopt -s histappend
 shopt -s no_empty_cmd_completion
-shopt -s globstar
+[[ $BASH_VERSION > 4 ]] && shopt -s globstar
 # }}}
 
 # ---------- environment {{{1
@@ -188,7 +198,7 @@ export EDITOR=/usr/bin/vim
 
 export GREP_COLOR=32
 
-case $(cat /etc/*release) in
+case $(cat /etc/*release 2>/dev/null) in
     *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
     *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
     *) ;;
@@ -214,7 +224,8 @@ export PATH
 #PROMPT_DIRTRIM=2
 
 ## For JOGL (it seems the default is missing ".so")
-export EGL_DRIVER=/usr/lib/egl/egl_glx.so
+f="/usr/lib/egl/egl_glx.so"
+[[ -f "$f" ]] && export EGL_DRIVER=$f
 
 ## ooffice is veeery slow to start if the print server is unreachable
 ## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
@@ -230,10 +241,16 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 export VMWARE_USE_SHIPPED_GTK=force
 
 ## Go lang: if present, set env
-#[[ $(type go &>/dev/null ; echo $?) -eq 0 ]] && export GOROOT=$(go env GOROOT)
+is_command go && {
+    export GOROOT=$(go env GOROOT)
+    export GOPATH="${HOME}/Source/go"
+    mkdir -p "${GOPATH}"
+}
 
-[[ -x /usr/bin/ssh-askpass ]] && export SSH_ASKPASS=/usr/bin/ssh-askpass
-[[ -x /usr/bin/ssh-askpass-fullscreen ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass-fullscreen
+f="/usr/bin/ssh-askpass"
+[[ -x "$f" ]] && export SSH_ASKPASS="$f"
+f="/usr/bin/ssh-askpass-fullscreen"
+[[ -x "$f" ]] && export SUDO_ASKPASS="$f"
 # See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
 
 # ---------- ---------- Prompts {{{2
@@ -254,7 +271,7 @@ c3='\[\033[01;34m\]'      # bold blue
 cx='\[\033[00m\]'         # white
 ## Mix double quotes (for variables, must be expanded)
 ## and single quotes (for subshells, must not be expanded)
-PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
+[[ $os_linux ]] && PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
 case $TERM in
 	xterm*|rxvt*|konsole*)
 		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
@@ -280,9 +297,17 @@ for src in \
     /etc/profile.d/bash-completion \
     /etc/profile.d/bash-completion.sh \
     /usr/share/compleat/compleat_setup \
+    ${HOME}/.bash-powerline.sh \
+    ${HOME}/.iterm2_shell_integration.bash \
 ; do
     [[ -f $src ]] && source "$src"
 done
+[[ $os_mac ]] && is_command brew && {
+    f="$(brew --prefix)/etc/bash_completion"
+    [[ -f $f ]] && source "$f"
+}
 # }}}
+
+unset f d
 
 # vim: fdm=marker
