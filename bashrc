@@ -53,6 +53,13 @@ function is_command() {
     $(type "$1" &> /dev/null)
 }
 
+# Docker Machine
+is_command docker-machine && {
+    docker-enable() {
+        eval $(docker-machine env default)
+    }
+}
+
 function font_test() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
     echo -e "             abcdefghijklmnopqrstuvwxyz "
