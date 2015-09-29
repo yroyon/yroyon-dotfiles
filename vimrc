@@ -152,21 +152,6 @@ set statusline+=]                              " ]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 
-" More statusbar, incl. patched fonts
-"
-" https://github.com/bling/vim-airline
-let g:airline_powerline_fonts = 1
-"
-" https://github.com/powerline/
-if has('gui_macvim')
-    let g:Powerline_symbols = 'fancy'
-"    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-"    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
-"    set guifont=Inconsolata\ for\ Powerline:h13
-"    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
-    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
-endif
-
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
 if has("gui_macvim")
@@ -190,6 +175,19 @@ endif
 " Console supports 8, looks ugly with >8.
 if &t_Co == 88 || (&term =~ "xterm")
     set t_Co=256
+endif
+
+" patched statusbar fonts: https://github.com/bling/vim-airline
+let g:airline_powerline_fonts = 1
+
+" patched statusbar fonts: https://github.com/powerline/
+if has('gui_macvim')
+    let g:Powerline_symbols = 'fancy'
+"    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
+"    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
+"    set guifont=Inconsolata\ for\ Powerline:h13
+"    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
+    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
 endif
 
 " If you use the solarized vim scheme, but not the solarized Xdefaults
@@ -405,6 +403,10 @@ map <silent> <end> g<end>
 "imap <silent> <Down> <C-o>gj
 imap <silent> <home> <C-o>g<home>
 imap <silent> <end> <C-o>g<end>
+
+" Prevent i<Esc>i<Esc> from moving cursor to the left.
+"    (but then a<Esc>a<Esc> moves cursor to the right)
+"au InsertLeave * call cursor([getpos('.')[1], getpos('.')[2]+1])
 
 " 'ac' toggles always/auto center (vertically)
 nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>

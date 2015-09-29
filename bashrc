@@ -139,7 +139,7 @@ alias rxvt="urxvt"
 alias rxvt-unicode="urxvt"
 
 ## colors
-[[ -x /usr/bin/grc ]] && {
+is_command grc && {
     alias cvs="grc cvs"
     alias netstat="grc netstat"
     alias ping="grc ping"
