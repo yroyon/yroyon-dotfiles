@@ -278,7 +278,7 @@ call <SID>X("Function",		"caeb82",	"",			"none")
 call <SID>X("PreProc",		"e5786d",	"",			"none")
 call <SID>X("Type",			"caeb82",	"",			"none")
 call <SID>X("Special",		"ffdead",	"",			"none")
-call <SID>X("Todo",			"857b6f",	"",			"italic")
+call <SID>X("Todo",			"857b6f",	"550000",			"italic")
 			"Underlined
 			"Error
 			"Ignore
