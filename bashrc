@@ -7,6 +7,8 @@
 #[[ -z $PS1 ]] && return
 #[[ $- =~ i ]] || return
 
+[[ $TERM == nuclide ]] && return
+
 # ---------- detect OS {{{
 name=$(uname -s)
 if [ "$name" == "Darwin" ]; then
@@ -53,10 +55,18 @@ function is_command() {
     $(type "$1" &> /dev/null)
 }
 
-# Docker Machine
+# Docker
 is_command docker-machine && {
     docker-enable() {
         eval $(docker-machine env default)
+    }
+}
+is_command docker && {
+    docker-rmi-dangling() {
+        docker images --quiet --filter "dangling=true" | xargs docker rmi
+    }
+    docker-pull-all() {
+        docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1":"$2}' | xargs -n 1 docker pull
     }
 }
 
@@ -81,18 +91,20 @@ fi
 [[ $os_linux ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 [[ $os_mac   ]] && export CLICOLOR=1
 
-# TODO ugly, and pdftotext not invoked porperly:
-#[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+is_command ssh-agent && eval $(ssh-agent -s)
+is_command keychain && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
 
-[[ -x /usr/bin/keychain ]] && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
-#/usr/bin/keychain $HOME/.ssh/id_rsa
-#source $HOME/.keychain/$HOSTNAME-sh
+# https://github.com/nvbn/thefuck
+is_command thefuck && eval $(thefuck --alias)
+
+# TODO ugly, and pdftotext not invoked porperly:
+#is_command lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 # }}}
 
 # ---------- aliases  {{{
 ## ls family new commands
 [[ $os_linux ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
-[[ $os_mac ]]   && ls_opts="-G"
+[[ $os_mac   ]] && ls_opts="-G"
 alias      d="ls ${ls_opts}"
 alias      l="ls ${ls_opts} ${ls_sort} -F"
 alias     ll="ls ${ls_opts} ${ls_sort} -F -A -lh"
@@ -122,11 +134,14 @@ alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 alias sudo='sudo '
 
 ## default options to common commands
+alias rm="rm -i"
 alias diff="colordiff -NrbB -x .git"
 [[ $os_mac ]] && alias pstree="pstree -w -g3"
-# Patching: git diff > patchfile  ;  patch -p1 < patchfile
-alias rm="rm -i"
-alias tree="tree --dirsfirst"
+[[ $os_mac ]] && {
+    alias tree="tree --dirsfirst -C"
+} || {
+    alias tree="tree --dirsfirst"
+}
 alias vi="vim"
 [[ $os_mac ]] && {
     alias vi="mvim -v"
@@ -163,18 +178,22 @@ alias path='echo -e ${PATH//:/\\n}'
 alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
 #alias suspend="pm-suspend"  # suspend is a bash builtin
-alias xpdf="okular"
-#alias xpdf="mupdf"
-#alias xpdf="pdf-presenter-console"
-#alias xpdf="pdfcube"
-#alias xpdf="qpdfview"
-#alias xpdf="zathura"
+
+[[ $os_linux ]] && {
+    # ordered, most favorite first
+    pdf_readers="okular mupdf pdf-presenter-console zathura pdfcube qpdfview"
+    for reader in ${pdf_readers}; do
+        is_command $reader && alias xpdf=$reader && break
+    done
+    unset reader pdf_readers
+}
+[[ $os_mac ]] && alias xpdf="open"
 
 #alias hd='od -Ax -tx1z -v'
 alias realpath='readlink -f'
 
 ## shortcut to KDE display settings (2nd monitor...)
-[[ -x /usr/bin/kcmshell4 ]] && {
+is_command kcmshell4 && {
     alias kdisplay="kcmshell4 display"
     alias xdisplay="kcmshell4 display"
 }
@@ -197,43 +216,15 @@ HISTSIZE=4096
 HISTFILESIZE=2097152
 
 export BROWSER="firefox '%s' &"
-
 export CVS_RSH=/usr/bin/ssh
-
-[[ -z $DISPLAY ]] && export DISPLAY=:0.0
-
 export EDITOR=/usr/bin/vim
-
 export GREP_COLOR=32
-
-case $(cat /etc/*release 2>/dev/null) in
-    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
-    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
-    *) ;;
-esac
-[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
-
-export MAVEN_OPTS="-Xmx1024m"
-#export M2_HOME=/usr/local/maven
-#export M2=$M2_HOME/bin
-
 export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
 is_command vimmanpager && export MANPAGER=vimmanpager
 # For Mac OS X with 'brew install coreutils':
 #d="/usr/local/opt/coreutils/libexec/gnuman"
 #[[ -d "$d" ]] && export MANPATH="$d:$MANPATH"
-
-append_to_path "/sbin"
-append_to_path "/usr/sbin"
-append_to_path "/usr/local/sbin"
-append_to_path "${HOME}/bin"
-append_to_path "${HOME}/scripts"
-append_to_path "${HOME}/scripts/games"
-prepend_to_path "${M2}"
-# For Mac OS X with 'brew install coreutils':
-#prepend_to_path "/usr/local/opt/coreutils/libexec/gnubin"
-export PATH
 
 ## bash 4: trim (nested) dirnames that are too long
 #PROMPT_DIRTRIM=2
@@ -255,18 +246,43 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 ## VMware segfaults @work without this:
 export VMWARE_USE_SHIPPED_GTK=force
 
-## Go lang: if present, set env
+# Java, Maven
+[[ -z $DISPLAY ]] && export DISPLAY=:0.0
+case $(cat /etc/*release 2>/dev/null) in
+    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
+    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
+    *) ;;
+esac
+[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
+export MAVEN_OPTS="-Xmx1024m"
+#export M2_HOME=/usr/local/maven
+#export M2=$M2_HOME/bin
+
+# Go lang: if present, set env
 is_command go && {
     export GOROOT=$(go env GOROOT)
     export GOPATH="${HOME}/Source/go"
     mkdir -p "${GOPATH}"
 }
 
+# SSH
 f="/usr/bin/ssh-askpass"
 [[ -x "$f" ]] && export SSH_ASKPASS="$f"
 f="/usr/bin/ssh-askpass-fullscreen"
 [[ -x "$f" ]] && export SUDO_ASKPASS="$f"
 # See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
+
+# path
+append_to_path "/sbin"
+append_to_path "/usr/sbin"
+append_to_path "/usr/local/sbin"
+append_to_path "${HOME}/bin"
+append_to_path "${HOME}/scripts"
+append_to_path "${HOME}/scripts/games"
+prepend_to_path "${M2}"
+# For Mac OS X with 'brew install coreutils':
+#prepend_to_path "/usr/local/opt/coreutils/libexec/gnubin"
+export PATH
 
 # ---------- ---------- Prompts {{{2
 ## PROMPT_COMMAND : window title for X terminals
@@ -307,7 +323,7 @@ bind '"\e[6~": history-search-forward'
 # }}}
 
 # ---------- sources {{{
-for src in \
+for f in \
     /etc/profile.d/proxy.sh \
     /etc/profile.d/bash-completion \
     /etc/profile.d/bash-completion.sh \
@@ -315,7 +331,7 @@ for src in \
     ${HOME}/.bash-powerline.sh \
     ${HOME}/.iterm2_shell_integration.bash \
 ; do
-    [[ -f $src ]] && source "$src"
+    [[ -f $f ]] && source "$f"
 done
 [[ $os_mac ]] && is_command brew && {
     f="$(brew --prefix)/etc/bash_completion"
