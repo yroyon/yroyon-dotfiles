@@ -5,7 +5,7 @@ scriptencoding utf-8
 " F3  : git: go to next hunk
 " F4  : toggle Tagbar
 " F5  : trim trailing white spaces
-" F6  :
+" F6  : toggle NERDTree
 " F7  : toggle cursor column highlight
 " F8  : toggle cursor line highlight
 " F9  :
@@ -155,10 +155,16 @@ set statusline+=]                              " ]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 
+" https://github.com/scrooloose/nerdtree
+map  <F6> :NERDTreeToggle<CR>:wincmd p<CR>
+imap <F6> <Esc>:NERDTreeToggle<CR>:wincmd p<CR>a
+
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
-if has("gui_macvim")
-    autocmd VimLeave * :!open -a iTerm
+if has("gui_macvim") && has("gui_running")
+    if $TERM_PROGRAM =~ "iTerm"
+        autocmd VimLeave * :!open -a iTerm
+    endif
 endif
 
 " }}}
@@ -410,6 +416,7 @@ imap <silent> <end> <C-o>g<end>
 " Prevent i<Esc>i<Esc> from moving cursor to the left.
 "    (but then a<Esc>a<Esc> moves cursor to the right)
 "au InsertLeave * call cursor([getpos('.')[1], getpos('.')[2]+1])
+" see also: https://github.com/jszakmeister/vim-togglecursor
 
 " 'ac' toggles always/auto center (vertically)
 nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
@@ -667,8 +674,10 @@ let g:localvimrc_persistent=2
 if filereadable("/usr/local/bin/bash")
     " Thanks Apple for the old Bash
     set shell=/usr/local/bin/bash
+    let g:syntastic_shell="/usr/local/bin/bash"
 else
     set shell=/bin/bash
+    let g:syntastic_shell="/bin/bash"
 endif
 let g:is_bash=1
 let g:sh_fold_enabled=3
@@ -697,10 +706,18 @@ let g:java_allow_cpp_keywords = 0
 " Uncomment to disable.
 "let g:no_haskell_conceal = 1
 
-let g:haddock_browser="/usr/bin/firefox"
+let g:haddock_browser = "/usr/bin/firefox"
 
 " Syntastic
-let g:syntastic_auto_loc_list=1
+"" Navigate with :lnext and :lprevious
+" Use :SyntasticToggleMode to toggle active/passive (meaning run on :w)
+let b:syntastic_mode = "passive"
+let g:syntastic_check_on_wq = 0
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_c_checkers = ['make']   " default is gcc
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 
 " TagBar
 let g:tagbar_autofocus = 1
