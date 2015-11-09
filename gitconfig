@@ -7,6 +7,7 @@
     lg = log --date=short --graph --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
     restore = checkout --
     sattus = status
+    stats = status
     todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
         -e XXX -e TODO -e FIXME -e @bug -e @todo
         # per-file hits:  -c  (appendable on CLI)
@@ -14,6 +15,7 @@
     undo = reset --soft HEAD^ --
     vimdiff = difftool --tool=vimdiff
     wdiff   = diff --no-ext-diff --word-diff
+    x = "!gitx"
 [blame]
     date = short
 [color]
@@ -40,7 +42,6 @@
     textconv = unzip -c -a
 [github]
     user = yroyon
-    token = fed6b8add696d67e89487310f418932a
 [http]
 #    proxy = bluecoat-be02.alcatel.fr:1080
 #    proxy = http://www-proxy.exu.ericsson.se:8080
