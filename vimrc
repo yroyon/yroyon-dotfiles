@@ -159,6 +159,9 @@ set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 map  <F6> :NERDTreeToggle<CR>:wincmd p<CR>
 imap <F6> <Esc>:NERDTreeToggle<CR>:wincmd p<CR>a
 
+" netrw mode: use a tree
+let g:netrw_liststyle=3
+
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
 if has("gui_macvim") && has("gui_running")
@@ -188,6 +191,8 @@ endif
 
 " patched statusline fonts: https://github.com/bling/vim-airline
 let g:airline_powerline_fonts = 1
+" but disable tagbar integration (shows current function, takes too much space)
+let g:airline#extensions#tagbar#enabled = 0
 
 " patched statusline fonts: https://github.com/powerline/
 if has('gui_macvim')
