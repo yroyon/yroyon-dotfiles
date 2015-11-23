@@ -91,7 +91,7 @@ fi
 [[ $os_linux ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 [[ $os_mac   ]] && export CLICOLOR=1
 
-is_command ssh-agent && eval $(ssh-agent -s)
+is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval $(ssh-agent -s)
 is_command keychain && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
 
 # https://github.com/nvbn/thefuck
