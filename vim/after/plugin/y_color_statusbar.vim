@@ -11,7 +11,7 @@ function! Mode()
     elseif l:mode ==# "V"  | return "  V·LINE  "
     elseif l:mode ==# "" | return "  V·BLOCK "
     else                   | return l:mode
-    endif   
+    endif
     return ""
 endfunction
 
@@ -19,8 +19,8 @@ endfunction
 " until the color is changed. The text is changed properly though.
 function! SwitchModeColor(mode)
     if     a:mode ==# 'n'  | hi User3 ctermfg=230 cterm=none ctermbg=22
-    elseif a:mode ==# "i"  | hi User3 ctermfg=232 cterm=bold ctermbg=lightblue  
-    elseif a:mode ==# "R"  | hi User3 ctermfg=230 cterm=bold ctermbg=160     
+    elseif a:mode ==# "i"  | hi User3 ctermfg=232 cterm=bold ctermbg=lightblue
+    elseif a:mode ==# "R"  | hi User3 ctermfg=230 cterm=bold ctermbg=160
     elseif a:mode ==? "v"  | hi User3 ctermfg=232 cterm=bold ctermbg=208
     elseif a:mode ==# "" | hi User3 ctermfg=232 cterm=bold ctermbg=208
     endif

@@ -7,4 +7,6 @@
 ""      in Python distributions - but not in Gentoo)
 
 setlocal tags+=$HOME/.vim/tags/python.ctags
+setlocal tags+=./ptags
+setlocal tags+=./ctags
 

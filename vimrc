@@ -40,7 +40,7 @@ else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
 
-" prevents delays on statusbar color changes triggered by mode change
+" prevents delays on statusline color changes triggered by mode change
 set ttimeoutlen=50
 set timeoutlen=500
 
@@ -186,10 +186,10 @@ if &t_Co == 88 || (&term =~ "xterm")
     set t_Co=256
 endif
 
-" patched statusbar fonts: https://github.com/bling/vim-airline
+" patched statusline fonts: https://github.com/bling/vim-airline
 let g:airline_powerline_fonts = 1
 
-" patched statusbar fonts: https://github.com/powerline/
+" patched statusline fonts: https://github.com/powerline/
 if has('gui_macvim')
     let g:Powerline_symbols = 'fancy'
 "    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
@@ -838,9 +838,6 @@ endif
 "-----------------------------------------------------------
 
 set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude=tags
-
-" Toggle the NERD_tree plugin
-"map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
 
 " }}}
 "-----------------------------------------------------------
