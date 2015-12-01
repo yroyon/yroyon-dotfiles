@@ -28,7 +28,7 @@ function dirsize() {
 
 function lsize() {
     local du="du"
-    [[ os_mac ]] && is_command "gdu" && du="gdu"
+    [[ $os_mac ]] && is_command "gdu" && du="gdu"
     ${du} -b --max-depth 1 -- $* 2>/dev/null | sort -nr | perl -pe \
         's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
 }
@@ -57,16 +57,26 @@ function is_command() {
 
 # Docker
 is_command docker-machine && {
-    docker-enable() {
+    function docker-enable() {
         eval $(docker-machine env default)
     }
 }
 is_command docker && {
-    docker-rmi-dangling() {
+    function docker-rmi-dangling() {
         docker images --quiet --filter "dangling=true" | xargs docker rmi
     }
-    docker-pull-all() {
+    function docker-pull-all() {
         docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1":"$2}' | xargs -n 1 docker pull
+    }
+    function docker-ip() {
+        docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
+    }
+}
+
+# Python
+is_command pip3 && {
+    function pip3-upgrade() {
+        pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
     }
 }
 
@@ -75,10 +85,13 @@ function font_test() {
     echo -e "             abcdefghijklmnopqrstuvwxyz "
     echo -e "        Num: 0123456789 "
     echo -e "   Brackets: () [] {} <> "
-    echo -e "     Quotes: \"foo\" 'bar' "
+    echo -e "     Quotes: \"double\" 'single' \`back\`"
     echo -e "Punctuation: , . : ; _ ! ? "
-    echo -e "    Symbols: ~  @ # $ % ^ & * - + = | / \` \\ "
+    echo -e "    Symbols: ~ @ # $ % ^ & * - + = / | \\ "
     echo -e "  Ambiguity: iI1lL oO0 "
+    echo -e "     French: á à â Â é è ê É î ï Î ô ö Ô û ü ç"
+    echo -e "      Fancy: æ œ ñ ø € ¢ ©  “”„ ‘’ … ¿ ‹› ‡"
+    echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
 if [[ -x ${HOME}/scripts/clippy.sh ]] ; then
