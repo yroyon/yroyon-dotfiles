@@ -97,7 +97,7 @@ URxvt.skipScroll: true
 !Rxvt*scrollTtyKeypress:   True
 !Rxvt*scrollWithBuffer:    False
 
-URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-iso8859-15
+URxvt.font:             -*-terminus-medium-*-*-*-14-*-*-*-*-*-*-*
 !URxvt.font:            xft:DejaVu Sans Mono-10
 !URxvt.boldFont:        xft:DejaVu Sans Mono-10:bold
 !URxvt.italicFont:      xft:DejaVu Sans Mono-10:italic
