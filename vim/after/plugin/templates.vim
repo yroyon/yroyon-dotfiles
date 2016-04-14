@@ -8,7 +8,7 @@ augroup templates
     autocmd BufNewFile *.java call s:JTemplate()
 augroup END
 
-""" Java source template
+""" Java source template {{{
 
 function! s:JTemplate()
     let relpath_noext = expand("%")
@@ -33,7 +33,9 @@ function! s:JTemplate_GetDir(name, orig)
     let dir = substitute(dir, "\/[^\/]*$", "", "")
     let dir = substitute(dir, "\/", ".", "g")
     if dir == a:orig
-        dir = substitute(dir, "*\/", "", "")
+        let dir = substitute(dir, "*\/", "", "")
+"        let dir = getcwd()
+"        let dir = substitute(dir, "^.*\/", "", "")
     endif
     return dir
 endfunction
@@ -48,5 +50,5 @@ function! s:JTemplate_Skeleton(dir, filename)
     call append(6, "}")
 endfunction
 
-""" end Java
+""" }}} end Java
 

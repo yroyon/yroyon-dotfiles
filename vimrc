@@ -225,7 +225,7 @@ endfunction
 
 " me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce
 let s:schemes_gvim = "wombat256:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
-let s:schemes_term256 = "wombat_y:luna-term:inkpot:molokai_y:vibrantink:desert256_y:desert256:desert"
+let s:schemes_term256 = "wombat_y:luna-term:inkpot:candycode:molokai_y:vibrantink:desert256_y:desert256:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
 let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui')
