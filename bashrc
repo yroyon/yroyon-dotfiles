@@ -147,7 +147,7 @@ alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 alias sudo='sudo '
 
 ## default options to common commands
-alias rm="rm -i"
+alias rm="rm -i --one-file-system"
 alias diff="colordiff -NrbB -x .git"
 [[ $os_mac ]] && alias pstree="pstree -w -g3"
 [[ $os_mac ]] && {
@@ -250,8 +250,11 @@ f="/usr/lib/egl/egl_glx.so"
 ## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
 export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 
+## TERM setting.
 ## Tell konsole it can use 256 colors. Konsole is not very smart.
 [[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
+# The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
+[[ $EUID == 0 ]] && export TERM=xterm-256color
 
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
@@ -274,8 +277,10 @@ export MAVEN_OPTS="-Xmx1024m"
 # Go lang: if present, set env
 is_command go && {
     export GOROOT=$(go env GOROOT)
-    export GOPATH="${HOME}/Source/go"
-    mkdir -p "${GOPATH}"
+    if [[ $EUID != 0 ]] ; then
+        export GOPATH="${HOME}/Source/go"
+        mkdir -p "${GOPATH}"
+    fi
 }
 
 # SSH
