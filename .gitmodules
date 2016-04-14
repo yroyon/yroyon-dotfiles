@@ -1,0 +1,54 @@
+[submodule "vim/bundle/securemodelines"]
+	path = vim/bundle/securemodelines
+	url = https://github.com/ciaranm/securemodelines
+[submodule "vim/bundle/a"]
+	path = vim/bundle/a
+	url = https://github.com/vim-scripts/a.vim
+[submodule "vim/bundle/colorscheme-lizard"]
+	path = vim/bundle/colorscheme-lizard
+	url = https://github.com/gilsondev/lizard
+[submodule "vim/bundle/colorscheme-luna"]
+	path = vim/bundle/colorscheme-luna
+	url = https://github.com/Pychimp/vim-luna
+[submodule "vim/bundle/ft-dockerfile"]
+	path = vim/bundle/ft-dockerfile
+	url = https://github.com/ekalinin/Dockerfile.vim
+[submodule "vim/bundle/ft-json"]
+	path = vim/bundle/ft-json
+	url = https://github.com/elzr/vim-json
+[submodule "vim/bundle/ft-scala"]
+	path = vim/bundle/ft-scala
+	url = https://github.com/derekwyatt/vim-scala
+[submodule "vim/bundle/gitgutter"]
+	path = vim/bundle/gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule "vim/bundle/localvimrc"]
+	path = vim/bundle/localvimrc
+	url = https://github.com/embear/vim-localvimrc
+[submodule "vim/bundle/neosnippet"]
+	path = vim/bundle/neosnippet
+	url = https://github.com/Shougo/neosnippet.vim
+[submodule "vim/bundle/speeddating"]
+	path = vim/bundle/speeddating
+	url = https://github.com/tpope/vim-speeddating
+[submodule "vim/bundle/startify"]
+	path = vim/bundle/startify
+	url = https://github.com/mhinz/vim-startify
+[submodule "vim/bundle/swapit"]
+	path = vim/bundle/swapit
+	url = https://github.com/mjbrownie/swapit
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic
+[submodule "vim/bundle/tagbar"]
+	path = vim/bundle/tagbar
+	url = https://github.com/majutsushi/tagbar
+[submodule "vim/bundle/taghighlight"]
+	path = vim/bundle/taghighlight
+	url = https://github.com/vim-scripts/TagHighlight
+[submodule "vim/bundle/ft-go"]
+	path = vim/bundle/ft-go
+	url = https://github.com/fatih/vim-go
+[submodule "vim/bundle/ft-haskell-conceal"]
+	path = vim/bundle/ft-haskell-conceal
+	url = https://github.com/Twinside/vim-haskellConceal
