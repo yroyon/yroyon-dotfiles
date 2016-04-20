@@ -52,3 +52,6 @@
 [submodule "vim/bundle/ft-haskell-conceal"]
 	path = vim/bundle/ft-haskell-conceal
 	url = https://github.com/Twinside/vim-haskellConceal
+[submodule "vim/neosnippet-snippets"]
+	path = vim/neosnippet-snippets
+	url = https://github.com/Shougo/neosnippet-snippets
