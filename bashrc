@@ -147,8 +147,10 @@ alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 alias sudo='sudo '
 
 ## default options to common commands
+is_command colordiff && diffprog="colordiff" || diffprog="diff"
+alias diff="$diffprog -NrbB -x .git"
+unset diffprog
 alias rm="rm -i --one-file-system"
-alias diff="colordiff -NrbB -x .git"
 [[ $os_mac ]] && alias pstree="pstree -w -g3"
 [[ $os_mac ]] && {
     alias tree="tree --dirsfirst -C"
