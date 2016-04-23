@@ -7,9 +7,6 @@
 [submodule "vim/bundle/colorscheme-lizard"]
 	path = vim/bundle/colorscheme-lizard
 	url = https://github.com/gilsondev/lizard
-[submodule "vim/bundle/colorscheme-luna"]
-	path = vim/bundle/colorscheme-luna
-	url = https://github.com/Pychimp/vim-luna
 [submodule "vim/bundle/ft-dockerfile"]
 	path = vim/bundle/ft-dockerfile
 	url = https://github.com/ekalinin/Dockerfile.vim
@@ -52,6 +49,6 @@
 [submodule "vim/bundle/ft-haskell-conceal"]
 	path = vim/bundle/ft-haskell-conceal
 	url = https://github.com/Twinside/vim-haskellConceal
-[submodule "vim/neosnippet-snippets"]
-	path = vim/neosnippet-snippets
+[submodule "vim/bundle/neosnippet-snippets"]
+	path = vim/bundle/neosnippet-snippets
 	url = https://github.com/Shougo/neosnippet-snippets
