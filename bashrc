@@ -254,7 +254,7 @@ export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 
 ## TERM setting.
 ## Tell konsole it can use 256 colors. Konsole is not very smart.
-[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
+#[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
 # The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
 [[ $EUID == 0 ]] && export TERM=xterm-256color
 
@@ -280,7 +280,7 @@ export MAVEN_OPTS="-Xmx1024m"
 is_command go && {
     export GOROOT=$(go env GOROOT)
     if [[ $EUID != 0 ]] ; then
-        export GOPATH="${HOME}/Source/go"
+        export GOPATH="${HOME}/.go"
         mkdir -p "${GOPATH}"
     fi
 }
