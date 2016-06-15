@@ -28,9 +28,12 @@ function dirsize() {
 
 function lsize() {
     local du="du"
-    [[ $os_mac ]] && is_command "gdu" && du="gdu"
-    ${du} -b --max-depth 1 -- $* 2>/dev/null | sort -nr | perl -pe \
-        's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e'
+    local sort="sort"
+    [[ $os_mac ]] && {
+        is_command "gdu" && du="gdu"
+        is_command "gsort" && du="gsort"
+    }
+    ${du} -h --max-depth 1 -- $* 2>/dev/null | ${sort} -hr
 }
 
 function histostats() {
