@@ -33,7 +33,7 @@ function lsize() {
         is_command "gdu" && du="gdu"
         is_command "gsort" && du="gsort"
     }
-    ${du} -h --max-depth 1 -- $* 2>/dev/null | ${sort} -hr
+    ${du} -h --max-depth 1 $* 2>/dev/null | ${sort} -hr
 }
 
 function histostats() {
