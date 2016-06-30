@@ -20,11 +20,23 @@
     date = short
 [color]
     ui = true
+[color "diff"]
+#    meta = yellow bold
+    commit = green bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "diff-highlight"]
+    oldNormal = red bold
+    oldHighlight = "red bold 52"
+    newNormal = "green bold"
+    newHighlight = "green bold 22"
 [core]
     abbrev = 9
     excludesfile = ~/.gitignore_global
 #    gitProxy = git-http-proxy
-    pager = less -FRSX
+#    pager = less -FRSX
 [credential]
     helper = cache --timeout=3600
 [diff]
@@ -51,6 +63,10 @@
 [merge]
     tool = vimdiff
     #tool = meld
+[pager]
+	log  = diff-highlight | less -FSR
+	show = diff-highlight | less -FSRX
+	diff = diff-highlight | less -FSRX
 [push]
     default = tracking
 [rerere]
