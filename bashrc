@@ -97,9 +97,9 @@ function font_test() {
     echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
-if [[ -x ${HOME}/scripts/clippy.sh ]] ; then
-    function command_not_found_handle { "${HOME}/scripts/clippy.sh" $1 ; }
-    export COWPATH="${HOME}/scripts/cows"
+if [[ -x ${HOME}/bin/clippy.sh ]] ; then
+    function command_not_found_handle { "${HOME}/bin/clippy.sh" $1 ; }
+    export COWPATH="${HOME}/bin/cows"
 fi
 # }}}
 
@@ -272,6 +272,7 @@ export VMWARE_USE_SHIPPED_GTK=force
 case $(cat /etc/*release 2>/dev/null) in
     *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
     *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
+    *Ubuntu*) export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") ;;
     *) ;;
 esac
 [[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
@@ -299,6 +300,7 @@ f="/usr/bin/ssh-askpass-fullscreen"
 append_to_path "/sbin"
 append_to_path "/usr/sbin"
 append_to_path "/usr/local/sbin"
+append_to_path "/opt/bin"
 append_to_path "${HOME}/bin"
 append_to_path "${HOME}/scripts"
 append_to_path "${HOME}/scripts/games"
