@@ -27,6 +27,6 @@ setlocal efm=%A\ %#[javac]\ %f:%l:\ %m,%-Z\ %#[javac]\ %p^,%-C%.%#
 " How to create abbreviations.
 " Usage: in insert mode, type:    sysout"
 " (the character after the abbr will be printed, hence '"' in this particular case)
-iabbr sysout System.out.println(")<Left><Left>
-iabbr Sysout System.out.println(")<Left><Left>
+iabbr sysout System.out.println(");<Left><Left><Left>
+iabbr Sysout System.out.println(");<Left><Left><Left>
 
