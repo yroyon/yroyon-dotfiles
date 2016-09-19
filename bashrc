@@ -15,6 +15,7 @@ if [ "$name" == "Darwin" ]; then
     os_mac=true
 elif [ "$(expr substr $name 1 5)" == "Linux" ]; then
     os_linux=true
+    os_gnu=true
 elif [ "$(expr substr $name 1 10)" == "MINGW32_NT" ]; then
     os_windows=true
 fi
@@ -31,7 +32,7 @@ function lsize() {
     local sort="sort"
     [[ $os_mac ]] && {
         is_command "gdu" && du="gdu"
-        is_command "gsort" && du="gsort"
+        is_command "gsort" && sort="gsort"
     }
     ${du} -h --max-depth 1 $* 2>/dev/null | ${sort} -hr
 }
@@ -103,9 +104,28 @@ if [[ -x ${HOME}/bin/clippy.sh ]] ; then
 fi
 # }}}
 
+# ---------- path  {{{
+append_to_path "/sbin"
+append_to_path "/usr/sbin"
+append_to_path "/usr/local/sbin"
+append_to_path "/opt/bin"
+append_to_path "${HOME}/bin"
+append_to_path "${HOME}/scripts"
+append_to_path "${HOME}/scripts/games"
+prepend_to_path "${M2}"
+# For Mac OS X with 'brew install coreutils':
+d="/usr/local/opt/coreutils/libexec/gnubin"
+[[ -d $d ]] && {
+    prepend_to_path $d
+    os_gnu=true
+}
+unset d
+export PATH
+# }}}
+
 # ---------- evals {{{
-[[ $os_linux ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
-[[ $os_mac   ]] && export CLICOLOR=1
+[[ $os_gnu ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
+[[ $os_mac ]] && export CLICOLOR=1
 
 is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval $(ssh-agent -s)
 is_command keychain && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
@@ -117,10 +137,82 @@ is_command thefuck && eval $(thefuck --alias)
 #is_command lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 # }}}
 
+# ---------- environment {{{1
+## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
+#FIGNORE=".git:.svn:CVS"
+HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
+HISTSIZE=4096
+HISTFILESIZE=2097152
+
+export BROWSER="firefox '%s' &"
+export CVS_RSH=/usr/bin/ssh
+export EDITOR=/usr/bin/vim
+export GREP_COLOR=32
+export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
+
+is_command vimmanpager && export MANPAGER=vimmanpager
+# For Mac OS X with 'brew install coreutils':
+#d="/usr/local/opt/coreutils/libexec/gnuman"
+#[[ -d "$d" ]] && export MANPATH="$d:$MANPATH"
+
+## bash 4: trim (nested) dirnames that are too long
+#PROMPT_DIRTRIM=2
+
+## For JOGL (it seems the default is missing ".so")
+f="/usr/lib/egl/egl_glx.so"
+[[ -f "$f" ]] && export EGL_DRIVER=$f
+
+## ooffice is veeery slow to start if the print server is unreachable
+## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
+export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
+
+## TERM setting.
+## Tell konsole it can use 256 colors. Konsole is not very smart.
+#[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
+# The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
+[[ $EUID == 0 ]] && export TERM=xterm-256color
+
+## /usr/bin/time format (pass '-v' for exhaustive output)
+export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
+
+## VMware segfaults @work without this:
+export VMWARE_USE_SHIPPED_GTK=force
+
+[[ -z $DISPLAY ]] && export DISPLAY=:0.0
+
+# Java, Maven
+case $(cat /etc/*release 2>/dev/null) in
+    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
+    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
+    *Ubuntu*) export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") ;;
+    *) ;;
+esac
+[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
+export MAVEN_OPTS="-Xmx1024m"
+#export M2_HOME=/usr/local/maven
+#export M2=$M2_HOME/bin
+
+# Go lang: if present, set env
+is_command go && {
+    export GOROOT=$(go env GOROOT)
+    if [[ $EUID != 0 ]] ; then
+        export GOPATH="${HOME}/code/go"
+        mkdir -p "${GOPATH}"
+    fi
+}
+
+# SSH
+f="/usr/bin/ssh-askpass"
+[[ -x "$f" ]] && export SSH_ASKPASS="$f"
+f="/usr/bin/ssh-askpass-fullscreen"
+[[ -x "$f" ]] && export SUDO_ASKPASS="$f"
+# See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
+# }}}
+
 # ---------- aliases  {{{
 ## ls family new commands
-[[ $os_linux ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
-[[ $os_mac   ]] && ls_opts="-G"
+[[ $os_gnu ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
+[[ $os_mac   ]] && [[ ! $os_gnu ]] && ls_opts="-G"
 alias      d="ls ${ls_opts}"
 alias      l="ls ${ls_opts} ${ls_sort} -F"
 alias     ll="ls ${ls_opts} ${ls_sort} -F -A -lh"
@@ -226,90 +318,7 @@ shopt -s no_empty_cmd_completion
 [[ $BASH_VERSION > 4 ]] && shopt -s globstar
 # }}}
 
-# ---------- environment {{{1
-## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
-#FIGNORE=".git:.svn:CVS"
-HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
-HISTSIZE=4096
-HISTFILESIZE=2097152
-
-export BROWSER="firefox '%s' &"
-export CVS_RSH=/usr/bin/ssh
-export EDITOR=/usr/bin/vim
-export GREP_COLOR=32
-export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
-
-is_command vimmanpager && export MANPAGER=vimmanpager
-# For Mac OS X with 'brew install coreutils':
-#d="/usr/local/opt/coreutils/libexec/gnuman"
-#[[ -d "$d" ]] && export MANPATH="$d:$MANPATH"
-
-## bash 4: trim (nested) dirnames that are too long
-#PROMPT_DIRTRIM=2
-
-## For JOGL (it seems the default is missing ".so")
-f="/usr/lib/egl/egl_glx.so"
-[[ -f "$f" ]] && export EGL_DRIVER=$f
-
-## ooffice is veeery slow to start if the print server is unreachable
-## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
-export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
-
-## TERM setting.
-## Tell konsole it can use 256 colors. Konsole is not very smart.
-#[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
-# The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
-[[ $EUID == 0 ]] && export TERM=xterm-256color
-
-## /usr/bin/time format (pass '-v' for exhaustive output)
-export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
-
-## VMware segfaults @work without this:
-export VMWARE_USE_SHIPPED_GTK=force
-
-# Java, Maven
-[[ -z $DISPLAY ]] && export DISPLAY=:0.0
-case $(cat /etc/*release 2>/dev/null) in
-    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
-    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
-    *Ubuntu*) export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") ;;
-    *) ;;
-esac
-[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
-export MAVEN_OPTS="-Xmx1024m"
-#export M2_HOME=/usr/local/maven
-#export M2=$M2_HOME/bin
-
-# Go lang: if present, set env
-is_command go && {
-    export GOROOT=$(go env GOROOT)
-    if [[ $EUID != 0 ]] ; then
-        export GOPATH="${HOME}/.go"
-        mkdir -p "${GOPATH}"
-    fi
-}
-
-# SSH
-f="/usr/bin/ssh-askpass"
-[[ -x "$f" ]] && export SSH_ASKPASS="$f"
-f="/usr/bin/ssh-askpass-fullscreen"
-[[ -x "$f" ]] && export SUDO_ASKPASS="$f"
-# See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
-
-# path
-append_to_path "/sbin"
-append_to_path "/usr/sbin"
-append_to_path "/usr/local/sbin"
-append_to_path "/opt/bin"
-append_to_path "${HOME}/bin"
-append_to_path "${HOME}/scripts"
-append_to_path "${HOME}/scripts/games"
-prepend_to_path "${M2}"
-# For Mac OS X with 'brew install coreutils':
-#prepend_to_path "/usr/local/opt/coreutils/libexec/gnubin"
-export PATH
-
-# ---------- ---------- Prompts {{{2
+# ---------- prompts {{{
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ $EUID == 0 ]] ; then
@@ -328,6 +337,7 @@ cx='\[\033[00m\]'         # white
 ## Mix double quotes (for variables, must be expanded)
 ## and single quotes (for subshells, must not be expanded)
 [[ $os_linux ]] && PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
+[[ $os_mac ]] && PS1="$c2\u $c3"'[`ls -1 | gwc -l`]'" \W $pr $cx"
 case $TERM in
 	xterm*|rxvt*|konsole*)
 		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
@@ -339,7 +349,7 @@ case $TERM in
 esac
 export PS1
 unset c1 c2 c3 cx id pr
-# }}}2 }}}1
+# }}}
 
 # ---------- readline {{{
 ## PageUp and PageDown browse through bash history
@@ -362,8 +372,8 @@ done
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
 }
-# }}}
 
 unset f d
+# }}}
 
 # vim: fdm=marker
