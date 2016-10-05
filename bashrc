@@ -9,6 +9,12 @@
 
 [[ $TERM == nuclide ]] && return
 
+## profile
+#PS4='+ $(date "+%s.%N")\011 '
+#exec 3>&2 2>/tmp/bashstart.$$.log
+#set -x
+##
+
 # ---------- detect OS {{{
 name=$(uname -s)
 if [ "$name" == "Darwin" ]; then
@@ -386,5 +392,10 @@ done
 
 unset f d
 # }}}
+
+## end profile
+#set +x
+#exec 2>&3 3>&-
+##
 
 # vim: fdm=marker
