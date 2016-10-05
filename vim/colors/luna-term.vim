@@ -82,7 +82,8 @@ let g:colors_name = "luna-term"
 hi Normal        ctermfg=254 ctermbg=232 cterm=NONE
 " ---------------------------------------------------------------------
 " The Languages stuff
-hi Title         ctermfg=195 ctermbg=NONE cterm=NONE
+"hi Title         ctermfg=195 ctermbg=NONE cterm=NONE
+hi Title         ctermfg=166 ctermbg=NONE cterm=NONE
 " ---------------------------------------------------------------------
 hi Comment       ctermfg=240  ctermbg=NONE cterm=NONE
 " ---------------------------------------------------------------------
@@ -124,7 +125,7 @@ hi IncSearch    ctermfg=235  ctermbg=208  cterm=NONE
 hi Search       ctermfg=235  ctermbg=208  cterm=NONE
 hi MoreMsg      ctermfg=241  ctermbg=NONE cterm=NONE
 hi ModeMsg      ctermfg=241  ctermbg=NONE cterm=NONE
-hi LineNr       ctermfg=244  ctermbg=NONE cterm=NONE
+hi LineNr       ctermfg=244  ctermbg=234  cterm=NONE
 hi VertSplit    ctermfg=0    ctermbg=238  cterm=NONE
 hi VisualNOS    ctermfg=235  ctermbg=227  cterm=NONE
 hi Folded       ctermfg=23   ctermbg=235  cterm=NONE
@@ -151,7 +152,24 @@ hi WildMenu     ctermfg=23   ctermbg=231  cterm=NONE
 hi SignColumn   ctermfg=NONE ctermbg=234  cterm=NONE
 "
 " }}}
+
+" yroyon: {{{
+" Diff
+" hi DiffAdd     ctermbg=22 guibg=DarkBlue
+" hi DiffChange  ctermbg=17 guibg=DarkMagenta
+" hi DiffDelete  ctermbg=52 guibg=DarkCyan
 "
+" airblade/vim-gitgutter
+" hi SignColumn                        ctermbg=235
+hi GitGutterAdd           ctermfg=2  ctermbg=234
+hi GitGutterChange        ctermfg=3  ctermbg=234
+hi GitGutterDelete        ctermfg=1  ctermbg=234
+hi GitGutterChangeDelete  ctermfg=3  ctermbg=234
+
+" Conceal
+hi Conceal      ctermfg=lightblue         ctermbg=none
+" }}}
+
 " Language Specifics: {{{
 " ---------------------------------------------------------------------
 " These are language specifics. These are set explicitly to override the group
@@ -176,7 +194,7 @@ hi rubyArrayDelimiter     ctermfg=37  ctermbg=NONE cterm=NONE
 " ---------------------------------------------------------------------
 "
 " }}}
-"
+
 " Extras: {{{
 " ---------------------------------------------------------------------
 " These are extra parts for highlighting certain external plugins
@@ -203,6 +221,6 @@ hi SignifySignDelete ctermfg=196 ctermbg=234 cterm=NONE
 "
 " ---------------------------------------------------------------------
 " }}}
-"
+
 " vim:foldmethod=marker:foldlevel=0:textwidth=79
 "
