@@ -41,16 +41,21 @@ function histostats() {
     history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
-function append_to_path() {
+function path_append() {
     if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
         PATH+=:$1
     fi
 }
 
-function prepend_to_path() {
+function path_prepend() {
     if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
         PATH=$1:$PATH
     fi
+}
+
+function path_remove() {
+    # remove $1 at beginning | end | middle of PATH
+    PATH=$(echo $PATH | sed -e "s|^$v:||" | sed -e "s|:$v$||" | sed -e "s|:$v:|:|")
 }
 
 # usage: is_command go && echo "go is installed"
@@ -105,18 +110,18 @@ fi
 # }}}
 
 # ---------- path  {{{
-append_to_path "/sbin"
-append_to_path "/usr/sbin"
-append_to_path "/usr/local/sbin"
-append_to_path "/opt/bin"
-append_to_path "${HOME}/bin"
-append_to_path "${HOME}/scripts"
-append_to_path "${HOME}/scripts/games"
-prepend_to_path "${M2}"
+path_append "/sbin"
+path_append "/usr/sbin"
+path_append "/usr/local/sbin"
+path_append "/opt/bin"
+path_append "${HOME}/bin"
+path_append "${HOME}/scripts"
+path_append "${HOME}/scripts/games"
+path_prepend "${M2}"
 # For Mac OS X with 'brew install coreutils':
 d="/usr/local/opt/coreutils/libexec/gnubin"
 [[ -d $d ]] && {
-    prepend_to_path $d
+    path_prepend $d
     os_gnu=true
 }
 unset d
@@ -233,6 +238,12 @@ alias grepbuild="grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,x
 alias grepwhite="grep '[[:space:]]\+$' -R"
 alias g=grepcode
 unset grep
+
+## GNU xargs supports --no-run-if-empty
+[[ $os_mac ]] && [[ $os_gnu ]] && {
+    alias sed=gsed
+    alias xargs=gxargs
+}
 
 ## git family new commands
 alias gdiff="git diff | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'"
