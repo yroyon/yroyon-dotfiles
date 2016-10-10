@@ -190,7 +190,9 @@ if &t_Co == 88 || (&term =~ "xterm")
 endif
 
 " patched statusline fonts: https://github.com/bling/vim-airline
-if has("gui_macvim") && has("gui_running")
+if has("gui_macvim")
+" NOTE: Configure iTerm2 & Terminal to use the patched Powerline fonts.
+"       otherwise: && if has("gui_running")
     let g:airline_powerline_fonts = 1
 endif
 " but disable tagbar integration (shows current function, takes too much space)
