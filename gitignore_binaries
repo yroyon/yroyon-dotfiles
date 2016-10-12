@@ -1,0 +1,37 @@
+# This is a .gitignore file that will ignore all files without an extension.
+# It gives examples of how to refine what to exclude/include.
+#
+# The other option is to generate the .gitignore programmatically, e.g.
+# during the build process. See scripts in ~/bin/tips/git*
+
+# Ignore all
+*
+
+# Unignore dirs and subdirs
+!/**/
+
+# Unignore files with extensions
+!*.*
+
+### Above combination will ignore all files without extension ###
+
+# Ignore files with extension `.class` & `.sm`
+*.class
+*.sm
+
+# Ignore `bin` dir
+bin/
+# or
+*/bin/*
+
+# Unignore all `.jar` in `bin` dir
+!*/bin/*.jar
+
+# Ignore all `library.jar` in `bin` dir
+*/bin/library.jar
+
+# Ignore a file with extension
+relative/path/to/dir/filename.extension
+
+# Ignore a file without extension
+relative/path/to/dir/anotherfile
