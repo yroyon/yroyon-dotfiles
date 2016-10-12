@@ -76,6 +76,7 @@ MX4J
 Microsoft
 NOMS
 NSLU2
+NTP
 NetBSD
 NetConf
 OMA
@@ -126,18 +127,22 @@ Xen
 YouTube
 Yvan
 admin
+amd64
 applicative
 applicatives
 broadcasted
 bundle
 bundles
 bytecode
+bz2
 cgroups
 chroot
 classpath
 codec
 composable
+conf
 connectivité
+coreos
 courriel
 courriels
 cscope
@@ -204,5 +209,6 @@ updateable
 virtualisation
 virtualiser
 virtualization
+wget
 émergentes
 émergents
