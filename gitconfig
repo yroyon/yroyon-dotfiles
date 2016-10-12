@@ -5,6 +5,7 @@
     ignored = ls-files --directory -o
     l  = log --date=relative --decorate --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
     lg = log --date=short --graph --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
+    outstanding-files = ls-files --other --exclude-standard
     restore = checkout --
     sattus = status
     stats = status
