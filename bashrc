@@ -76,6 +76,7 @@ is_command docker-machine && {
         eval $(docker-machine env default)
     }
 }
+
 is_command docker && {
     function docker-rmi-dangling() {
         docker images --quiet --filter "dangling=true" | xargs docker rmi
@@ -95,16 +96,17 @@ is_command pip3 && {
     }
 }
 
-# MacOS: cd into whatever directory is open in Finder
+# MacOS: if Finder window open, cd the shell into that directory
 [[ $os_mac ]] && {
-	cdf() {
-		target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
-		if [[ $target != "" ]]; then
-			cd "$target"; pwd
-		else
-			echo 'No Finder window found' >&2
-		fi
-	}
+    cdf() {
+        local target
+        target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+        if [[ $target != "" ]]; then
+            cd "$target"; pwd
+        else
+            echo 'No Finder window found' >&2
+        fi
+    }
 }
 
 function font_test() {
@@ -367,14 +369,15 @@ cx='\[\033[00m\]'         # white
 ## and single quotes (for subshells, must not be expanded)
 [[ $os_linux ]] && PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
 [[ $os_mac ]] && PS1="$c2\u $c3"'[`ls -1 | gwc -l`]'" \W $pr $cx"
+
 case $TERM in
-	xterm*|rxvt*|konsole*)
-		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
-		;;
-	screen*)
-		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\033\\"'
+    xterm*|rxvt*|konsole*)
+        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
+        ;;
+    screen*)
+        PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\033\\"'
         PS1="$cx(screen) $PS1"
-		;;
+        ;;
 esac
 export PS1
 unset c1 c2 c3 cx id pr
@@ -401,7 +404,6 @@ done
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
 }
-
 unset f d
 # }}}
 
