@@ -124,7 +124,7 @@ function font_test() {
 }
 
 if [[ -x ${HOME}/bin/clippy.sh ]] ; then
-    function command_not_found_handle { "${HOME}/bin/clippy.sh" $1 ; }
+    function command_not_found_handle() { "${HOME}/bin/clippy.sh" $1 ; }
     export COWPATH="${HOME}/bin/cows"
 fi
 # }}}
@@ -183,13 +183,9 @@ is_command vimmanpager && export MANPAGER=vimmanpager
 ## bash 4: trim (nested) dirnames that are too long
 #PROMPT_DIRTRIM=2
 
-## For JOGL (it seems the default is missing ".so")
-f="/usr/lib/egl/egl_glx.so"
-[[ -f "$f" ]] && export EGL_DRIVER=$f
-
 ## ooffice is veeery slow to start if the print server is unreachable
 ## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
-export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
+#export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 
 ## TERM setting.
 ## Tell konsole it can use 256 colors. Konsole is not very smart.
@@ -201,7 +197,7 @@ export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
 export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
 
 ## VMware segfaults @work without this:
-export VMWARE_USE_SHIPPED_GTK=force
+#export VMWARE_USE_SHIPPED_GTK=force
 
 [[ -z $DISPLAY ]] && export DISPLAY=:0.0
 
@@ -214,8 +210,6 @@ case $(cat /etc/*release 2>/dev/null) in
 esac
 [[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
 export MAVEN_OPTS="-Xmx1024m"
-#export M2_HOME=/usr/local/maven
-#export M2=$M2_HOME/bin
 
 # Go lang: if present, set env
 is_command go && {
@@ -252,10 +246,10 @@ unset ls_opts ls_sort
 # mac: brew tap homebrew/dupes; brew install grep
 [[ $os_mac ]] && is_command "ggrep" && grep="ggrep" || grep="\grep"
 alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
-alias grepcode="grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
-alias grepdoc="grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
-alias grepbuild="grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
-alias grepwhite="grep '[[:space:]]\+$' -R"
+alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
+alias grepdoc="$grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
+alias grepbuild="$grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
+alias grepwhite="$grep '[[:space:]]\+$' -R"
 alias g=grepcode
 unset grep
 
@@ -353,18 +347,19 @@ shopt -s no_empty_cmd_completion
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ $EUID == 0 ]] ; then
-    c1='\[\033[00;31m\]'  # red
-    c2='\[\033[01;31m\]'  # bold red
-    id='\h'
-    pr='#'
+    c1='\[\033[00;31m\]'  # color red
+    c2='\[\033[01;31m\]'  # color bold red
+    id='\h'               # identifier part
+    pr='#'                # prompt symbol
 else
-    c1='\[\033[00;34m\]'  # blue
-    c2='\[\033[01;32m\]'  # bold green
-    id='\u@\h'
-    pr='$'
+    c1='\[\033[00;34m\]'  # color blue
+    c2='\[\033[01;32m\]'  # color bold green
+    id='\u@\h'            # identifier part
+    pr='$'                # prompt symbol
 fi
-c3='\[\033[01;34m\]'      # bold blue
-cx='\[\033[00m\]'         # white
+c3='\[\033[01;34m\]'      # color bold blue
+cx='\[\033[00m\]'         # color white
+
 ## Mix double quotes (for variables, must be expanded)
 ## and single quotes (for subshells, must not be expanded)
 [[ $os_linux ]] && PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
