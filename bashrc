@@ -226,6 +226,10 @@ f="/usr/bin/ssh-askpass"
 f="/usr/bin/ssh-askpass-fullscreen"
 [[ -x "$f" ]] && export SUDO_ASKPASS="$f"
 # See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
+
+# shellcheck
+# Ignore Useless Use Of Cat
+export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002'
 # }}}
 
 # ---------- aliases  {{{
