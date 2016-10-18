@@ -13,12 +13,12 @@ set background=dark
 
 if version > 580
     hi clear
-    if exists("syntax_on")
+    if exists('syntax_on')
         syntax reset
     endif
 endif
 
-let colors_name = "wombat256mod"
+let g:colors_name = 'wombat256mod'
 
 
 " General colors

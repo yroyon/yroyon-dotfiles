@@ -9,7 +9,7 @@ setlocal number
 "set foldmethod=indent
 
 " Show tabs and trailing whitespace visually
-if (&encoding == "utf-8")
+if (&encoding ==? 'utf-8')
     setlocal list listchars=tab:»·,trail:·,extends:>,nbsp:_
 else
     setlocal list listchars=tab:>-,trail:.,extends:>,nbsp:_

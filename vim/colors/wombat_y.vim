@@ -6,11 +6,11 @@ set background=dark
 
 hi clear
 
-if exists("syntax_on")
+if exists('syntax_on')
   syntax reset
 endif
 
-let colors_name = "wombat"
+let g:colors_name = 'wombat'
 
 " General colors
 hi Cursor       ctermfg=none ctermbg=241  cterm=none
