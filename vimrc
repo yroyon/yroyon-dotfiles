@@ -159,8 +159,13 @@ set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 map  <F6> :NERDTreeToggle<CR>:wincmd p<CR>
 imap <F6> <Esc>:NERDTreeToggle<CR>:wincmd p<CR>a
 
-" netrw mode: use a tree
-let g:netrw_liststyle=3
+" netrw mode
+let g:netrw_banner = 0                         " no top banner
+let g:netrw_liststyle = 3                      " tree view
+"let g:netrw_browse_split=1                    " open files in hsplit instead of same win
+let g:netrw_browse_split = 4                   " open files in prev win
+let g:netrw_altv = 1                           " right side instead of left
+let g:netrw_winsize = 25                       " type :Vex to open, 25% left side
 
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
