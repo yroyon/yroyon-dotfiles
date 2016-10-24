@@ -123,6 +123,10 @@ function font_test() {
     echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
+function rot13() {
+    tr A-Za-z N-ZA-Mn-za-m
+}
+
 if [[ -x ${HOME}/bin/clippy.sh ]] ; then
     function command_not_found_handle() { "${HOME}/bin/clippy.sh" $1 ; }
     export COWPATH="${HOME}/bin/cows"
