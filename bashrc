@@ -145,7 +145,8 @@ path_prepend "${M2}"
 # For Mac OS X with 'brew install coreutils':
 d="/usr/local/opt/coreutils/libexec/gnubin"
 [[ -d $d ]] && {
-    path_prepend $d
+    path_remove "$d"
+    path_prepend "$d"
     os_gnu=true
 }
 unset d
@@ -224,6 +225,13 @@ is_command go && {
     fi
 }
 
+# TODO clang/llvm on macOS
+# Using the bundled libc++:
+#    LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+# Using the brew-provided LLVM instead of MacOS-shipped one:
+#    LDFLAGS:  -L/usr/local/opt/llvm/lib
+#    CPPFLAGS: -I/usr/local/opt/llvm/include
+
 # SSH
 f="/usr/bin/ssh-askpass"
 [[ -x "$f" ]] && export SSH_ASKPASS="$f"
@@ -263,8 +271,8 @@ unset grep
 
 ## GNU xargs supports --no-run-if-empty
 [[ $os_mac ]] && [[ $os_gnu ]] && {
-    alias sed=gsed
-    alias xargs=gxargs
+    is_command gsed && alias sed=gsed
+    is_command gxargs && alias xargs=gxargs
 }
 
 ## git family new commands
@@ -292,6 +300,7 @@ alias vi="vim"
 }
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
 [[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 
 ## locale issues
