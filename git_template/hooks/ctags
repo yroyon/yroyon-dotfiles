@@ -5,5 +5,5 @@ mkdir .git/tags_lock 2>/dev/null
 trap "rmdir .git/tags_lock; rm -f .git/tags.$$" EXIT
 
 #ctags --tag-relative -Rf .git/tags.$$ --exclude=.git --languages=-javascript,sql,html
-git ls-files | ctags --tag-relative -L - -f ${dir}/tags.$$ --languages=-javascript,sql,html
+git ls-files | ctags --tag-relative -L - -f "${dir}/tags.$$" --languages=-javascript,sql,html
 mv .git/tags.$$ .git/tags

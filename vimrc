@@ -771,6 +771,9 @@ augroup END
 "    au FileAppendPost               *.lzma call gzip#write("lzma")
 "augroup END
 
+" TODO fzf integration
+"set rtp+=/usr/local/opt/fzf
+
 " }}}
 "-----------------------------------------------------------
 

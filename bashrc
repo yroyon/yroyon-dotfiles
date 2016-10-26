@@ -60,7 +60,7 @@ function path_prepend() {
 }
 
 function path_remove() {
-    # remove $1 at beginning | end | middle of PATH
+    # remove $1 at beginning | end | middle of PATH. If middle, keep ':'
     PATH=$(echo $PATH | sed -e "s|^$1:||" | sed -e "s|:$1$||" | sed -e "s|:$1:|:|")
 }
 
@@ -217,12 +217,18 @@ esac
 export MAVEN_OPTS="-Xmx1024m"
 
 # Go lang: if present, set env
+# TODO As of go 1.2, a valid GOPATH is required to use the `go get` command:
+#  https://golang.org/doc/code.html#GOPATH
+#
+# You may wish to add the GOROOT-based install location to your PATH:
+#  export PATH=$PATH:/usr/local/opt/go/libexec/bin
 is_command go && {
     export GOROOT=$(go env GOROOT)
     if [[ $EUID != 0 ]] ; then
         export GOPATH="${HOME}/code/go"
         mkdir -p "${GOPATH}"
     fi
+    #path_append $GOROOT
 }
 
 # TODO clang/llvm on macOS
@@ -298,6 +304,9 @@ alias vi="vim"
     alias vi="mvim -v"
     alias vim="mvim"
 }
+
+# GNU parallel
+is_command parallel && alias parallel="parallel --will-cite"
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
 [[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
