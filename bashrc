@@ -61,7 +61,7 @@ function path_prepend() {
 
 function path_remove() {
     # remove $1 at beginning | end | middle of PATH
-    PATH=$(echo $PATH | sed -e "s|^$v:||" | sed -e "s|:$v$||" | sed -e "s|:$v:|:|")
+    PATH=$(echo $PATH | sed -e "s|^$1:||" | sed -e "s|:$1$||" | sed -e "s|:$1:|:|")
 }
 
 # usage: is_command go && echo "go is installed"
