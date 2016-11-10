@@ -17,12 +17,12 @@
 
 # ---------- detect OS {{{
 name=$(uname -s)
-if [ "$name" == "Darwin" ]; then
+if [[ $name == Darwin ]]; then
     os_mac=true
-elif [ "$(expr substr $name 1 5)" == "Linux" ]; then
+elif [[ $name =~ Linux ]]; then
     os_linux=true
     os_gnu=true
-elif [ "$(expr substr $name 1 10)" == "MINGW32_NT" ]; then
+elif [[ $name =~ MINGW32_NT ]]; then
     os_windows=true
 fi
 unset name
@@ -30,7 +30,7 @@ unset name
 
 # ---------- functions {{{
 function dirsize() {
-    find ${*-.} -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
+    find "${@-.}" -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
 }
 
 function lsize() {
@@ -40,7 +40,7 @@ function lsize() {
         is_command "gdu" && du="gdu"
         is_command "gsort" && sort="gsort"
     }
-    ${du} -h --max-depth 1 $* 2>/dev/null | ${sort} -hr
+    ${du} -h --max-depth 1 "$@" 2>/dev/null | ${sort} -hr
 }
 
 function histostats() {
@@ -61,7 +61,7 @@ function path_prepend() {
 
 function path_remove() {
     # remove $1 at beginning | end | middle of PATH. If middle, keep ':'
-    PATH=$(echo $PATH | sed -e "s|^$1:||" | sed -e "s|:$1$||" | sed -e "s|:$1:|:|")
+    PATH=$(echo "$PATH" | sed -e "s|^$1:||" | sed -e "s|:$1$||" | sed -e "s|:$1:|:|")
 }
 
 # usage: is_command go && echo "go is installed"
@@ -73,7 +73,7 @@ function is_command() {
 # Docker
 is_command docker-machine && {
     function docker-enable() {
-        eval $(docker-machine env default)
+        eval "$(docker-machine env default)"
     }
 }
 
@@ -128,7 +128,7 @@ function rot13() {
 }
 
 if [[ -x ${HOME}/bin/clippy.sh ]] ; then
-    function command_not_found_handle() { "${HOME}/bin/clippy.sh" $1 ; }
+    function command_not_found_handle() { "${HOME}/bin/clippy.sh" "$1" ; }
     export COWPATH="${HOME}/bin/cows"
 fi
 # }}}
@@ -154,14 +154,14 @@ export PATH
 # }}}
 
 # ---------- evals {{{
-[[ $os_gnu ]] && [[ -f ${HOME}/.dir_colors ]] && eval $(dircolors -b "${HOME}/.dir_colors")
+[[ $os_gnu ]] && [[ -f ${HOME}/.dir_colors ]] && eval "$(dircolors -b "${HOME}/.dir_colors")"
 [[ $os_mac ]] && export CLICOLOR=1
 
-is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval $(ssh-agent -s)
-is_command keychain && eval $(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)
+is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval "$(ssh-agent -s)"
+is_command keychain && eval "$(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)"
 
 # https://github.com/nvbn/thefuck
-is_command thefuck && eval $(thefuck --alias)
+is_command thefuck && eval "$(thefuck --alias)"
 
 # TODO ugly, and pdftotext not invoked porperly:
 #is_command lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
@@ -207,13 +207,15 @@ export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w wa
 [[ -z $DISPLAY ]] && export DISPLAY=:0.0
 
 # Java, Maven
+export JAVA_HOME
+export JAVAC
 case $(cat /etc/*release 2>/dev/null) in
-    *Debian*) export JAVA_HOME=/usr/lib/jvm/default-java ;;
-    *Gentoo*) export JAVA_HOME=$(java-config -o) ;;
-    *Ubuntu*) export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") ;;
+    *Debian*) JAVA_HOME=/usr/lib/jvm/default-java ;;
+    *Gentoo*) JAVA_HOME=$(java-config -o) ;;
+    *Ubuntu*) JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") ;;
     *) ;;
 esac
-[[ ! -z $JAVA_HOME ]] && export JAVAC="${JAVA_HOME}/bin/javac"
+[[ -n $JAVA_HOME ]] && JAVAC="${JAVA_HOME}/bin/javac"
 export MAVEN_OPTS="-Xmx1024m"
 
 # Go lang: if present, set env
@@ -223,9 +225,11 @@ export MAVEN_OPTS="-Xmx1024m"
 # You may wish to add the GOROOT-based install location to your PATH:
 #  export PATH=$PATH:/usr/local/opt/go/libexec/bin
 is_command go && {
-    export GOROOT=$(go env GOROOT)
+    export GOROOT
+    GOROOT=$(go env GOROOT)
     if [[ $EUID != 0 ]] ; then
-        export GOPATH="${HOME}/code/go"
+        export GOPATH
+        GOPATH="${HOME}/code/go"
         mkdir -p "${GOPATH}"
     fi
     #path_append $GOROOT
@@ -245,7 +249,7 @@ f="/usr/bin/ssh-askpass-fullscreen"
 [[ -x "$f" ]] && export SUDO_ASKPASS="$f"
 # See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
 
-# shellcheck
+# The useful shellcheck static analyzer:
 # Ignore Useless Use Of Cat
 export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002'
 # }}}
@@ -266,7 +270,7 @@ unset ls_opts ls_sort
 
 ## grep family new commands
 # mac: brew tap homebrew/dupes; brew install grep
-[[ $os_mac ]] && is_command "ggrep" && grep="ggrep" || grep="\grep"
+[[ $os_mac ]] && is_command "ggrep" && grep="ggrep --color=auto" || grep="\grep --color=auto"
 alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
 alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
 alias grepdoc="$grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
@@ -344,7 +348,7 @@ alias qweb='python3 -m http.server'
     # ordered, most favorite first
     pdf_readers="okular mupdf pdf-presenter-console zathura pdfcube qpdfview"
     for reader in ${pdf_readers}; do
-        is_command $reader && alias xpdf=$reader && break
+        is_command "$reader" && alias xpdf="$reader" && break
     done
     unset reader pdf_readers
 }
