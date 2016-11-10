@@ -193,6 +193,8 @@ export EDITOR=/usr/bin/vim
 export GREP_COLOR=32
 export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
+[[ $os_mac ]] && export HOMEBREW_NO_ANALYTICS=1
+
 is_command vimmanpager && export MANPAGER=vimmanpager
 # For Mac OS X with 'brew install coreutils':
 #d="/usr/local/opt/coreutils/libexec/gnuman"
