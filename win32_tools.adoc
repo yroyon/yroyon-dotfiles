@@ -1,0 +1,15 @@
+
+== Package managers for Windows
+
+- https://chocolatey.org
+
+- http://msys2.github.io
+
+- npackd
+
+
+== Terminals for Windows
+
+- https://github.com/mintty/wsltty
+
+
