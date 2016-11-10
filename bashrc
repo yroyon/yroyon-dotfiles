@@ -67,7 +67,16 @@ function path_remove() {
 # usage: is_command go && echo "go is installed"
 # works for functions, builtins, aliases, everything that 'type' can find.
 function is_command() {
-    $(type "$1" &> /dev/null)
+    type "$1" &> /dev/null
+}
+
+# Git
+gdiff() {
+    git diff "$@" | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'
+}
+
+glog() {
+    git log -p "$@" | vim - -R -c 'set foldmethod=syntax'
 }
 
 # Docker
@@ -108,6 +117,10 @@ is_command pip3 && {
         fi
     }
 }
+
+[[ $os_linux ]] && alias realpath='readlink -f'
+[[ $os_mac ]] && realpath() { (cd -P -- "${1:-.}" && pwd) }
+# realpath() { perl -MCwd=abs_path -le 'print abs_path readlink(shift);' "$1"; }
 
 function font_test() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -279,15 +292,19 @@ alias grepwhite="$grep '[[:space:]]\+$' -R"
 alias g=grepcode
 unset grep
 
+grepport() {
+    [[ $1 =~ ^[0-9]+$ ]] || {
+        echo "$1 is not a valid port number"
+        return 1
+    }
+    lsof -n -iTCP:$1
+}
+
 ## GNU xargs supports --no-run-if-empty
 [[ $os_mac ]] && [[ $os_gnu ]] && {
     is_command gsed && alias sed=gsed
     is_command gxargs && alias xargs=gxargs
 }
-
-## git family new commands
-alias gdiff="git diff | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'"
-alias glog="git log -p $@ | vim - -R -c 'set foldmethod=syntax'"
 
 ## propagate (sub-)command completion when using sudo
 alias sudo='sudo '
@@ -315,6 +332,7 @@ is_command parallel && alias parallel="parallel --will-cite"
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
 [[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
 [[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
+[[ -x /usr/libexec/locate.updatedb ]] && alias updatedb="sudo /usr/libexec/locate.updatedb"
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
@@ -355,7 +373,6 @@ alias qweb='python3 -m http.server'
 [[ $os_mac ]] && alias xpdf="open"
 
 #alias hd='od -Ax -tx1z -v'
-alias realpath='readlink -f'
 
 ## shortcut to KDE display settings (2nd monitor...)
 is_command kcmshell4 && {
@@ -429,8 +446,9 @@ done
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
 }
-unset f d
 # }}}
+
+unset f d
 
 ## end profile
 #set +x
