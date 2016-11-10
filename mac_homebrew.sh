@@ -161,6 +161,7 @@ shellinabox
 stunnel
 userspace-rcu
 xmlto
+languagetool
 "
 #brew install $pkg_todo
 
@@ -208,4 +209,17 @@ gx
 gx-go
 "
 #brew install $is_it_good
+
+## Migration
+# List your installed stuff:
+#    brew bundle dump
+# Creates a file 'Brewfile'. Copy it over to new machine. Then:
+#    brew bundle
+
+# TODO: I should commit my Brewfile instead of this script
+#       Only add python/ruby stuff in an extra script
+
+# For startup scripts (integration with launchd):
+#    brew services
+#    brew services list
 
