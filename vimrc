@@ -441,6 +441,7 @@ command! ToggleAlwaysCenter call ToggleAlwaysCenter()
 
 " Q wraps paragraph lines up to col 79. See gqap and gq}
 nnoremap Q gwap
+vnoremap Q gw
 " Reverse operation, to unwrap (Join) lines: J
 " To split a line under the cursor:
 " (normal S is covered by cc, no problem overriding it)
