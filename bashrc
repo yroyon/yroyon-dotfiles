@@ -507,6 +507,10 @@ done
 [[ $os_mac ]] && is_command brew && {
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
+    [[ $BASH_VERSION > 4 ]] && {
+        f="$(brew --prefix)/share/bash-completion/bash_completion"
+        [[ -f $f ]] && source "$f"
+    }
 }
 # }}}
 
