@@ -29,30 +29,44 @@ unset name
 # }}}
 
 # ---------- functions {{{
+# List directory sizes, unsorted
+# (see lsize for sorted version)
 function dirsize() {
     find "${@-.}" -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
 }
 
-function lsize() {
-    local du="du"
-    local sort="sort"
-    [[ $os_mac ]] && {
-        is_command "gdu" && du="gdu"
-        is_command "gsort" && sort="gsort"
-    }
-    ${du} -h --max-depth 1 "$@" 2>/dev/null | ${sort} -hr
+function font_test() {
+    echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+    echo -e "             abcdefghijklmnopqrstuvwxyz "
+    echo -e "        Num: 0123456789 "
+    echo -e "   Brackets: () [] {} <> "
+    echo -e "     Quotes: \"double\" 'single' \`back\`"
+    echo -e "Punctuation: , . : ; _ ! ? "
+    echo -e "    Symbols: ~ @ # $ % ^ & * - + = / | \\ "
+    echo -e "  Ambiguity: iI1lL oO0 "
+    echo -e "     French: á à â Â é è ê É î ï Î ô ö Ô û ü ç"
+    echo -e "      Fancy: æ œ ñ ø € ¢ ©  “”„ ‘’ … ¿ ‹› ‡"
+    echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
 function histostats() {
-    history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
+    history | awk '{a[$2]++} END {for(i in a) {print a[i] " " i}}' | sort -rn | head -n ${1-10}
 }
 
+# usage: is_command go && echo "go is installed"
+# works for functions, builtins, aliases, everything that 'type' can find.
+function is_command() {
+    type "$1" &> /dev/null
+}
+
+# Add $1 to end of PATH, if not already in there
 function path_append() {
     if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
         PATH+=:$1
     fi
 }
 
+# Add $1 to beginning of PATH, if not already in there
 function path_prepend() {
     if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
         PATH=$1:$PATH
@@ -64,18 +78,22 @@ function path_remove() {
     PATH=$(echo "$PATH" | sed -e "s|^$1:||" | sed -e "s|:$1$||" | sed -e "s|:$1:|:|")
 }
 
-# usage: is_command go && echo "go is installed"
-# works for functions, builtins, aliases, everything that 'type' can find.
-function is_command() {
-    type "$1" &> /dev/null
+function rot13() {
+    tr A-Za-z N-ZA-Mn-za-m
+}
+
+# Reverse diff: print identical parts of 2+ files
+# Contrary to comm(1), files do not need to be sorted
+function samelines() {
+    perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' "$@"
 }
 
 # Git
-gdiff() {
+function gdiff() {
     git diff "$@" | vim - -R -c 'set filetype=git' -c 'set foldmethod=syntax'
 }
 
-glog() {
+function glog() {
     git log -p "$@" | vim - -R -c 'set foldmethod=syntax'
 }
 
@@ -105,9 +123,29 @@ is_command pip3 && {
     }
 }
 
+# List directories by size
+# Use nicest 'du' and 'sort' available
+if [[ $os_mac ]] && is_command "gdu"; then
+    # MacOS using GNU coreutils
+    function lsize() {
+        gdu -h --max-depth 1 "$@" 2>/dev/null | gsort -hr
+    }
+elif [[ $os_mac ]]; then
+    # MacOS using BSD base system
+    # Show kilobytes :-(
+    function lsize() {
+        du -d 1 -k "$@" | sort -gr
+    }
+else
+    # GNU/Linux
+    function lsize() {
+        du -h --max-depth 1 "$@" 2>/dev/null | sort -hr
+    }
+fi
+
 # MacOS: if Finder window open, cd the shell into that directory
 [[ $os_mac ]] && {
-    cdf() {
+    function cdf() {
         local target
         target=$(osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
         if [[ $target != "" ]]; then
@@ -119,26 +157,23 @@ is_command pip3 && {
 }
 
 [[ $os_linux ]] && alias realpath='readlink -f'
-[[ $os_mac ]] && realpath() { (cd -P -- "${1:-.}" && pwd) }
+[[ $os_mac ]] && function realpath() { (cd -P -- "${1:-.}" && pwd) }
 # realpath() { perl -MCwd=abs_path -le 'print abs_path readlink(shift);' "$1"; }
 
-function font_test() {
-    echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-    echo -e "             abcdefghijklmnopqrstuvwxyz "
-    echo -e "        Num: 0123456789 "
-    echo -e "   Brackets: () [] {} <> "
-    echo -e "     Quotes: \"double\" 'single' \`back\`"
-    echo -e "Punctuation: , . : ; _ ! ? "
-    echo -e "    Symbols: ~ @ # $ % ^ & * - + = / | \\ "
-    echo -e "  Ambiguity: iI1lL oO0 "
-    echo -e "     French: á à â Â é è ê É î ï Î ô ö Ô û ü ç"
-    echo -e "      Fancy: æ œ ñ ø € ¢ ©  “”„ ‘’ … ¿ ‹› ‡"
-    echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
-}
-
-function rot13() {
-    tr A-Za-z N-ZA-Mn-za-m
-}
+# Basic computations, e.g.: calc 35.7 / 8
+if is_command python3; then
+    function calc() {
+        echo "print($*)" | python3
+    }
+elif is_command ruby; then
+    function calc() {
+        echo "puts $*" | ruby
+    }
+elif is_command python2; then
+    function calc() {
+        echo " print $*" | python2
+    }
+fi
 
 if [[ -x ${HOME}/bin/clippy.sh ]] ; then
     function command_not_found_handle() { "${HOME}/bin/clippy.sh" "$1" ; }
@@ -272,7 +307,7 @@ export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002'
 # ---------- aliases  {{{
 ## ls family new commands
 [[ $os_gnu ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
-[[ $os_mac   ]] && [[ ! $os_gnu ]] && ls_opts="-G"
+[[ $os_mac ]] && [[ ! $os_gnu ]] && ls_opts="-G"
 alias      d="ls ${ls_opts}"
 alias      l="ls ${ls_opts} ${ls_sort} -F"
 alias     ll="ls ${ls_opts} ${ls_sort} -F -A -lh"
@@ -294,7 +329,7 @@ alias grepwhite="$grep '[[:space:]]\+$' -R"
 alias g=grepcode
 unset grep
 
-grepport() {
+function grepport() {
     [[ $1 =~ ^[0-9]+$ ]] || {
         echo "$1 is not a valid port number"
         return 1
