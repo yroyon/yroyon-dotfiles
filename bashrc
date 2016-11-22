@@ -400,27 +400,30 @@ alias qweb='python3 -m http.server'
 #alias suspend="pm-suspend"  # suspend is a bash builtin
 
 ## colorized cat
-# 'ccat' conflicts wih ccrypt, which I don't use so far
-#
-# 1) Set tools and default options here
-declare -A ccats
-#  - pip3 install Pygments:
-#    Nice color schemes: emacs fruity monokai perldoc
-ccats['pygmentize']='pygmentize -O style=emacs -f console256 -g'
-#  - from package ccat:
-ccats['ccat']='ccat --bg-dark'
-#  - from package vimpager:
-ccats['vimcat']='vimcat'
-#  - from package source-highlight:
-ccats['src-hilite-lesspipe.sh']='src-hilite-lesspipe.sh'
-#  - fom package lesspipe: color doesn't work for me following man page
-#ccats['lesspipe.sh']='lesspipe.sh'
-#
-# 2) Pick one tool, listed from most preferred to least preferred
-for prog in pygmentize ccat vimcat src-hilite-lesspipe.sh; do
-    is_command "$prog" && alias ccat="${ccats[$prog]}" && break
-done
-unset prog ccats
+# 'ccat' conflicts with package ccrypt, which I don't use so far.
+# Pick one of these tools, listed from most preferred to least preferred.
+#   - speed: ccat > src-hilite-lesspipe.sh (x2) >>> vimcat (x30) >>> pygmentize (x60)
+#   - pygmentize takes only one file parameter.
+#     src-hilite-lesspipe.sh takes many, prints with no visual separator.
+#     ccat same.
+#     vimcat takes many, prints with visual separator.
+if is_command pygmentize; then
+    # pip3 install Pygments:
+    # Nice color schemes: emacs fruity monokai perldoc
+    alias ccat='pygmentize -O style=emacs -f console256 -g'
+elif is_command ccat; then
+    # from package ccat:
+    alias ccat='ccat --bg=dark'
+elif is_command vimcat; then
+    # from package vimpager:
+    alias ccat='vimcat'
+elif is_command src-hilite-lesspipe.sh; then
+    # from package source-highlight:
+    alias ccat='src-hilite-lesspipe.sh'
+#elif is_command lesspipe.sh; then
+    # fom package lesspipe: color doesn't work for me following man page
+    #alias ccat='lesspipe.sh'
+fi
 
 # TODO try out 'mdv' to view Markdown
 
