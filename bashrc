@@ -337,6 +337,10 @@ function grepport() {
     lsof -n -iTCP:$1
 }
 
+# TODO
+# 'route' for MacOS:
+# netstat -nr
+
 ## GNU xargs supports --no-run-if-empty
 [[ $os_mac ]] && [[ $os_gnu ]] && {
     is_command gsed && alias sed=gsed
@@ -363,8 +367,13 @@ alias vi="vim"
     alias vim="mvim"
 }
 
+# Inhibit "non-prefixed coreutils" warning from `brew doctor`
+[[ $os_mac ]] && {
+    alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin /usr/local/bin/brew"
+}
+
 # GNU parallel
-is_command parallel && alias parallel="parallel --will-cite"
+#is_command parallel && alias parallel="parallel --will-cite"
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
 [[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
@@ -497,6 +506,7 @@ bind '"\e[6~": history-search-forward'
 # }}}
 
 # ---------- sources {{{
+# Note: iterm's bash integration makes debugging with 'bash -x' very noisy
 for f in \
     /etc/profile.d/proxy.sh \
     /etc/profile.d/bash-completion \
@@ -508,6 +518,7 @@ for f in \
     [[ -f $f ]] && source "$f"
 done
 [[ $os_mac ]] && is_command brew && {
+    # Note: brew's bash_completion makes bash start very slow
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
     [[ $BASH_VERSION > 4 ]] && {

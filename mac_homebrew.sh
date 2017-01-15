@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Install Xcode Command-Line Tools
+if ! xcode-select -p ; then
+    xcode-select --install
+    exit 0
+fi
+
+# Install homebrew
+which brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 brew update
 brew upgrade
 
@@ -127,6 +136,7 @@ brew install $pkg_needed $pkg_devel $pkg_virt $pkg_tools
 
 ### Packages that come in separate "casks"
 casks="
+firefox
 gitx
 iterm2
 osxfuse
@@ -167,12 +177,14 @@ languagetool
 
 casks_todo="
 docker
+java
 slate
+shady
 "
 ### Other casks:
 # . seil: remap Caps Lock key. I use System Prefs->Keyboard->Modifier Keys
 #         I think I used Caps Lock as Mega Combo key, for ???
-# . karabiner: remap more keys. Forgot what for.
+# . karabiner: remap more keys. Forgot what for. Maybe Cmd-K for iTerm.
 # . bettertouchtool: more trigger actions. Not free.
 # . go2shell: open term 'here' in Finder. Broken.
 #brew cask install $casks_todo
@@ -209,6 +221,17 @@ gx
 gx-go
 "
 #brew install $is_it_good
+
+# Bash-completion for rustup
+type -p rustup &>/dev/null && {
+    rustup completions bash | sudo tee /usr/local/share/bash-completion/completions/rustup
+}
+
+# TODO fonts
+#brew tap caskroom/fonts
+#brew cask search /powerline/
+# install those
+#brew cask install font-meslo-lg-for-powerline
 
 ## Migration
 # List your installed stuff:
