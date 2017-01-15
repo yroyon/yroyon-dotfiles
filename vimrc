@@ -895,5 +895,7 @@ endtry
 "
 "   Pasting from OS clipboard into Vim:  ?+gP
 "
+" Running uniq(1) on open file:    :%!uniq
+"
 " }}}
 " -------------------------
