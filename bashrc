@@ -35,6 +35,18 @@ function dirsize() {
     find "${@-.}" -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
 }
 
+du_sorted () {
+    local ds="${@-.}"
+    paste -d '#' <(du $ds) <(du -h $ds) | sort -n -k1,7 | cut -d '#' -f 2
+}
+
+# TODO
+#unhuman() {
+#   numfmt --from=auto --to-unit=K
+#}
+# sum:
+# awk '{print $2}' < montana.by_size | numfmt --from=auto --to-unit=1M | paste -sd+ | bc | numfmt --to-unit=1K
+
 function font_test() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
     echo -e "             abcdefghijklmnopqrstuvwxyz "
@@ -59,16 +71,18 @@ function is_command() {
     type "$1" &> /dev/null
 }
 
-# Add $1 to end of PATH, if not already in there
+# Add $1 to end of PATH. Remove duplicates.
 function path_append() {
-    if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
+    if [[ -d "$1" ]] ; then
+        path_remove $1
         PATH+=:$1
     fi
 }
 
-# Add $1 to beginning of PATH, if not already in there
+# Add $1 to beginning of PATH. Remove duplicates.
 function path_prepend() {
-    if [[ -d "$1" ]] && [[ ! $PATH =~ (^|:)$1(:|$) ]] ; then
+    if [[ -d "$1" ]] ; then
+        path_remove $1
         PATH=$1:$PATH
     fi
 }
@@ -182,22 +196,25 @@ fi
 # }}}
 
 # ---------- path  {{{
-path_append "/sbin"
-path_append "/usr/sbin"
 path_append "/usr/local/sbin"
+path_append "/usr/sbin"
+path_append "/sbin"
 path_append "/opt/bin"
-path_append "${HOME}/bin"
-path_append "${HOME}/scripts"
-path_append "${HOME}/scripts/games"
-path_prepend "${M2}"
-# For Mac OS X with 'brew install coreutils':
+# MacOS with 'brew install coreutils':
 d="/usr/local/opt/coreutils/libexec/gnubin"
 [[ -d $d ]] && {
-    path_remove "$d"
     path_prepend "$d"
     os_gnu=true
 }
 unset d
+# Maven
+path_prepend "${M2}"
+# Rust
+path_prepend "${HOME}/.cargo/bin"
+# My stuff
+path_prepend "${HOME}/bin"
+path_prepend "${HOME}/scripts"
+path_append "${HOME}/scripts/games"
 export PATH
 # }}}
 
@@ -226,7 +243,7 @@ export BROWSER="firefox '%s' &"
 export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export GREP_COLOR=32
-export LESS="$LESS --ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
+export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 
 [[ $os_mac ]] && export HOMEBREW_NO_ANALYTICS=1
 
@@ -268,19 +285,15 @@ esac
 [[ -n $JAVA_HOME ]] && JAVAC="${JAVA_HOME}/bin/javac"
 export MAVEN_OPTS="-Xmx1024m"
 
-# Go lang: if present, set env
-# TODO As of go 1.2, a valid GOPATH is required to use the `go get` command:
-#  https://golang.org/doc/code.html#GOPATH
-#
-# You may wish to add the GOROOT-based install location to your PATH:
-#  export PATH=$PATH:/usr/local/opt/go/libexec/bin
+# Golang
 is_command go && {
     export GOROOT
     GOROOT=$(go env GOROOT)
     if [[ $EUID != 0 ]] ; then
+        GOPATH="$HOME/code/go"
         export GOPATH
-        GOPATH="${HOME}/code/go"
-        mkdir -p "${GOPATH}"
+        mkdir -p "$GOPATH"
+        path_append "$GOPATH/bin"
     fi
     #path_append $GOROOT
 }
@@ -410,16 +423,23 @@ alias qweb='python3 -m http.server'
 
 ## colorized cat
 # 'ccat' conflicts with package ccrypt, which I don't use so far.
-# Pick one of these tools, listed from most preferred to least preferred.
+# Pick one of these tools, most preferred first.
 #   - speed: ccat > src-hilite-lesspipe.sh (x2) >>> vimcat (x30) >>> pygmentize (x60)
 #   - pygmentize takes only one file parameter.
 #     src-hilite-lesspipe.sh takes many, prints with no visual separator.
 #     ccat same.
 #     vimcat takes many, prints with visual separator.
 if is_command pygmentize; then
-    # pip3 install Pygments:
-    # Nice color schemes: emacs fruity monokai perldoc
-    alias ccat='pygmentize -O style=emacs -f console256 -g'
+    # 'pip3 install Pygments':
+    ccat() {
+        # Simulate support for multiple files in argument
+        for f in "$@"; do
+            # Show file name like vimcat does
+            [[ $# -gt 1 ]] && echo "==> $f <=="
+            # Suggested color schemes: emacs fruity monokai perldoc
+            pygmentize -O style=emacs -f console256 -g "$f"
+        done
+    }
 elif is_command ccat; then
     # from package ccat:
     alias ccat='ccat --bg=dark'
