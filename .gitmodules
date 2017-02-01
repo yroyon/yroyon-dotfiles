@@ -61,3 +61,9 @@
 [submodule "vim/bundle/surround"]
 	path = vim/bundle/surround
 	url = https://github.com/tpope/vim-surround
+[submodule "vim/bundle/ft-rust"]
+	path = vim/bundle/ft-rust
+	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim/bundle/neomake"]
+	path = vim/bundle/neomake
+	url = https://github.com/neomake/neomake
