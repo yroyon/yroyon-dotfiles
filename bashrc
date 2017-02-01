@@ -119,12 +119,44 @@ is_command docker-machine && {
 }
 
 is_command docker && {
-    function docker-rmi-dangling() {
-        docker images --quiet --filter "dangling=true" | xargs docker rmi
+
+    function docker-cleanup-containers() {
+        echo "Clean up exited containers..."
+        # !!! rm -v will nuke volume containers
+		docker ps --all --quiet -f status=exited | xargs -P4 --no-run-if-empty docker rm
     }
+
+    function docker-cleanup-images() {
+        echo "Clean up unused images..."
+        docker images --quiet --filter "dangling=true" | xargs -P4 --no-run-if-empty docker rmi
+    }
+
+    function docker-cleanup-volumes() {
+        echo "Clean up unused volumes..."
+        docker volume ls --quiet -f dangling=true | xargs -P4 --no-run-if-empty docker volume rm
+    }
+
+    function docker-cleanup-overlays() {
+        echo "Clean up overlay[fs]..."
+        pushd /var/lib/docker/overlay/ &>/dev/null && {
+            for o in *; do
+                docker inspect $(docker ps -aq) | grep $o &>/dev/null || rm -rf $o
+            done
+            popd &>/dev/null
+        }
+    }
+
+    function docker-cleanup() {
+        docker-cleanup-containers
+        docker-cleanup-images
+        docker-cleanup-volumes
+        docker-cleanup-overlays
+    }
+
     function docker-pull-all() {
         docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1":"$2}' | xargs -n 1 docker pull
     }
+
     function docker-ip() {
         docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
     }
