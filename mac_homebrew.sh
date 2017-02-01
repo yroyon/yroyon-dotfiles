@@ -1,19 +1,26 @@
 #!/bin/bash
 
+set -o nounset
+set -o errexit
+set -o pipefail
+
 # Install Xcode Command-Line Tools
-if ! xcode-select -p ; then
+if ! xcode-select -p &>/dev/null; then
     xcode-select --install
     exit 0
 fi
 
 # Install homebrew
-which brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+which brew &>/dev/null || /usr/bin/ruby -e \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew analytics off
 
 brew update
 brew upgrade
 
 ### Need --with-default-names
-gnu="
+gnu=(
 findutils
 gnu-indent
 gnu-sed
@@ -21,15 +28,30 @@ gnu-tar
 gnu-time
 gnu-which
 grep
-"
+)
 brew tap homebrew/dupes  # for GNU grep
-#brew uninstall $gnu
-brew install $gnu --with-default-names
+#brew uninstall "${gnu[@]}"
+brew install "${gnu[@]}" --with-default-names
+
+taps=(
+caskroom/cask
+caskroom/fonts
+codeclimate/formulae
+homebrew/bundle
+homebrew/completions
+homebrew/core
+homebrew/dupes
+homebrew/fuse
+homebrew/gui
+homebrew/services
+homebrew/versions
+)
+brew tap "${taps[@]}"
 
 ### Basic essentials
-pkg_needed="
+pkg_needed=(
 bash
-bash-completion
+bash-completion2
 binutils
 coreutils
 curl
@@ -44,10 +66,10 @@ python3
 rename
 tree
 wget
-"
+)
 
 ### Languages, runtimes, dev tools
-pkg_devel="
+pkg_devel=(
 afl-fuzz
 ant
 automake
@@ -83,9 +105,11 @@ lmdb
 maven
 mercurial
 node
+parallel
 pcre
 pkg-config
 qcachegrind
+ruby
 rust
 sbt
 scala
@@ -93,27 +117,28 @@ scalariform
 shellcheck
 sloccount
 socat
-sparse
 subversion
 tmux
 valgrind
 watchman
 xdot
 zzuf
-"
+)
 
 ### VM & container related
-pkg_virt="
+pkg_virt=(
 corectl
 fleetctl
 xhyve
-"
+)
 
 ### Nice-to-have tools
-pkg_tools="
+pkg_tools=(
 asciidoc
+ccat
 ghostscript
 gnuplot
+htop
 homebrew/fuse/sshfs
 imagemagick
 jpeg
@@ -122,75 +147,118 @@ lesspipe
 libmagic
 netperf
 odt2txt
-openssl
 python
-readline
 sysbench
 the_silver_searcher
 thefuck
+vimpager
 watch
 xz
-"
+)
 
-brew install $pkg_needed $pkg_devel $pkg_virt $pkg_tools
+brew install "${pkg_needed[@]}" "${pkg_devel[@]}" "${pkg_virt[@]}" "${pkg_tools[@]}"
+
+### With options
+brew install moreutils --without-parallel
+
+### Completions
+completions=(
+brew-cask-completion
+gem-completion
+launchctl-completion
+maven-completion
+open-completion
+pip-completion
+rustc-completion
+sonar-completion
+vagrant-completion
+)
+brew install "${completions[@]}"
 
 ### Packages that come in separate "casks"
-casks="
+casks=(
+corectl-app
+docker
 firefox
 gitx
+hipchat
+iina
 iterm2
+keepassx
+meld
 osxfuse
+sourcetree
 spectacle
+vagrant
+vagrant-manager
 visualvm
 wireshark
-"
-brew cask install $casks
+wireshark-chmodbpf
+xquartz
+)
+# continue on errors (like a pre-existing /Applications/*.app)
+brew cask install "${casks[@]}" || true
 
 ### Python3 modules and tools
-pystuff="
+pystuff=(
 ptpython
 radon
 flake8
-"
-pip3 install $pystuff
+)
+# pip3 was installed as part of python3 above
+pip3 install "${pystuff[@]}"
 
 ### Ruby tools
-rubystuff="
+rubystuff=(
 asciidoctor
-"
-sudo gem install $rubystuff
+)
+# gem comes with the pre-installed ruby
+# XXX needs sudo access
+sudo gem install "${rubystuff[@]}"
 
-brew linkapps
+brew linkapps  # deprecated
 brew cleanup
-brew doctor
+brew doctor || true
+
+RED='\033[0;31m'
+NC='\033[0m'
+
+echo
+echo -e "Remember to have these settings in ${RED}${HOME}/.bashrc${NC}"
+echo
+echo 'PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:$PATH'
+echo 'f="$(brew --prefix)/share/bash-completion/bash_completion"'
+echo '[[ -f $f ]] && source "$f"'
+
+# ---------- END ---------- #
 
 ### TODO
 
-pkg_todo="
+pkg_todo=(
 shellinabox
 stunnel
 userspace-rcu
 xmlto
 languagetool
-"
-#brew install $pkg_todo
+)
+#brew install "${pkg_todo[@]}"
 
-casks_todo="
+casks_todo=(
 docker
 java
 slate
 shady
-"
+)
 ### Other casks:
 # . seil: remap Caps Lock key. I use System Prefs->Keyboard->Modifier Keys
 #         I think I used Caps Lock as Mega Combo key, for ???
 # . karabiner: remap more keys. Forgot what for. Maybe Cmd-K for iTerm.
 # . bettertouchtool: more trigger actions. Not free.
 # . go2shell: open term 'here' in Finder. Broken.
-#brew cask install $casks_todo
+#brew cask install "${casks_todo[@]}"
 
 ### Stuff I've installed, but I need to test before I decide to keep
-is_it_good="
+is_it_good=(
 ceylon
 codeclimate
 cowsay
@@ -203,7 +271,6 @@ gnu-complexity
 graphviz
 fzf
 harfbuzz
-htop
 ipfs
 jansson
 libevent
@@ -219,13 +286,13 @@ gnu-getopt
 guile
 gx
 gx-go
-"
-#brew install $is_it_good
+)
+#brew install "${is_it_good[@]}"
 
 # Bash-completion for rustup
-type -p rustup &>/dev/null && {
-    rustup completions bash | sudo tee /usr/local/share/bash-completion/completions/rustup
-}
+#type -p rustup &>/dev/null && {
+#    rustup completions bash | sudo tee /usr/local/share/bash-completion/completions/rustup
+#}
 
 # TODO fonts
 #brew tap caskroom/fonts
