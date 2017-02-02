@@ -47,7 +47,7 @@ du_sorted () {
 # sum:
 # awk '{print $2}' < montana.by_size | numfmt --from=auto --to-unit=1M | paste -sd+ | bc | numfmt --to-unit=1K
 
-function font_test() {
+function test_font() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
     echo -e "             abcdefghijklmnopqrstuvwxyz "
     echo -e "        Num: 0123456789 "
@@ -123,7 +123,7 @@ is_command docker && {
     function docker-cleanup-containers() {
         echo "Clean up exited containers..."
         # !!! rm -v will nuke volume containers
-		docker ps --all --quiet -f status=exited | xargs -P4 --no-run-if-empty docker rm
+        docker ps --all --quiet -f status=exited | xargs -P4 --no-run-if-empty docker rm
     }
 
     function docker-cleanup-images() {
@@ -516,27 +516,55 @@ shopt -s no_empty_cmd_completion
 [[ $BASH_VERSION > 4 ]] && shopt -s globstar
 # }}}
 
+# ---------- ansi colors {{{
+export c_black='\033[0;30m'
+export c_red='\033[0;31m'
+export c_green='\033[0;32m'
+export c_yellow='\033[0;33m'
+export c_blue='\033[0;34m'
+export c_purple='\033[0;35m'
+export c_cyan='\033[0;36m'
+export c_gray='\033[0;37m'
+export c_bold_gray='\033[1;30m'
+export c_bold_red='\033[1;31m'
+export c_bold_green='\033[1;32m'
+export c_bold_yellow='\033[1;33m'
+export c_bold_blue='\033[1;34m'
+export c_bold_purple='\033[1;35m'
+export c_bold_cyan='\033[1;36m'
+export c_bold_white='\033[1;37m'
+export c_none='\033[00m'
+
+function test_colors() {
+  echo -e "$c_none no color"
+  echo -n -e "$c_black black\t$c_red red\t$c_green green\t$c_yellow yellow"
+  echo -e "\t$c_blue blue\t$c_purple purple\t$c_cyan cyan\t$c_gray gray"
+  echo -n -e "$c_bold_gray gray2\t$c_bold_red red2\t$c_bold_green green2\t$c_bold_yellow yellow2"
+  echo -e "\t$c_bold_blue blue2\t$c_bold_purple purple2\t$c_bold_cyan cyan2\t$c_bold_white white2"
+}
+# }}}
+
 # ---------- prompts {{{
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ $EUID == 0 ]] ; then
-    c1='\[\033[00;31m\]'  # color red
-    c2='\[\033[01;31m\]'  # color bold red
+    c1="\[${c_red}\]"     # colors in PS1 must be surrounded by escaped brackets
+    c2="\[${c_bold_red}\]"
     id='\h'               # identifier part
     pr='#'                # prompt symbol
 else
-    c1='\[\033[00;34m\]'  # color blue
-    c2='\[\033[01;32m\]'  # color bold green
+    c1="\[${c_blue}\]"
+    c2="\[${c_bold_green}\]"
     id='\u@\h'            # identifier part
     pr='$'                # prompt symbol
 fi
-c3='\[\033[01;34m\]'      # color bold blue
-cx='\[\033[00m\]'         # color white
+c3="\[${c_bold_blue}\]"
+cx="\[${c_none}\]"
 
-## Mix double quotes (for variables, must be expanded)
-## and single quotes (for subshells, must not be expanded)
-[[ $os_linux ]] && PS1="$c1\D{%m-%d %R} $c2$id $c3"'[`ls -1 | wc -l`]'" \W $pr $cx"
-[[ $os_mac ]] && PS1="$c2\u $c3"'[`ls -1 | gwc -l`]'" \W $pr $cx"
+## Mix double quotes (for variables, must be expanded now)
+## and single quotes (for subshells, must not be expanded until prompt is evaluated)
+[[ $os_linux ]] && PS1="${c1}\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \W $pr $c_none"
+[[ $os_mac ]] && PS1="${c2}\u ${c3}["'$(ls -1 | gwc -l)'"] \W $pr $cx"
 
 case $TERM in
     xterm*|rxvt*|konsole*)
