@@ -2,7 +2,7 @@
 
 set -o nounset
 set -o errexit
-set -o pipefail
+#set -o pipefail
 
 # Install Xcode Command-Line Tools
 if ! xcode-select -p &>/dev/null; then
@@ -14,6 +14,7 @@ fi
 which brew &>/dev/null || /usr/bin/ruby -e \
     "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+# it spies on us by default
 brew analytics off
 
 brew update
@@ -187,6 +188,7 @@ iterm2
 keepassx
 meld
 osxfuse
+slack
 sourcetree
 spectacle
 vagrant
