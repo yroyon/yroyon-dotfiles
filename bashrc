@@ -565,7 +565,7 @@ cx="\[${c_none}\]"
 
 ## Mix double quotes (for variables, must be expanded now)
 ## and single quotes (for subshells, must not be expanded until prompt is evaluated)
-[[ $os_linux ]] && PS1="${c1}\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \W $pr $c_none"
+[[ $os_linux ]] && PS1="${c1}\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \W $pr $cx"
 [[ $os_mac ]] && PS1="${c2}\u ${c3}["'$(ls -1 | gwc -l)'"] \W $pr $cx"
 
 case $TERM in
