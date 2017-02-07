@@ -268,7 +268,7 @@ is_command thefuck && eval "$(thefuck --alias)"
 ## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
 #FIGNORE=".git:.svn:CVS"
 HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
-HISTSIZE=4096
+HISTSIZE=8192
 HISTFILESIZE=2097152
 
 export BROWSER="firefox '%s' &"
@@ -296,6 +296,8 @@ is_command vimmanpager && export MANPAGER=vimmanpager
 #[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
 # The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
 [[ $EUID == 0 ]] && export TERM=xterm-256color
+
+is_command hh && export HH_CONFIG=hicolor
 
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
@@ -577,12 +579,15 @@ case $TERM in
 esac
 export PS1
 unset c1 c2 c3 cx id pr
+# PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 # }}}
 
 # ---------- readline {{{
 ## PageUp and PageDown browse through bash history
 bind '"\e[5~": history-search-backward'
 bind '"\e[6~": history-search-forward'
+## Ctrl-r invokes https://github.com/dvorka/hstr
+is_command hh && bind '"\C-r": "\C-ahh -- \C-j"'
 # }}}
 
 # ---------- sources {{{
