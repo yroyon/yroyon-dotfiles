@@ -189,7 +189,6 @@ keepassx
 meld
 osxfuse
 slack
-sourcetree
 spectacle
 vagrant
 vagrant-manager
@@ -199,7 +198,7 @@ wireshark-chmodbpf
 xquartz
 )
 # continue on errors (like a pre-existing /Applications/*.app)
-brew cask install "${casks[@]}" || true
+brew cask install --force "${casks[@]}" || true
 
 ### Python3 modules and tools
 pystuff=(
