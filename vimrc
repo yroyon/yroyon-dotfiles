@@ -724,7 +724,8 @@ let g:java_allow_cpp_keywords = 0
 let g:haddock_browser = "/usr/bin/firefox"
 
 " Syntastic
-"" Navigate with :lnext and :lprevious
+" Navigate with :lnext and :lprevious
+"
 " Use :SyntasticToggleMode to toggle active/passive (meaning run on :w)
 let b:syntastic_mode = "passive"
 let g:syntastic_check_on_wq = 0
@@ -733,6 +734,7 @@ let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_c_checkers = ['make']   " default is gcc
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
+let g:syntastic_sh_shellcheck_args = "-x"
 
 " TagBar
 let g:tagbar_autofocus = 1
