@@ -198,6 +198,11 @@ wireshark-chmodbpf
 xquartz
 )
 # continue on errors (like a pre-existing /Applications/*.app)
+# or better, just force it. override the existing install.
+# this should not delete existing preferences/profiles, unlike uninstall --force.
+# tested on slack: it logged me out (forgot login/pass), but kept my color theme. color theme may have been saved on slack servers.
+# :-(
+# tested on firefox: kept my profile.
 brew cask install --force "${casks[@]}" || true
 
 ### Python3 modules and tools
@@ -219,6 +224,7 @@ sudo gem install "${rubystuff[@]}"
 
 brew linkapps  # deprecated
 brew cleanup
+brew cask cleanup  # any reason 'brew cleanup' doesn't do this?
 brew doctor || true
 
 RED='\033[0;31m'
