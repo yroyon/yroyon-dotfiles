@@ -447,7 +447,7 @@ is_command grc && {
 
 ## new commands
 alias dvdplay="mplayer -nocache dvdnav://"
-alias emptytrash="rm -rf ~/.local/share/Trash/*"
+alias emptytrash="rm -rf ~/.local/share/Trash/*; rm -rf ~/.Trash/*"
 alias loffice="libreoffice"
 alias manga="thunar &>/dev/null &"
 alias path='echo -e ${PATH//:/\\n}'
