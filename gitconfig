@@ -74,6 +74,8 @@
     diff = diff-so-fancy | less -FSRX
 [push]
     default = tracking
+[rebase]
+	autostash = true
 [rerere]
     enabled = 1
 [svn]
