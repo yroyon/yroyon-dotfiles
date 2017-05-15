@@ -353,7 +353,7 @@ export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002'
 
 # ---------- aliases  {{{
 ## ls family new commands
-[[ $os_gnu ]] && ls_opts="--color --group-directories-first" && ls_sort="-X"
+[[ $os_gnu ]] && ls_opts="--color --group-directories-first" && ls_sort="-Xv"
 [[ $os_mac ]] && [[ ! $os_gnu ]] && ls_opts="-G"
 alias      d="ls ${ls_opts}"
 alias      l="ls ${ls_opts} ${ls_sort} -F"
