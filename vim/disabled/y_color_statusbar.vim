@@ -1,4 +1,5 @@
 " BUG when first opening vim, User3 ctermbg=black, until first keystroke.
+" With vim-airline, the fix is:  autocmd VimEnter * :AirlineRefresh
 hi! User3 ctermfg=230 cterm=none ctermbg=22
 hi! link User4 StatusLine
 

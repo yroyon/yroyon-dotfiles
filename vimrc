@@ -69,12 +69,14 @@ let g:secure_modelines_modelines=15
 " Syntax when printing
 set printoptions+=syntax:y
 
+"set ttimeoutlen=10
+
 "set mouse=a
 
 "set shortmess="filnxtToO"
 "set shortmess="aoOtT"
 
-" XXX Directories for swp files
+" TODO Directories for swp files
 "set backupdir=~/.vim/backup
 "set directory=~/.vim/backup
 
@@ -199,6 +201,8 @@ if has("gui_macvim")
 " NOTE: Configure iTerm2 & Terminal to use the patched Powerline fonts.
 "       otherwise: && if has("gui_running")
     let g:airline_powerline_fonts = 1
+    let g:airline_theme = 'dark'
+    "let g:airline_theme = 'luna'
 endif
 " but disable tagbar integration (shows current function, takes too much space)
 let g:airline#extensions#tagbar#enabled = 0
@@ -240,7 +244,6 @@ let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui_running')
     call LoadColourScheme(s:schemes_gvim)
 else
-    " I had the autocmd commented out on devious. Why?
     if has("autocmd")
         autocmd VimEnter *
             \ if &t_Co == 88 || &t_Co == 256 |
@@ -361,6 +364,9 @@ let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
 " XXX TODO FIXME The :hi line is rendered ineffective somewhere.
 "                It works if I type it in an open vim session.
 "                Putting it in ~/.vim/plugin/WhiteSpaceEOL.vim is KO.
+"   ==> It's because of my colorscheme.
+"   E.g. tell vimrc to always use "colorscheme" "darkblue", and the :hi works.
+"
 " Highlight spaces that should not be there
 highlight WhiteSpaceEOL ctermfg=darkred cterm=underline
 match WhiteSpaceEOL /\s\+$/
@@ -388,10 +394,6 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 
 " TODO make 'spell' use my WhiteSpaceEOL style instead of a red bgcolor for
 " errors (blue for caps errors, purple for ??)
-
-" TODO test (tpope)
-" Merge consecutive empty lines and clean up trailing whitespace
-" map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 
 "" TODO
 "highlight YTodoGroup ctermbg=green guibg=green
@@ -542,7 +544,6 @@ command! W w !sudo tee > /dev/null %
 "               completion in insert mode (FIXME) {{{
 "-----------------------------------------------------------
 
-" XXX
 set dictionary+=/usr/share/dict/words
 
 " Show full tags when doing search completion (works only moderately well)

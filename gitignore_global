@@ -1,8 +1,9 @@
 *.bak
+*.pyc
+*~
 .*.swp
 .DS_Store
 .ant-targets-build.xml
+__pycache__
 cscope.out
 tags
-*.pyc
-__pycache__

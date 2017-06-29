@@ -255,7 +255,7 @@ export PATH
 [[ $os_mac ]] && export CLICOLOR=1
 
 is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval "$(ssh-agent -s)"
-is_command keychain && eval "$(keychain --eval --ignore-missing --quiet id_rsa id_rsa_eforge)"
+is_command keychain && eval "$(keychain --eval --ignore-missing --quiet id_rsa verizon_atlassian)"
 
 # https://github.com/nvbn/thefuck
 is_command thefuck && eval "$(thefuck --alias)"
@@ -607,6 +607,7 @@ done
     f="$(brew --prefix)/etc/bash_completion"
     [[ -f $f ]] && source "$f"
     [[ $BASH_VERSION > 4 ]] && {
+        # Tip: replace function _have() with 'true'. Will load more things, but faster.
         f="$(brew --prefix)/share/bash-completion/bash_completion"
         [[ -f $f ]] && source "$f"
     }

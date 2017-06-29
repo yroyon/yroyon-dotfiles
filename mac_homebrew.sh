@@ -29,6 +29,7 @@ gnu-tar
 gnu-time
 gnu-which
 grep
+make
 )
 brew tap homebrew/dupes  # for GNU grep
 #brew uninstall "${gnu[@]}"
@@ -39,13 +40,11 @@ caskroom/cask
 caskroom/fonts
 codeclimate/formulae
 homebrew/bundle
-homebrew/completions
 homebrew/core
 homebrew/dupes
 homebrew/fuse
 homebrew/gui
 homebrew/services
-homebrew/versions
 )
 brew tap "${taps[@]}"
 
@@ -251,7 +250,6 @@ languagetool
 #brew install "${pkg_todo[@]}"
 
 casks_todo=(
-docker
 java
 slate
 shady
