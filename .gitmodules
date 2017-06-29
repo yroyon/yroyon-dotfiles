@@ -67,3 +67,9 @@
 [submodule "vim/bundle/neomake"]
 	path = vim/bundle/neomake
 	url = https://github.com/neomake/neomake
+[submodule "vim/bundle/tokei"]
+	path = vim/bundle/tokei
+	url = https://github.com/vmchale/tokei-vim
+[submodule "vim/bundle/airline-themes"]
+	path = vim/bundle/airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes
