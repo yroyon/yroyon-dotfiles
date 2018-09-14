@@ -31,27 +31,35 @@ gnu-which
 grep
 make
 )
-brew tap homebrew/dupes  # for GNU grep
+
 #brew uninstall "${gnu[@]}"
-brew install "${gnu[@]}" --with-default-names
+brew install "${gnu[@]}" # --with-default-names
+
+# NOTE: had permission issues with:
+# brew reinstall findutils gnu-sed gnu-tar grep --with-default-names
+#
+# Had to run with sudo.
+# 1. vi /usr/local/Homebrew/Library/Homebrew/brew.sh
+#    Change check-run-command-as-root() to always succeed
+# 2. sudo brew reinstall ...
+# 3. Fix permissions.
+#    find /usr/local -user root; find ~ -user root
+#    sudo chown -R royonyv /Users/royonyv/Library/Logs/Homebrew/ /usr/local/{bin,etc,opt,share/info,share/man,var/homebrew,Cellar,Caskroom,Homebrew}
+# 4. Revert /usr/local/Homebrew/Library/Homebrew/brew.sh
 
 taps=(
 caskroom/cask
 caskroom/fonts
-codeclimate/formulae
 homebrew/bundle
 homebrew/core
-homebrew/dupes
-homebrew/fuse
-homebrew/gui
 homebrew/services
 )
-brew tap "${taps[@]}"
+#brew tap "${taps[@]}"
 
 ### Basic essentials
 pkg_needed=(
 bash
-bash-completion2
+bash-completion@2
 binutils
 coreutils
 curl
@@ -85,7 +93,6 @@ cppcheck
 cscope
 ctags
 doxygen
-flawfinder
 fswatch
 gcc
 gdb
@@ -111,9 +118,6 @@ pkg-config
 qcachegrind
 ruby
 rust
-sbt
-scala
-scalariform
 shellcheck
 sloccount
 socat
@@ -139,7 +143,7 @@ ccat
 ghostscript
 gnuplot
 htop
-homebrew/fuse/sshfs
+sshfs
 imagemagick
 jpeg
 less
@@ -150,7 +154,6 @@ odt2txt
 python
 sysbench
 the_silver_searcher
-thefuck
 vimpager
 watch
 xz
@@ -159,7 +162,7 @@ xz
 brew install "${pkg_needed[@]}" "${pkg_devel[@]}" "${pkg_virt[@]}" "${pkg_tools[@]}"
 
 ### With options
-brew install moreutils --without-parallel
+#brew install moreutils --without-parallel
 
 ### Completions
 completions=(
@@ -182,18 +185,13 @@ docker
 firefox
 gitx
 hipchat
-iina
 iterm2
 keepassx
-meld
 osxfuse
 slack
 spectacle
-vagrant
-vagrant-manager
 visualvm
 wireshark
-wireshark-chmodbpf
 xquartz
 )
 # continue on errors (like a pre-existing /Applications/*.app)
