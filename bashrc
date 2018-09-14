@@ -1,3 +1,7 @@
+# shellcheck disable=SC2139
+# SC2139: expand when defined, not when used.  It's mostly what I want, but it still caught a bug.
+#         Disable now; re-enable the warning once in a while to revisit.
+
 ## This file should generate no output or it will break the scp | rcp commands.
 
 . /etc/profile
@@ -9,7 +13,7 @@
 
 [[ $TERM == nuclide ]] && return
 
-## profile
+## profiling
 #PS4='+ $(date "+%s.%N")\011 '
 #exec 3>&2 2>/tmp/bashstart.$$.log
 #set -x
@@ -19,10 +23,12 @@
 name=$(uname -s)
 if [[ $name == Darwin ]]; then
     os_mac=true
+    # detect os_gnu later, in the 'path' section of this file
 elif [[ $name =~ Linux ]]; then
     os_linux=true
     os_gnu=true
 elif [[ $name =~ MINGW32_NT ]]; then
+    # shellcheck disable=SC2034  # unused
     os_windows=true
 fi
 unset name
@@ -32,12 +38,11 @@ unset name
 # List directory sizes, unsorted
 # (see lsize for sorted version)
 function dirsize() {
-    find "${@-.}" -maxdepth 1 -type d -exec du -hs '{}' \; 2>/dev/null
+    find "${@-.}" -maxdepth 1 -type "d" -exec du -hs '{}' \; 2>/dev/null
 }
 
-du_sorted () {
-    local ds="${@-.}"
-    paste -d '#' <(du $ds) <(du -h $ds) | sort -n -k1,7 | cut -d '#' -f 2
+function du_sorted() {
+    paste -d '#' <(du "${@}") <(du -h "${@}") | sort -n -k1,7 | cut -d '#' -f 2
 }
 
 # TODO
@@ -51,18 +56,19 @@ function test_font() {
     echo -e "      Alpha: ABCDEFGHIJKLMNOPQRSTUVWXYZ "
     echo -e "             abcdefghijklmnopqrstuvwxyz "
     echo -e "        Num: 0123456789 "
-    echo -e "   Brackets: () [] {} <> "
+    echo -e "   Brackets: () [] {} <-> "
     echo -e "     Quotes: \"double\" 'single' \`back\`"
     echo -e "Punctuation: , . : ; _ ! ? "
     echo -e "    Symbols: ~ @ # $ % ^ & * - + = / | \\ "
     echo -e "  Ambiguity: iI1lL oO0 "
     echo -e "     French: á à â Â é è ê É î ï Î ô ö Ô û ü ç"
+    # shellcheck disable=SC1111  # silly warning
     echo -e "      Fancy: æ œ ñ ø € ¢ ©  “”„ ‘’ … ¿ ‹› ‡"
     echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
 function histostats() {
-    history | awk '{a[$2]++} END {for(i in a) {print a[i] " " i}}' | sort -rn | head -n ${1-10}
+    history | awk '{a[$2]++} END {for(i in a) {print a[i] " " i}}' | sort -rn | head -n "${1-10}"
 }
 
 # usage: is_command go && echo "go is installed"
@@ -74,7 +80,7 @@ function is_command() {
 # Add $1 to end of PATH. Remove duplicates.
 function path_append() {
     if [[ -d "$1" ]] ; then
-        path_remove $1
+        path_remove "$1"
         PATH+=:$1
     fi
 }
@@ -82,7 +88,7 @@ function path_append() {
 # Add $1 to beginning of PATH. Remove duplicates.
 function path_prepend() {
     if [[ -d "$1" ]] ; then
-        path_remove $1
+        path_remove "$1"
         PATH=$1:$PATH
     fi
 }
@@ -123,7 +129,7 @@ is_command docker && {
     function docker-cleanup-containers() {
         echo "Clean up exited containers..."
         # !!! rm -v will nuke volume containers
-        docker ps --all --quiet -f status=exited | xargs -P4 --no-run-if-empty docker rm
+        docker ps --all --quiet -f status=exited | xargs -P4 --no-run-if-empty docker "rm"
     }
 
     function docker-cleanup-images() {
@@ -133,14 +139,15 @@ is_command docker && {
 
     function docker-cleanup-volumes() {
         echo "Clean up unused volumes..."
-        docker volume ls --quiet -f dangling=true | xargs -P4 --no-run-if-empty docker volume rm
+        docker volume ls --quiet -f dangling=true | xargs -P4 --no-run-if-empty docker volume "rm"
     }
 
     function docker-cleanup-overlays() {
         echo "Clean up overlay[fs]..."
         pushd /var/lib/docker/overlay/ &>/dev/null && {
             for o in *; do
-                docker inspect $(docker ps -aq) | grep $o &>/dev/null || rm -rf $o
+                # shellcheck disable=SC2046  # we want word splitting here
+                docker inspect $(docker ps -aq) | grep "$o" &>/dev/null || rm -rf "$o"
             done
             popd &>/dev/null
         }
@@ -276,6 +283,8 @@ export CVS_RSH=/usr/bin/ssh
 export EDITOR=/usr/bin/vim
 export GREP_COLOR=32
 export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
+# shellcheck disable=SC2016  # we don't want to expand
+export LESSOPEN='|$HOME/.lessfilter %s'
 
 [[ $os_mac ]] && export HOMEBREW_NO_ANALYTICS=1
 
@@ -300,7 +309,7 @@ is_command vimmanpager && export MANPAGER=vimmanpager
 is_command hh && export HH_CONFIG=hicolor
 
 ## /usr/bin/time format (pass '-v' for exhaustive output)
-export TIME="--\n%C  [exit %x]\nreal %e\tCPU: %P  \t\tswitches: %c forced, %w waits\nuser %U\tMem: %M kB maxrss\tpage faults: %F major, %R minor\nsys  %S\tI/O: %I/%O"
+export TIME="--\\n%C  [exit %x]\\nreal %e\\tCPU: %P  \\t\\tswitches: %c forced, %w waits\\nuser %U\\tMem: %M kB maxrss\\tpage faults: %F major, %R minor\\nsys  %S\\tI/O: %I/%O"
 
 ## VMware segfaults @work without this:
 #export VMWARE_USE_SHIPPED_GTK=force
@@ -347,8 +356,14 @@ f="/usr/bin/ssh-askpass-fullscreen"
 # See http://forums.gentoo.org/viewtopic-t-925016-start-0.html
 
 # The useful shellcheck static analyzer:
-# Ignore Useless Use Of Cat
-export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002'
+# SC2002: Ignore Useless Use Of Cat
+# SC2164: Ignore "'cd ... || return' in case cd fails"
+export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002 --exclude=SC2164'
+
+# Tell xmllint to find asciidoc's catalog files
+f="/usr/local/etc/xml/catalog"
+[[ -f "$f" ]] && export XML_CATALOG_FILES="$f"
+
 # }}}
 
 # ---------- aliases  {{{
@@ -367,12 +382,13 @@ unset ls_opts ls_sort
 
 ## grep family new commands
 # mac: brew tap homebrew/dupes; brew install grep
-[[ $os_mac ]] && is_command "ggrep" && grep="ggrep --color=auto" || grep="\grep --color=auto"
+[[ $os_mac ]] && is_command "ggrep" && grep="ggrep --color=auto" || grep="\\grep --color=auto"
 alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
+alias grepbash="$grep -R --exclude=* --include=*.{bash,sh}"
 alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
 alias grepdoc="$grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
 alias grepbuild="$grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
-alias grepwhite="$grep '[[:space:]]\+$' -R"
+alias grepwhite="$grep --binary-files=without-match '[[:space:]]\\+$' -R"
 alias g=grepcode
 unset grep
 
@@ -381,7 +397,7 @@ function grepport() {
         echo "$1 is not a valid port number"
         return 1
     }
-    lsof -n -iTCP:$1
+    lsof -n -iTCP:"$1"
 }
 
 # TODO
@@ -398,16 +414,13 @@ function grepport() {
 alias sudo='sudo '
 
 ## default options to common commands
-is_command colordiff && diffprog="colordiff" || diffprog="diff"
-alias diff="$diffprog -NrbB -x .git"
-unset diffprog
 alias rm="rm -i --one-file-system"
 [[ $os_mac ]] && alias pstree="pstree -w -g3"
-[[ $os_mac ]] && {
+if [[ $os_mac ]]; then
     alias tree="tree --dirsfirst -C"
-} || {
+else
     alias tree="tree --dirsfirst"
-}
+fi
 alias vi="vim"
 [[ $os_mac ]] && {
     alias vi="mvim -v"
@@ -423,9 +436,35 @@ alias vi="vim"
 #is_command parallel && alias parallel="parallel --will-cite"
 
 [[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ -x /usr/local/bin/time ]] && alias time="/usr/local/bin/time"
 [[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
 [[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 [[ -x /usr/libexec/locate.updatedb ]] && alias updatedb="sudo /usr/libexec/locate.updatedb"
+is_command glances && alias top=glances
+
+## new commands
+alias dvdplay="mplayer -nocache dvdnav://"
+alias emptytrash="rm -rf ~/.local/share/Trash/*; rm -rf ~/.Trash/*"
+alias loffice="libreoffice"
+alias manga="thunar &>/dev/null &"
+alias path='echo -e ${PATH//:/\\n}'
+alias quickweb='python2 -m SimpleHTTPServer'
+alias qweb='python3 -m http.server'
+#alias suspend="pm-suspend"  # suspend is a bash builtin
+is_command ncdu && alias cdu="ncdu --color dark -rr --exclude .git"
+is_command tokei && alias sloc="tokei \$(find . -type f)"
+
+[[ $os_linux ]] && {
+    # ordered, most favorite first
+    pdf_readers="okular mupdf pdf-presenter-console zathura pdfcube qpdfview"
+    for reader in ${pdf_readers}; do
+        is_command "$reader" && alias xpdf="$reader" && break
+    done
+    unset reader pdf_readers
+}
+[[ $os_mac ]] && alias xpdf="open"
+
+#alias hd='od -Ax -tx1z -v'
 
 ## locale issues
 alias calibre="LC_ALL=en_US calibre"
@@ -444,16 +483,6 @@ is_command grc && {
     alias svn="grc svn"
     alias traceroute="grc traceroute"
 }
-
-## new commands
-alias dvdplay="mplayer -nocache dvdnav://"
-alias emptytrash="rm -rf ~/.local/share/Trash/*; rm -rf ~/.Trash/*"
-alias loffice="libreoffice"
-alias manga="thunar &>/dev/null &"
-alias path='echo -e ${PATH//:/\\n}'
-alias quickweb='python2 -m SimpleHTTPServer'
-alias qweb='python3 -m http.server'
-#alias suspend="pm-suspend"  # suspend is a bash builtin
 
 ## colorized cat
 # 'ccat' conflicts with package ccrypt, which I don't use so far.
@@ -486,26 +515,51 @@ elif is_command src-hilite-lesspipe.sh; then
 #elif is_command lesspipe.sh; then
     # fom package lesspipe: color doesn't work for me following man page
     #alias ccat='lesspipe.sh'
+else
+    alias ccat='cat'
 fi
 
 # TODO try out 'mdv' to view Markdown
 
-[[ $os_linux ]] && {
-    # ordered, most favorite first
-    pdf_readers="okular mupdf pdf-presenter-console zathura pdfcube qpdfview"
-    for reader in ${pdf_readers}; do
-        is_command "$reader" && alias xpdf="$reader" && break
-    done
-    unset reader pdf_readers
+## diff
+is_command colordiff && diffprog="colordiff" || diffprog="diff"
+alias diff="$diffprog -NrbB -x .git"
+unset diffprog
+# poor person's colordiff. doesn't play nice with diff-so-fancy.
+function diff1() {
+    local regex
+    # damn it
+    regex='s/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/^Only in/\x1b[1;36mOnly in/;s/^diff /\x1b[1;36mdiff /;s/$/\x1b[0m/'
+    command diff -U1 --minimal "$@" |
+    sed "$regex"
 }
-[[ $os_mac ]] && alias xpdf="open"
+# not good, diff1 is better?
+function diff2() { command diff -U3 --minimal "$@" | diff-so-fancy; }
 
-#alias hd='od -Ax -tx1z -v'
+# not good
+#regex='s/^--- /\x1b[0;31m--- /;s/^\+\+\+ /\x1b[0;32m\+\+\+ /;s/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/^Only in/\x1b[1;36mOnly in/;s/^diff /\x1b[1;36mdiff /;s/$/\x1b[0m/'
 
-## shortcut to KDE display settings (2nd monitor...)
+# ok-ish with diff-highlight, breaks diff-so-fancy.
+# command colordiff -U2 --minimal logs.ori/ logs/ | sed 's/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/$/\x1b[0m/' | diff-highlight
+
+## KDE display settings (2nd monitor...)
 is_command kcmshell4 && {
     alias kdisplay="kcmshell4 display"
     alias xdisplay="kcmshell4 display"
+}
+
+## fuzzy-finder
+is_command fzf && {
+    # ctr-o opens the file in vim
+    export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
+    # 'preview' alias auto-opens a preview on the right pane
+    if is_command bat; then
+        alias preview="fzf --preview 'bat --color always {}'"
+    else
+        alias preview="fzf --preview 'cat {}'"
+    fi
+    #alias o="fzf --preview 'bat --color always {}' | xargs -i '{}' xdg-open '{}'"
+    #[[ $os_mac ]] && alias xdg-open=open # does it work? 
 }
 # }}}
 
@@ -515,6 +569,7 @@ shopt -s dotglob
 shopt -s extglob
 shopt -s histappend
 shopt -s no_empty_cmd_completion
+# shellcheck disable=SC2071  # This is indeed a string comparison
 [[ $BASH_VERSION > 4 ]] && shopt -s globstar
 # }}}
 
@@ -526,8 +581,8 @@ export c_yellow='\033[0;33m'
 export c_blue='\033[0;34m'
 export c_purple='\033[0;35m'
 export c_cyan='\033[0;36m'
-export c_gray='\033[0;37m'
-export c_bold_gray='\033[1;30m'
+export c_white='\033[0;37m'
+export c_bold_black='\033[1;30m'
 export c_bold_red='\033[1;31m'
 export c_bold_green='\033[1;32m'
 export c_bold_yellow='\033[1;33m'
@@ -537,12 +592,27 @@ export c_bold_cyan='\033[1;36m'
 export c_bold_white='\033[1;37m'
 export c_none='\033[00m'
 
+# Codes:
+#  \033[<Select Graphic Rendition>;<Color>m
+# You can combine SGRs as semicolon-separated.
+#   Example:  bold italic, default color   \033[1;3;m
+# SGRs are:
+# 0  normal
+# 1  bold
+# 2  faint      (de-bold)
+# 3  italic
+# 4  underline
+# 5  slow blink (limited support. Terminal.app:yes iTerm:no)
+# 7  reverse    (swap fg/bg)
+
 function test_colors() {
-  echo -e "$c_none no color"
-  echo -n -e "$c_black black\t$c_red red\t$c_green green\t$c_yellow yellow"
-  echo -e "\t$c_blue blue\t$c_purple purple\t$c_cyan cyan\t$c_gray gray"
-  echo -n -e "$c_bold_gray gray2\t$c_bold_red red2\t$c_bold_green green2\t$c_bold_yellow yellow2"
-  echo -e "\t$c_bold_blue blue2\t$c_bold_purple purple2\t$c_bold_cyan cyan2\t$c_bold_white white2"
+    {
+  echo -e "${c_none}nocolor"
+  echo -e -n "${c_black}black $c_red red $c_green green $c_yellow yellow"
+  echo -e "$c_blue blue $c_purple purple $c_cyan cyan $c_white white"
+  echo -e -n "${c_bold_black}blackB $c_bold_red redB $c_bold_green greenB $c_bold_yellow yellowB"
+  echo -e "$c_bold_blue blueB $c_bold_purple purpleB $c_bold_cyan cyanB $c_bold_white whiteB"
+    } | column -t
 }
 # }}}
 
@@ -550,23 +620,23 @@ function test_colors() {
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ $EUID == 0 ]] ; then
-    c1="\[${c_red}\]"     # colors in PS1 must be surrounded by escaped brackets
-    c2="\[${c_bold_red}\]"
+    c1="\\[${c_red}\\]"     # colors in PS1 must be surrounded by escaped brackets
+    c2="\\[${c_bold_red}\\]"
     id='\h'               # identifier part
     pr='#'                # prompt symbol
 else
-    c1="\[${c_blue}\]"
-    c2="\[${c_bold_green}\]"
+    c1="\\[${c_blue}\\]"
+    c2="\\[${c_bold_green}\\]"
     id='\u@\h'            # identifier part
     pr='$'                # prompt symbol
 fi
-c3="\[${c_bold_blue}\]"
-cx="\[${c_none}\]"
+c3="\\[${c_bold_blue}\\]"
+cx="\\[${c_none}\\]"
 
 ## Mix double quotes (for variables, must be expanded now)
 ## and single quotes (for subshells, must not be expanded until prompt is evaluated)
-[[ $os_linux ]] && PS1="${c1}\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \W $pr $cx"
-[[ $os_mac ]] && PS1="${c2}\u ${c3}["'$(ls -1 | gwc -l)'"] \W $pr $cx"
+[[ $os_linux ]] && PS1="${c1}\\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \\W $pr $cx"
+[[ $os_mac ]] && PS1="${c2}\\u ${c3}["'$(ls -1 | gwc -l)'"] \\W $pr $cx"
 
 case $TERM in
     xterm*|rxvt*|konsole*)
@@ -600,18 +670,25 @@ for f in \
     ${HOME}/.bash-powerline.sh \
     ${HOME}/.iterm2_shell_integration.bash \
 ; do
+    # shellcheck source=/dev/null  # Don't shellcheck those files
     [[ -f $f ]] && source "$f"
 done
 [[ $os_mac ]] && is_command brew && {
     # Note: brew's bash_completion makes bash start very slow
     f="$(brew --prefix)/etc/bash_completion"
+    # shellcheck source=/dev/null
     [[ -f $f ]] && source "$f"
+    # shellcheck disable=SC2071  # This is indeed a string comparison
     [[ $BASH_VERSION > 4 ]] && {
         # Tip: replace function _have() with 'true'. Will load more things, but faster.
         f="$(brew --prefix)/share/bash-completion/bash_completion"
+        # shellcheck source=/dev/null
         [[ -f $f ]] && source "$f"
     }
 }
+#
+# Skip the fzf bash completions; they break ssh and scp completion for host names!
+# ${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.bash \
 # }}}
 
 unset f d
