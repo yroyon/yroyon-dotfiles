@@ -73,3 +73,6 @@
 [submodule "vim/bundle/airline-themes"]
 	path = vim/bundle/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "vim/bundle/ft-slack"]
+	path = vim/bundle/ft-slack
+	url = https://github.com/uptech/vim-slack-format.git
