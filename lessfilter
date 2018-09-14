@@ -1,0 +1,45 @@
+#!/bin/sh
+# ~/.lessfilter: add commands for lesspipe, the input filter to less(1)
+
+# You need:
+#  - this file executable
+#  - export LESSOPEN='|$HOME/.lessfilter %s'
+#  - and possibly:
+#      export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
+
+# TODO
+# https://github.com/nojhan/dotfiles/blob/master/lessfilter.sh
+
+# TODO
+# I think I should 'exit 1' (or 0?) to NOP
+
+case $(echo "$1" | tr '[:upper:]' '[:lower:]') in
+    *.md)
+        mdcat --colour yes "$1"
+        #view-md "$1"
+        #pandoc -s -f markdown -t man "$1" | groff -T utf8 -man #| less -R
+        ;;
+    *.json)
+        jq -C . "$1"
+        ;;
+    *)
+        pygmentize "$1"
+        ;;
+esac
+
+# ----- END ----- #
+
+# Some explanations
+
+# pandoc: the conversion to man format is lossy (e.g. I get broken URL links)
+# vimcat:  no colors (I don't know how to force colors)
+# vimpager: no arrow key bindings
+
+# view-md is a wrapper for:
+#   gem install tty-markdown
+# code:
+#
+# #!/usr/bin/env ruby
+# require 'tty-markdown'
+# puts TTY::Markdown.parse(ARGF.read, colors: 256)
+
