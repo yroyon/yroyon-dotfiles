@@ -5,6 +5,7 @@ AWT
 Abdelnur
 Alcatel
 Amazones
+Ansible
 Audioscrobbler
 Beras
 Blackdown
@@ -24,6 +25,7 @@ CVS
 CWMP
 CeCILL
 CellPipe
+CoreOS
 DHCP
 DMTF
 DUT
@@ -104,6 +106,7 @@ SEDA
 SLUG's
 SNMP
 SWEX
+SanDisk
 Serafeim
 Slackware
 Solaris
@@ -159,6 +162,7 @@ exports
 filesystem
 gcc
 granularité
+hdparm
 hgl
 hyperviseurs
 icc
@@ -197,13 +201,16 @@ runlevels
 réécrite
 réécrivant
 servlets
+smartctl
 stateful
 surcoût
 surcoûts
 syscall
+systemctl
 sérialisation
 télécharger
 uninstall
+uniq
 unsubscribe
 updateable
 virtualisation

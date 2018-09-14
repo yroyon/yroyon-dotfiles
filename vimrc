@@ -237,7 +237,7 @@ function! LoadColourScheme(schemes)
 endfunction
 
 " me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce
-let s:schemes_gvim = "wombat256mod:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
+let s:schemes_gvim = "molokai_y:wombat256mod:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
 let s:schemes_term256 = "luna-term:wombat_y:inkpot:candycode:molokai_y:desert256_y:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
 let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
@@ -679,6 +679,9 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "                   app-specific settings {{{
 "-----------------------------------------------------------
 "   (Those must not be under .vim/after/)
+
+" BUG: vim-go thinks I have Vim < 7.4, though I run Vim 8
+let g:go_version_warning = 0
 
 " https://github.com/embear/vim-localvimrc/
 let g:localvimrc_name=[ ".vimrc.local" ]
