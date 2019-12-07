@@ -97,5 +97,26 @@
 
 [user]
     name = Yvan Royon
-    email = yvan.royon@gmail.com
+    email = yvan.royon@verizon.com
+
+#{{{ sqlite support
+# We want databases checked in as a text version (for meaningful diffs),
+#               and checked out as binary version (for fast/regular access).
+# This example uses COOPY.
+# http://share.find.coop/doc/tutorial_git.html
+#
+# [filter "coopy-filter-sqlite"]
+#   smudge = ssformat dbi:sqlitext:file=- dbi:sqlite:file=-
+#   clean = ssformat dbi:sqlite:file=- dbi:sqlitext:file=-
+#
+# [merge "coopy-merge-sqlite"]
+#   name = coopy sqlite merge
+#   driver = ssmerge --named --unordered --output dbi:sqlitext::file=%A dbi:sqlitext::file=%O dbi:sqlitext::file=%A dbi:sqlitext::file=%B
+#
+# Then add a .gitattributes file:
+#
+# *.sqlite filter=coopy-filter-sqlite
+# *.sqlite merge=coopy-merge-sqlite
+#}}}
+
 # vim: set ft=gitconfig
