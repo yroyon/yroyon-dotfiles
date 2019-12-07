@@ -67,14 +67,18 @@ function test_font() {
     echo -e "       Math: Ω ∑ ß ∂ ƒ ∆ π µ √ ∫ ∞ ≈ ≠ ≤ ≥ ÷ ± —"
 }
 
+# Most used commands in my bash sessions.
+# Top 10 by default, pass a number for Top N.
 function histostats() {
-    history | awk '{a[$2]++} END {for(i in a) {print a[i] " " i}}' | sort -rn | head -n "${1-10}"
+    # If not using timestamps (default), index is $2
+    # If using timestamps, index is $4 (depending on your HISTTIMEFORMAT)
+    history | awk '{a[$4]++} END {for(i in a) {print a[i] " " i}}' | sort -rn | head -n "${1-10}"
 }
 
 # usage: is_command go && echo "go is installed"
 # works for functions, builtins, aliases, everything that 'type' can find.
 function is_command() {
-    type "$1" &> /dev/null
+    type -t "$1" &> /dev/null
 }
 
 # Add $1 to end of PATH. Remove duplicates.
@@ -344,8 +348,8 @@ export HISTTIMEFORMAT="[%F %T] "
 # Note: this will mingle histories from all shells currently open
 
 export BROWSER="firefox '%s' &"
-export CVS_RSH=/usr/bin/ssh
-export EDITOR=/usr/bin/vim
+export CVS_RSH="$(which ssh)"
+export EDITOR="$(which vim)"
 export GREP_COLOR=32
 export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 # shellcheck disable=SC2016  # we don't want to expand
