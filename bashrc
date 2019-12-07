@@ -232,6 +232,51 @@ if [[ -x ${HOME}/bin/clippy.sh ]] ; then
     function command_not_found_handle() { "${HOME}/bin/clippy.sh" "$1" ; }
     export COWPATH="${HOME}/bin/cows"
 fi
+
+# Consume stdin and spit it out at some rate-limited time interval.
+# Uses date(1) and bash arithmetics.
+# The time unit is seconds -- not anything smaller (that I can find).
+debounce() {
+    local -i intervalInSeconds
+    local -i limit
+    [[ -z $1 ]] && {
+        echo >&2 "Usage: ${FUNCNAME[0]} delay_in_seconds"
+        return 1
+    }
+    intervalInSeconds="$1";
+    unixtime() {
+        date +%s;
+    }
+    nextTimeLimit() {
+        echo $(($(unixtime) + $intervalInSeconds));
+    }
+    limit=$(nextTimeLimit);
+    while read line; do
+        if test $limit -lt $(unixtime); then
+            limit=$(nextTimeLimit);
+            echo "$line";
+        fi
+    done;
+}
+
+# Consume stdin and spit it out at some rate-limited time interval.
+# Uses bash SECONDS (man bash then /SECONDS) instead of date(1).
+# The time unit is seconds -- not anything smaller (that I can find).
+throttle() {
+    local -i limit
+    [[ -z $1 ]] && {
+        echo >&2 "Usage: ${FUNCNAME[0]} delay_in_seconds"
+        return 1
+    }
+    ((limit = SECONDS + $1))
+    while read line; do
+        if ((limit < SECONDS)); then
+            ((limit = SECONDS + $1))
+            echo "$line"
+        fi
+    done
+}
+
 # }}}
 
 # ---------- path  {{{
