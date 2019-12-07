@@ -672,6 +672,17 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 "let g:gitgutter_highlight_lines = 1         " line highlight by default
 "let g:gitgutter_eager = 0                   " be faster but less up-to-date
 
+" WiP
+function GitP()
+    :GitGutterPrevHunk
+    :GitGutterPreviewHunk
+endfunction
+function GitN()
+    :GitGutterNextHunk
+    :GitGutterPreviewHunk
+endfunction
+command! GitP GitGutterPrevHunk|GitGutterPreviewHunk
+command! GitN call GitN()
 " }}}
 "-----------------------------------------------------------
 
