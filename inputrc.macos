@@ -12,3 +12,7 @@
 # Action: Send Escape Sequence
 # Esc+: type in F (forward) or B (backward)
 
+# Protect against hidden <span> blocks when copy-pasting from a browser
+# https://lwn.net/Articles/749992/
+set enable-bracketed-paste on
+

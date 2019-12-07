@@ -261,8 +261,10 @@ export PATH
 [[ $os_gnu ]] && [[ -f ${HOME}/.dir_colors ]] && eval "$(dircolors -b "${HOME}/.dir_colors")"
 [[ $os_mac ]] && export CLICOLOR=1
 
-is_command ssh-agent && [[ -z $(pidof ssh-agent) ]] && eval "$(ssh-agent -s)"
 is_command keychain && eval "$(keychain --eval --ignore-missing --quiet id_rsa verizon_atlassian)"
+if [[ -z $(pidof ssh-agent) ]]; then
+    is_command ssh-agent && eval "$(ssh-agent -s)"
+fi
 
 # https://github.com/nvbn/thefuck
 is_command thefuck && eval "$(thefuck --alias)"
@@ -305,8 +307,6 @@ is_command vimmanpager && export MANPAGER=vimmanpager
 #[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
 # The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
 [[ $EUID == 0 ]] && export TERM=xterm-256color
-
-is_command hh && export HH_CONFIG=hicolor
 
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\\n%C  [exit %x]\\nreal %e\\tCPU: %P  \\t\\tswitches: %c forced, %w waits\\nuser %U\\tMem: %M kB maxrss\\tpage faults: %F major, %R minor\\nsys  %S\\tI/O: %I/%O"
@@ -559,8 +559,11 @@ is_command fzf && {
         alias preview="fzf --preview 'cat {}'"
     fi
     #alias o="fzf --preview 'bat --color always {}' | xargs -i '{}' xdg-open '{}'"
-    #[[ $os_mac ]] && alias xdg-open=open # does it work? 
+    #[[ $os_mac ]] && alias xdg-open=open # does it work?
 }
+
+[[ -f /Applications/Meld.app/Contents/MacOS/Meld ]] && alias meld=/Applications/Meld.app/Contents/MacOS/Meld
+
 # }}}
 
 # ---------- shopts {{{
@@ -620,7 +623,7 @@ function test_colors() {
 ## PROMPT_COMMAND : window title for X terminals
 ##            PS1 : shell prompt
 if [[ $EUID == 0 ]] ; then
-    c1="\\[${c_red}\\]"     # colors in PS1 must be surrounded by escaped brackets
+    c1="\\[${c_red}\\]"   # colors in PS1 must be surrounded by escaped brackets
     c2="\\[${c_bold_red}\\]"
     id='\h'               # identifier part
     pr='#'                # prompt symbol
@@ -674,16 +677,21 @@ for f in \
     [[ -f $f ]] && source "$f"
 done
 [[ $os_mac ]] && is_command brew && {
-    # Note: brew's bash_completion makes bash start very slow
-    f="$(brew --prefix)/etc/bash_completion"
-    # shellcheck source=/dev/null
-    [[ -f $f ]] && source "$f"
+    ## Note: brew's bash_completion makes bash start very slow
+    #f="$(brew --prefix)/etc/bash_completion"
+    ## shellcheck source=/dev/null
+    #[[ -f $f ]] && source "$f"
     # shellcheck disable=SC2071  # This is indeed a string comparison
     [[ $BASH_VERSION > 4 ]] && {
+        export BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d"
         # Tip: replace function _have() with 'true'. Will load more things, but faster.
-        f="$(brew --prefix)/share/bash-completion/bash_completion"
-        # shellcheck source=/dev/null
-        [[ -f $f ]] && source "$f"
+        for f in \
+            "$(brew --prefix)/share/bash-completion/bash_completion" \
+            "$(brew --prefix)/etc/profile.d/bash_completion.sh" \
+        ; do
+            # shellcheck source=/dev/null
+            [[ -f $f ]] && source "$f"
+        done
     }
 }
 #
