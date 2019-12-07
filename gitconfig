@@ -17,8 +17,10 @@
     vimdiff = difftool --tool=vimdiff
     wdiff   = diff --no-ext-diff --word-diff
     x = "!gitx"
+
 [blame]
     date = short
+
 [color]
     ui = true
 [color "diff"]
@@ -29,18 +31,21 @@
     new = green bold
     whitespace = red reverse
 [color "diff-highlight"]
-    oldNormal = red bold
+    oldNormal = "red bold"
     oldHighlight = "red bold 52"
     newNormal = "green bold"
     newHighlight = "green bold 22"
+
 [core]
     abbrev = 9
     excludesfile = ~/.gitignore_global
 #    gitProxy = git-http-proxy
 #    pager = less -FRSX
+
 [credential]
 #    helper = cache --timeout=3600
     helper = osxkeychain
+
 [diff]
     tool = vimdiff
     guitool = meld
@@ -54,17 +59,22 @@
     textconv = ps2ascii
 [diff "zip"]
     textconv = unzip -c -a
+
 [github]
     user = yroyon
+
 [http]
 #    proxy = bluecoat-be02.alcatel.fr:1080
 #    proxy = http://www-proxy.exu.ericsson.se:8080
 #    sslverify = false
+
 [init]
     templatedir = ~/.git_template
+
 [merge]
     tool = vimdiff
     #tool = meld
+
 [pager]
 #   -F breaks on MacOS. (auto-quits and shows nothing if log is < 1 screen)
 #   ==> brew install less
@@ -74,14 +84,17 @@
     diff = diff-so-fancy | less --tabs=1,5 -FSRX
     log  = diff-so-fancy | less --tabs=1,5 -FSRX
     show = diff-so-fancy | less --tabs=1,5 -FSRX
+
 [push]
     default = tracking
 [rebase]
 	autostash = true
 [rerere]
     enabled = 1
+
 [svn]
     rmdir = true
+
 [user]
     name = Yvan Royon
     email = yvan.royon@gmail.com
