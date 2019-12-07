@@ -448,7 +448,7 @@ unset ls_opts ls_sort
 [[ $os_mac ]] && is_command "ggrep" && grep="ggrep --color=auto" || grep="\\grep --color=auto"
 alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
 alias grepbash="$grep -R --exclude=* --include=*.{bash,sh}"
-alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
+alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,go,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
 alias grepdoc="$grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
 alias grepbuild="$grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
 alias grepwhite="$grep --binary-files=without-match '[[:space:]]\\+$' -R"
