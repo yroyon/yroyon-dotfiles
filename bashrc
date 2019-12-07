@@ -321,9 +321,27 @@ is_command thefuck && eval "$(thefuck --alias)"
 # ---------- environment {{{1
 ## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
 #FIGNORE=".git:.svn:CVS"
-HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
-HISTSIZE=8192
-HISTFILESIZE=2097152
+
+# Use 'export' for the case where you run 'bash --norc'
+export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
+export HISTSIZE=  # 1048576
+# Change file location because certain bash sessions truncate .bash_history file upon close.
+# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+export HISTFILE=~/.bash_eternal_history
+unset HISTFILESIZE  #export HISTFILESIZE=524288000
+export HISTTIMEFORMAT="[%F %T] "
+# ----
+## Undocumented feature which sets the size to "unlimited".
+## https://stackoverflow.com/questions/9457233/unlimited-bash-history
+#export HISTFILESIZE=
+#export HISTSIZE=
+#export HISTTIMEFORMAT="[%F %T] "
+# ----
+# Force prompt to write history after every command.
+# http://superuser.com/questions/20900/bash-history-loss
+# PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
+# PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND} ;}history -a; history -c; history -r";
+# Note: this will mingle histories from all shells currently open
 
 export BROWSER="firefox '%s' &"
 export CVS_RSH=/usr/bin/ssh
