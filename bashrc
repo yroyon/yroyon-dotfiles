@@ -703,12 +703,17 @@ else
     pr='$'                # prompt symbol
 fi
 c3="\\[${c_bold_blue}\\]"
+c4="\\[${c_bold_black}\\]"
 cx="\\[${c_none}\\]"
 
 ## Mix double quotes (for variables, must be expanded now)
 ## and single quotes (for subshells, must not be expanded until prompt is evaluated)
-[[ $os_linux ]] && PS1="${c1}\\D{%m-%d %R} ${c2}${id} ${c3}["'$(ls -1 | wc -l)'"] \\W $pr $cx"
-[[ $os_mac ]] && PS1="${c2}\\u ${c3}["'$(ls -1 | gwc -l)'"] \\W $pr $cx"
+[[ $os_linux ]] && pre_ps1="${c1}\\D{%m-%d %R} ${c2}${id} "
+[[ $os_mac ]]   && pre_ps1="${c2}\\u "
+
+post_ps1="${c3}["'$(ls -1 | gwc -l)'"] \\W${c4}"'$(type -t __git_ps1 &>/dev/null && __git_ps1)'" ${c3}$pr $cx"
+
+PS1="${pre_ps1}${post_ps1}"
 
 case $TERM in
     xterm*|rxvt*|konsole*)
@@ -720,8 +725,7 @@ case $TERM in
         ;;
 esac
 export PS1
-unset c1 c2 c3 cx id pr
-# PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
+unset c1 c2 c3 c4 cx id pr
 # }}}
 
 # ---------- readline {{{
