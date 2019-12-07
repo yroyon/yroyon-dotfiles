@@ -519,7 +519,9 @@ alias quickweb='python2 -m SimpleHTTPServer'
 alias qweb='python3 -m http.server'
 #alias suspend="pm-suspend"  # suspend is a bash builtin
 is_command ncdu && alias cdu="ncdu --color dark -rr --exclude .git"
-is_command tokei && alias sloc="tokei \$(find . -type f)"
+is_command tokei && alias sloc="tokei" #\$(find . -type f)"
+is_command tokei && alias sloc-all="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs"
+is_command tokei && alias sloc-details="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs -f"
 
 [[ $os_linux ]] && {
     # ordered, most favorite first
