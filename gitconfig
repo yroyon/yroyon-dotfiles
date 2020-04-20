@@ -78,12 +78,12 @@
 [pager]
 #   -F breaks on MacOS. (auto-quits and shows nothing if log is < 1 screen)
 #   ==> brew install less
-#   diff = diff-highlight | less -FSRX
-#   log  = diff-highlight | less -FSRX
-#   show = diff-highlight | less -FSRX
-    diff = diff-so-fancy | less --tabs=1,5 -FSRX
-    log  = diff-so-fancy | less --tabs=1,5 -FSRX
-    show = diff-so-fancy | less --tabs=1,5 -FSRX
+   diff = diff-highlight | less -FSRX
+   log  = diff-highlight | less -FSRX
+   show = diff-highlight | less -FSRX
+#   diff = diff-so-fancy | less --tabs=1,5 -FSRX
+#   log  = diff-so-fancy | less --tabs=1,5 -FSRX
+#   show = diff-so-fancy | less --tabs=1,5 -FSRX
 
 [push]
     default = tracking
