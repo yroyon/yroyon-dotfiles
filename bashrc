@@ -146,22 +146,10 @@ is_command docker && {
         docker volume ls --quiet -f dangling=true | xargs -P4 --no-run-if-empty docker volume "rm"
     }
 
-    function docker-cleanup-overlays() {
-        echo "Clean up overlay[fs]..."
-        pushd /var/lib/docker/overlay/ &>/dev/null && {
-            for o in *; do
-                # shellcheck disable=SC2046  # we want word splitting here
-                docker inspect $(docker ps -aq) | grep "$o" &>/dev/null || rm -rf "$o"
-            done
-            popd &>/dev/null
-        }
-    }
-
     function docker-cleanup() {
         docker-cleanup-containers
         docker-cleanup-images
         docker-cleanup-volumes
-        docker-cleanup-overlays
     }
 
     function docker-pull-all() {
@@ -494,6 +482,12 @@ alias vi="vim"
     alias vim="mvim"
 }
 
+if ! is_command tree; then
+    if is_command exa; then
+        alias tree="exa -TFa --group-directories-first"
+    fi
+fi
+
 # Inhibit "non-prefixed coreutils" warning from `brew doctor`
 [[ $os_mac ]] && {
     alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin /usr/local/bin/brew"
@@ -522,6 +516,12 @@ is_command ncdu && alias cdu="ncdu --color dark -rr --exclude .git"
 is_command tokei && alias sloc="tokei" #\$(find . -type f)"
 is_command tokei && alias sloc-all="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs"
 is_command tokei && alias sloc-details="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs -f"
+
+[[ $os_linux ]] && {
+    alias ipa="ip -brief -color address"
+    alias ipl="ip -brief -color link"
+    # on older versions of ip(8):  "ip -oneline"
+}
 
 [[ $os_linux ]] && {
     # ordered, most favorite first
