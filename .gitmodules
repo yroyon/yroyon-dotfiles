@@ -76,3 +76,6 @@
 [submodule "vim/bundle/ft-slack"]
 	path = vim/bundle/ft-slack
 	url = https://github.com/uptech/vim-slack-format.git
+[submodule "vim/bundle/ft-yaml-fold"]
+	path = vim/bundle/ft-yaml-fold
+	url = git@github.com:digitalrounin/vim-yaml-folds
