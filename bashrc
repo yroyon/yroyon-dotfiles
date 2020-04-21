@@ -711,7 +711,7 @@ cx="\\[${c_none}\\]"
 [[ $os_linux ]] && pre_ps1="${c1}\\D{%m-%d %R} ${c2}${id} "
 [[ $os_mac ]]   && pre_ps1="${c2}\\u "
 
-post_ps1="${c3}["'$(ls -1 | gwc -l)'"] \\W${c4}"'$(type -t __git_ps1 &>/dev/null && __git_ps1)'" ${c3}$pr $cx"
+post_ps1="${c3}["'$(echo $(ls -1 | wc -l))'"] \\W${c4}"'$(type -t __git_ps1 &>/dev/null && __git_ps1)'" ${c3}$pr $cx"
 
 PS1="${pre_ps1}${post_ps1}"
 
