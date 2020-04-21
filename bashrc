@@ -745,6 +745,7 @@ for f in \
     /usr/share/compleat/compleat_setup \
     ${HOME}/.bash-powerline.sh \
     ${HOME}/.iterm2_shell_integration.bash \
+    ${HOME}/.config/broot/launcher/bash/br \
 ; do
     # shellcheck source=/dev/null  # Don't shellcheck those files
     [[ -f $f ]] && source "$f"
