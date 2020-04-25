@@ -1,108 +1,110 @@
+# add.interactive.useBuiltin true  -> use EXPERIMENTAL built-in interactive add, instead of Perl
+
 [alias]
-    ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
-    diffgui = difftool --tool=meld
-    filehist = log --patch --stat --follow
-    ignored = ls-files --directory -o
-    l  = log --date=relative --decorate --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
-    lg = log --date=short --graph --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
-    outstanding-files = ls-files --other --exclude-standard
-    restore = checkout --
-    sattus = status
-    stats = status
-    todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
-        -e XXX -e TODO -e FIXME -e @bug -e @todo
-        # per-file hits:  -c  (appendable on CLI)
-    unstage = reset HEAD --
-    undo = reset --soft HEAD^ --
-    vimdiff = difftool --tool=vimdiff
-    wdiff   = diff --no-ext-diff --word-diff
-    x = "!gitx"
+	ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+	diffgui = difftool --tool=meld
+	filehist = log --patch --stat --follow
+	ignored = ls-files --directory -o
+	l  = log --date=relative --decorate --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
+	lg = log --date=short --graph --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
+	outstanding-files = ls-files --other --exclude-standard
+	restore = checkout --
+	sattus = status
+	stats = status
+	todo = grep --untracked -I --heading --break --line-number --fixed-strings --word-regexp \
+		-e XXX -e TODO -e FIXME -e @bug -e @todo
+		# per-file hits:  -c  (appendable on CLI)
+	unstage = reset HEAD --
+	undo = reset --soft HEAD^ --
+	vimdiff = difftool --tool=vimdiff
+	wdiff   = diff --no-ext-diff --word-diff
+	x = "!gitx"
 
 [blame]
-    date = short
+	date = short
 
 [color]
-    ui = true
+	ui = true
 [color "diff"]
-#    meta = yellow bold
-    commit = green bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
-    whitespace = red reverse
+#	meta = yellow bold
+	commit = green bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
 [color "diff-highlight"]
-    oldNormal = "red bold"
-    oldHighlight = "red bold 52"
-    newNormal = "green bold"
-    newHighlight = "green bold 22"
+	oldNormal = "red bold"
+	oldHighlight = "red bold 52"
+	newNormal = "green bold"
+	newHighlight = "green bold 22"
 
 [core]
-    abbrev = 9
-    excludesfile = ~/.gitignore_global
-#    gitProxy = git-http-proxy
-#    pager = less -FRSX
+	abbrev = 9
+	excludesfile = ~/.gitignore_global
+#	gitProxy = git-http-proxy
+#	pager = less -FRSX
 
 [credential]
-#    helper = cache --timeout=3600
-    helper = osxkeychain
+#	helper = cache --timeout=3600
+	helper = osxkeychain
 
 [diff]
-    algorithm = histogram
-    guitool = meld
-    tool = vimdiff
+	algorithm = histogram
+	guitool = meld
+	tool = vimdiff
 [difftool]
-    prompt = false
+	prompt = false
 [diff "image"]
-    textconv = identify
+	textconv = identify
 [diff "odf"]
-    textconv = odt2txt
+	textconv = odt2txt
 [diff "pdf"]
-    textconv = ps2ascii
+	textconv = ps2ascii
 [diff "zip"]
-    textconv = unzip -c -a
+	textconv = unzip -c -a
 
 [github]
-    user = yroyon
+	user = yroyon
 
 [http]
-#    proxy = bluecoat-be02.alcatel.fr:1080
-#    proxy = http://www-proxy.exu.ericsson.se:8080
-#    sslverify = false
+#	proxy = bluecoat-be02.alcatel.fr:1080
+#	proxy = http://www-proxy.exu.ericsson.se:8080
+#	sslverify = false
 
 [init]
-    templatedir = ~/.git_template
+	templatedir = ~/.git_template
 
 [merge]
-    tool = vimdiff
-    #tool = meld
+	tool = vimdiff
+	#tool = meld
 
 [pager]
-#   -F breaks on MacOS. (auto-quits and shows nothing if log is < 1 screen)
-#   ==> brew install less
-   diff = diff-highlight | less -FSRX
-   log  = diff-highlight | less -FSRX
-   show = diff-highlight | less -FSRX
-#   diff = diff-so-fancy | less --tabs=1,5 -FSRX
-#   log  = diff-so-fancy | less --tabs=1,5 -FSRX
-#   show = diff-so-fancy | less --tabs=1,5 -FSRX
+#	-F breaks on MacOS. (auto-quits and shows nothing if log is < 1 screen)
+#	==> brew install less
+	diff = diff-highlight | less -FSRX
+	log  = diff-highlight | less -FSRX
+	show = diff-highlight | less -FSRX
+#	diff = diff-so-fancy | less --tabs=1,5 -FSRX
+#	log  = diff-so-fancy | less --tabs=1,5 -FSRX
+#	show = diff-so-fancy | less --tabs=1,5 -FSRX
 
 [push]
-    default = tracking
+	default = tracking
 [rebase]
 	autostash = true
 [rerere]
-    enabled = 1
+	enabled = 1
 
 [svn]
-    rmdir = true
+	rmdir = true
 
 [user]
-    name = Yvan Royon
-    email = yvan.royon@verizon.com
+	name = Royon, Yvan
+	email = yvan.royon@one.verizon.com
 
 #{{{ sqlite support
 # We want databases checked in as a text version (for meaningful diffs),
-#               and checked out as binary version (for fast/regular access).
+#   and checked out as binary version (for fast/regular access).
 # This example uses COOPY.
 # http://share.find.coop/doc/tutorial_git.html
 #
