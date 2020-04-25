@@ -121,6 +121,20 @@ function glog() {
     git log -p "$@" | vim - -R -c 'set foldmethod=syntax'
 }
 
+# Print a horizontal rule.  $1 is optional override of the rule character.
+function rule() {
+	printf -v _hr "%*s" $(tput cols) && echo ${_hr// /${1-─}}
+}
+
+function rule_msg()  {
+	if [ $# -eq 0 ]; then
+		echo "Usage: rulem MESSAGE [RULE_CHARACTER]"
+		return 1
+	fi
+	# Fill line with ruler character, reset cursor, move 2 cols right, print message
+	printf -v _hr "%*s" $(tput cols) && echo -en ${_hr// /${2-─}} && echo -e "\r\033[2C$1"
+}
+
 # Docker
 is_command docker-machine && {
     function docker-enable() {
