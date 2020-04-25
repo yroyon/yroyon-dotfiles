@@ -254,11 +254,11 @@ debounce() {
         date +%s;
     }
     nextTimeLimit() {
-        echo $(($(unixtime) + $intervalInSeconds));
+        echo $(($(unixtime) + intervalInSeconds));
     }
     limit=$(nextTimeLimit);
-    while read line; do
-        if test $limit -lt $(unixtime); then
+    while read -r line; do
+        if test "$limit" -lt "$(unixtime)"; then
             limit=$(nextTimeLimit);
             echo "$line";
         fi
@@ -275,7 +275,7 @@ throttle() {
         return 1
     }
     ((limit = SECONDS + $1))
-    while read line; do
+    while read -r line; do
         if ((limit < SECONDS)); then
             ((limit = SECONDS + $1))
             echo "$line"
@@ -286,25 +286,29 @@ throttle() {
 # }}}
 
 # ---------- path  {{{
+# MacOS with 'brew install coreutils findutils':
+for d in "/usr/local/opt/coreutils/libexec/gnubin" \
+         "/usr/local/opt/findutils/libexec/gnubin" \
+; do
+    [[ -d $d ]] && {
+        path_prepend "$d"
+        os_gnu=true
+    }
+done
+unset d
+
+path_prepend "${M2}"               # Maven
+path_prepend "${HOME}/.cargo/bin"  # Rust / Cargo
+path_prepend "${HOME}/bin"
+path_prepend "${HOME}/scripts"
+
 path_append "/usr/local/sbin"
 path_append "/usr/sbin"
 path_append "/sbin"
 path_append "/opt/bin"
-# MacOS with 'brew install coreutils':
-d="/usr/local/opt/coreutils/libexec/gnubin"
-[[ -d $d ]] && {
-    path_prepend "$d"
-    os_gnu=true
-}
-unset d
-# Maven
-path_prepend "${M2}"
-# Rust
-path_prepend "${HOME}/.cargo/bin"
-# My stuff
-path_prepend "${HOME}/bin"
-path_prepend "${HOME}/scripts"
 path_append "${HOME}/scripts/games"
+path_append "${HOME}/.krew/bin"
+
 export PATH
 # }}}
 
@@ -725,6 +729,7 @@ cx="\\[${c_none}\\]"
 [[ $os_linux ]] && pre_ps1="${c1}\\D{%m-%d %R} ${c2}${id} "
 [[ $os_mac ]]   && pre_ps1="${c2}\\u "
 
+# shellcheck disable=SC2016
 post_ps1="${c3}["'$(echo $(ls -1 | wc -l))'"] \\W${c4}"'$(type -t __git_ps1 &>/dev/null && __git_ps1)'" ${c3}$pr $cx"
 
 PS1="${pre_ps1}${post_ps1}"
