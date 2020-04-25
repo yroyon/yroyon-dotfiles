@@ -135,11 +135,15 @@ map  <F1> :make!<CR><CR>
 imap <F1> <Esc>:make!<CR><CR>a
 
 " https://github.com/mhinz/vim-startify
-let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
-let g:startify_bookmarks  = ['~/.vimrc', '~/.bashrc', '~/TODO']
-let g:startify_skiplist   = ['.*.swp']
-let g:startify_files_number   = 5
-let g:startify_enable_special = 1
+let g:startify_files_number         = 5
+let g:startify_bookmarks            = ['~/.vimrc', '~/.bashrc', '~/TODO']
+let g:startify_custom_header_quotes = [['moo, I say']]
+let g:startify_list_order           = ['files', 'dir', 'bookmarks', 'sessions']
+let g:startify_skiplist             = ['.*.swp']
+let g:startify_change_to_dir        = 1
+let g:startify_enable_special       = 1
+let g:startify_relative_path        = 1
+let g:startify_update_oldfiles      = 1
 
 " Status Bar
 set laststatus=2
