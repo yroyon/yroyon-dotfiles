@@ -297,11 +297,58 @@ gx-go
 #    rustup completions bash | sudo tee /usr/local/share/bash-completion/completions/rustup
 #}
 
-# TODO fonts
-#brew tap caskroom/fonts
-#brew cask search /powerline/
-# install those
-#brew cask install font-meslo-lg-for-powerline
+# nerd-font versions (superset of powerline)
+fonts=(
+font-hack-nerd-font
+font-dejavusansmono-nerd-font
+font-saucecodepro-nerd-font
+font-anonymice-nerd-font
+font-robotomono-nerd-font
+font-monofur-nerd-font
+font-arimo-nerd-font
+font-cousine-nerd-font
+font-tinos-nerd-font
+font-noto-nerd-font
+font-ubuntu-nerd-font
+font-ubuntumono-nerd-font
+font-firacode-nerd-font
+)
+# roboto replaces droid
+# roboto is preferred over noto, but noto covers more scripts in unicode.  noto is MASSIVE.
+# dejavu is still popular, although roboto or hack are nicer
+# firacode has ligatures.  matter of taste.  firamono is same w/o ligatures.
+
+fonts_ignore=(
+font-ibm-plex
+font-gomono-nerd-font
+font-inconsolata-nerd-font
+font-liberation-nerd-font
+font-meslolg-nerd-font
+font-firamono-nerd-font
+)
+
+# Fonts I have manually installed:
+# A lot of them have no -powerline package!
+# No package: fura, font-meslo-for-powerline in bold and ita, symbol-neu
+#fonts=(
+#font-anonymice-powerline
+#font-dejavu-sans-mono-for-powerline
+#font-droid-sans-mono-for-powerline
+#font-inconsolata-for-powerline
+#font-inconsolata-dz-for-powerline
+#font-inconsolata-g-for-powerline
+#font-inconsolata-for-powerline-bold
+#font-liberation-mono-for-powerline
+#font-meslo-for-powerline
+#font-monofur-for-powerline
+#font-noto-mono-for-powerline
+#font-roboto-mono-for-powerline
+#font-ubuntu-mono-derivative-powerline
+#)
+
+for font in "${fonts[@]}"; do
+    brew cask install "$font" --force
+done
 
 ## Migration
 # List your installed stuff:
