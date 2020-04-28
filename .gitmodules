@@ -79,3 +79,33 @@
 [submodule "vim/bundle/ft-yaml-fold"]
 	path = vim/bundle/ft-yaml-fold
 	url = git@github.com:digitalrounin/vim-yaml-folds
+[submodule "vim/bundle/coc"]
+	path = vim/bundle/coc
+	url = git@github.com:neoclide/coc.nvim
+[submodule "vim/bundle/colorscheme-ayu"]
+	path = vim/bundle/colorscheme-ayu
+	url = git@github.com:ayu-theme/ayu-vim
+[submodule "vim/bundle/colorscheme-gruvbox"]
+	path = vim/bundle/colorscheme-gruvbox
+	url = git@github.com:morhetz/gruvbox
+[submodule "vim/bundle/colorscheme-molokai"]
+	path = vim/bundle/colorscheme-molokai
+	url = git@github.com:tomasr/molokai
+[submodule "vim/bundle/colorscheme-atom-dark"]
+	path = vim/bundle/colorscheme-atom-dark
+	url = git@github.com:gosukiwi/vim-atom-dark
+[submodule "vim/bundle/colorscheme-badwolf"]
+	path = vim/bundle/colorscheme-badwolf
+	url = git@github.com:sjl/badwolf
+[submodule "vim/bundle/colorscheme-tender"]
+	path = vim/bundle/colorscheme-tender
+	url = git@github.com:jacoborus/tender.vim
+[submodule "vim/bundle/colorscheme-jellybeans"]
+	path = vim/bundle/colorscheme-jellybeans
+	url = git@github.com:nanotech/jellybeans.vim
+[submodule "vim/bundle/colorscheme-wombat256i"]
+	path = vim/bundle/colorscheme-wombat256i
+	url = git@github.com:dsolstad/vim-wombat256i
+[submodule "vim/bundle/colorscheme-wombat256grf"]
+	path = vim/bundle/colorscheme-wombat256grf
+	url = git@github.com:gryf/wombat256grf

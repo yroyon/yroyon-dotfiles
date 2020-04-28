@@ -185,10 +185,10 @@ endif
 "-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                     fonts & colours {{{
+"                     fonts & colors {{{
 "-----------------------------------------------------------
 
-" Highlight syntax, but only if the terminal has colours
+" Highlight syntax, but only if the terminal has colors
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
@@ -206,19 +206,21 @@ if has("gui_macvim")
 "       otherwise: && if has("gui_running")
     let g:airline_powerline_fonts = 1
     let g:airline_theme = 'dark'
-    "let g:airline_theme = 'luna'
+"    let g:airline_theme = 'badwolf'
+"    let g:airline_theme = 'minimalist'
+"    let g:airline_theme = 'wombat'
+"    let g:airline_theme = 'zenburn'
 endif
 " but disable tagbar integration (shows current function, takes too much space)
 let g:airline#extensions#tagbar#enabled = 0
 
-" patched statusline fonts: https://github.com/powerline/
+" patched statusline fonts: https://github.com/powerlines
+" brew tap caskroom/fonts; brew cask install font-saucecodepro-nerd-font
 if has('gui_macvim')
     let g:Powerline_symbols = 'fancy'
-"    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-"    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12
-"    set guifont=Inconsolata\ for\ Powerline:h13
-"    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
-    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
+    set guifont=Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono:h13
+    " Hack and Roboto have asymmetrical shapes for > in statusline :-(
+"    set guifont=Hack\ Regular\ Nerd\ Font\ Complete\ Mono:h13
 endif
 
 " If you use the solarized vim scheme, but not the solarized Xdefaults
@@ -226,8 +228,8 @@ let g:solarized_termcolors=256
 " If you use molokai from https://github.com/tomasr/molokai/
 let g:rehash256 = 1
 
-" Try to load a nice colourscheme (from ciaranm)
-function! LoadColourScheme(schemes)
+" Try to load a nice colorscheme (from ciaranm)
+function! LoadColorScheme(schemes)
     let l:schemes = a:schemes . ":"
     while l:schemes != ""
         let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
@@ -240,26 +242,28 @@ function! LoadColourScheme(schemes)
     endwhile
 endfunction
 
-" me like: wombat, molokai, inkpot, vibrantink, desert256, ir_black, jellybeans, lettuce
-let s:schemes_gvim = "molokai_y:wombat256mod:luna:inkpot:vibrantink:molokai:desert256:bluegreen:default"
+let s:schemes_gvim = "gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf"
+let s:schemes_termhi = "molokai_y:luna-term:lettuce:ir_black:candycode:wombat_y:molokai:desert"
 let s:schemes_term256 = "luna-term:wombat_y:inkpot:candycode:molokai_y:desert256_y:desert"
 let s:schemes_term = "desert:bluegreen:darkblue"
 let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui_running')
-    call LoadColourScheme(s:schemes_gvim)
+    call LoadColorScheme(s:schemes_gvim)
 else
     if has("autocmd")
         autocmd VimEnter *
-            \ if &t_Co == 88 || &t_Co == 256 |
-            \     call LoadColourScheme(s:schemes_term256) |
+            \ if &t_Co > 256 |
+            \     call LoadColorScheme(s:schemes_termhi) |
+            \ elseif &t_Co == 88 || &t_Co == 256 |
+            \     call LoadColorScheme(s:schemes_term256) |
             \ else |
-            \     call LoadColourScheme(s:schemes_term) |
+            \     call LoadColorScheme(s:schemes_term) |
             \ endif
     else
         if &t_Co == 88 || &t_Co == 256
-            call LoadColourScheme(s:schemes_term256)
+            call LoadColorScheme(s:schemes_term256)
         else
-            call LoadColourScheme(s:schemes_term)
+            call LoadColorScheme(s:schemes_term)
         endif
     endif
 endif
@@ -267,7 +271,7 @@ endif
 if &diff
     " TODO luna-term drops syntax coloring inside the diff sections.
     " Otherwise, its diff colors are nicely clear.
-    call LoadColourScheme(s:schemes_diff)
+    call LoadColorScheme(s:schemes_diff)
 endif
 " }}}
 "-----------------------------------------------------------

@@ -40,7 +40,8 @@
 
 [core]
 	abbrev = 9
-	excludesfile = ~/.gitignore_global
+    # Removed:  default is ~/.config/git/ignore so use that
+#	excludesFile = ~/.gitignore_global
 #	gitProxy = git-http-proxy
 #	pager = less -FRSX
 
