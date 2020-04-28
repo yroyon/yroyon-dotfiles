@@ -1,18 +1,57 @@
-*.[ao]
-*.bak
-*.class
+# MacOS
+.DS_Store
+
+# Windows
+$RECYCLE.BIN/
 *.dll
-*.pyc
+Thumbs.db
+[Dd]esktop.ini
+
+# Linux
+.Trash-*
+.directory
+.fuse_hidden*
+.nfs*
+
+# scm other than git
+.bzr/
+.hg/
+.svn/
+CVS/
+
+# MS Office
+*.~vsd*
+~$*.doc*
+~$*.ppt*
+~$*.xls*
+
+# temp files
+*.bak
+*.ori
+*.orig
 *.tmp
 *~
 .*.swp
-.DS_Store
+._*
+.netrwhist
+
+# Development temp files
+*.[ao]
+*.class
+*.ctags
+*.pyc
+*.rej
+*.retry
 .ant-targets-build.xml
-.hg/
+.settings/
 .sonar/
-Desktop.ini
-Thumbs.db
+.target
+.vagrant/
+.venv
 __pycache__
 a.out
 cscope.out
+hs_err_pid*
+local.properties
 tags
+
