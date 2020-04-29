@@ -3,12 +3,12 @@ scriptencoding utf-8
 " F1  : run makeprg silently
 " F2  : git: toggle diff highlight
 " F3  : git: go to next hunk
-" F4  : toggle Tagbar
+" F4  : toggle signcolumn
 " F5  : trim trailing white spaces
-" F6  : toggle NERDTree
+" F6  : toggle Tagbar
 " F7  : toggle cursor column highlight
 " F8  : toggle cursor line highlight
-" F9  :
+" F9  : toggle NERDTree
 " F10 : toggle line numbers
 " F11 : toggle paste mode
 " F12 :
@@ -104,11 +104,11 @@ set sidescrolloff=2
 
 " Line numbers
 set numberwidth=3
-"map  <F10> :set invnumber<CR>
+"map  <F10>      :set invnumber<CR>
 "imap <F10> <Esc>:set invnumber<CR>a
 " Switch between absolute line numbers, relative numbers and no numbers
-noremap <F10> :set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>
-inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>a
+noremap  <silent> <F10>      :set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>
+inoremap <silent> <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rnu.&nu]<CR>nu<CR>a
 " Other impls:
 " " Toggle relative/absolute line numbers
 " map <Leader>na :se <c-r>=&nu?"no":""<CR>nu<CR>
@@ -120,10 +120,10 @@ inoremap <F10> <Esc>:set <c-r>={'00':'','01':'r','10':'nor','11':'nornu no'}[&rn
 "autocmd InsertLeave * :set relativenumber
 
 " Highlight current position
-map  <F8> :set invcursorline<CR>
-imap <F8> <Esc>:set invcursorline<CR>a
-map  <F7> :set invcursorcolumn<CR>
-imap <F7> <Esc>:set invcursorcolumn<CR>a
+map  <silent> <F8>      :set invcursorline<CR>
+imap <silent> <F8> <Esc>:set invcursorline<CR>a
+map  <silent> <F7>      :set invcursorcolumn<CR>
+imap <silent> <F7> <Esc>:set invcursorcolumn<CR>a
 
 " Make backspace delete lots of things
 set backspace=indent,eol,start
@@ -131,8 +131,8 @@ set backspace=indent,eol,start
 " Wrap on <Left> and <Right> in all 4 modes
 "set whichwrap+=<,>,[,]
 
-map  <F1> :make!<CR><CR>
-imap <F1> <Esc>:make!<CR><CR>a
+map  <silent> <F1>      :make!<CR><CR>
+imap <silent> <F1> <Esc>:make!<CR><CR>a
 
 " https://github.com/mhinz/vim-startify
 let g:startify_files_number         = 5
@@ -161,9 +161,16 @@ set statusline+=]                              " ]
 set statusline+=%=                             " right align
 set statusline+=%-14.(%l/%L,%c%)\ %<%P         " offset
 
-" https://github.com/scrooloose/nerdtree
-map  <F6> :NERDTreeToggle<CR>:wincmd p<CR>
-imap <F6> <Esc>:NERDTreeToggle<CR>:wincmd p<CR>a
+" https://github.com/mhinz/vim-startify
+let g:startify_files_number         = 5
+let g:startify_bookmarks            = ['~/.vimrc', '~/.bashrc', '~/TODO']
+let g:startify_custom_header_quotes = [['moo, I say']]
+let g:startify_list_order           = ['files', 'dir', 'bookmarks', 'sessions']
+let g:startify_skiplist             = ['.*.swp']
+let g:startify_change_to_dir        = 1
+let g:startify_enable_special       = 1
+let g:startify_relative_path        = 1
+let g:startify_update_oldfiles      = 1
 
 " netrw mode
 let g:netrw_banner = 0                         " no top banner
@@ -347,9 +354,9 @@ function! ToggleAutoFormatting()
 endfunction
 
 " Keep visual selections when indenting text
-vnoremap <M-<> <gv
-vnoremap <M->> >gv
-vnoremap <Space> I<Space><Esc>gv
+vnoremap <silent> <M-<> <gv
+vnoremap <silent> <M->> >gv
+vnoremap <silent> <Space> I<Space><Esc>gv
 
 " TODO try
 "" p and P to match target indentation level (instead of just preserving
@@ -394,7 +401,7 @@ function! TrimWhiteSpace()
     call cursor(l:l, l:c)
 endfunction
 
-map  <F5> :TrimWhiteSpace<CR>
+map  <F5>      :TrimWhiteSpace<CR>
 imap <F5> <Esc>:TrimWhiteSpace<CR>a
 
 "" To use it automatically:
@@ -427,15 +434,15 @@ imap <F5> <Esc>:TrimWhiteSpace<CR>a
 set pastetoggle=<F11>
 
 " Move between visible lines and not between real lines
-map <silent> <Up> gk
+map <silent> <Up>   gk
 map <silent> <Down> gj
 map <silent> <home> g<home>
-map <silent> <end> g<end>
+map <silent> <end>  g<end>
 
 "imap <silent> <Up> <C-o>gk
 "imap <silent> <Down> <C-o>gj
 imap <silent> <home> <C-o>g<home>
-imap <silent> <end> <C-o>g<end>
+imap <silent> <end>  <C-o>g<end>
 
 " Prevent i<Esc>i<Esc> from moving cursor to the left.
 "    (but then a<Esc>a<Esc> moves cursor to the right)
@@ -444,18 +451,18 @@ imap <silent> <end> <C-o>g<end>
 
 " 'ac' toggles always/auto center (vertically)
 nnoremap <silent> ac :let &scrolloff=999-&scrolloff<CR>
-function! ToggleAlwaysCenter()
+function! VerticalCenterToggle()
     let &scrolloff=999-&scrolloff
 endfunction
-command! ToggleAlwaysCenter call ToggleAlwaysCenter()
+command! VerticalCenterToggle call VerticalCenterToggle()
 
 " Q wraps paragraph lines up to col 79. See gqap and gq}
-nnoremap Q gwap
-vnoremap Q gw
+nnoremap <silent> Q gwap
+vnoremap <silent> Q gw
 " Reverse operation, to unwrap (Join) lines: J
 " To split a line under the cursor:
 " (normal S is covered by cc, no problem overriding it)
-nnoremap S i<cr><esc><right>
+nnoremap <silent> S i<cr><esc><right>
 
 " % reacts to more delimiters, such as closing XML tags
 runtime! macros/matchit.vim
@@ -478,11 +485,12 @@ noremap <silent> * :let @/='\<'.expand('<cword>').'\>'<bar>:set hls<CR>
 " g* searches for partial words
 noremap <silent> g* :let @/=expand('<cword>')<bar>:set hls<CR>
 
-map µ <Esc>:set invhlsearch<CR>
+" That was for a French keyboard
+"map µ <Esc>:set invhlsearch<CR>
 
 " center screen on search matches
-nnoremap N Nzz
-nnoremap n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> n nzz
 " make zz/zt/zb center blocks (instead of current line) with visual selections
 vnoremap <silent> zz :<C-u>call setpos('.',[0,(line("'>")-line("'<"))/2+line("'<"),0,0])<Bar>normal! zzgv<CR>
 vnoremap <silent> zt :<C-u>call setpos('.',[0,line("'<"),0,0])<Bar>normal! ztgv<CR>
@@ -558,7 +566,8 @@ set dictionary+=/usr/share/dict/words
 set showfulltag
 
 " Ctrl-Space in insert mode opens completion window
-inoremap <Nul> <C-x><C-o>
+" This is for omnifunc.  If we use CoC, we need to disable omnifunc. So, comment it out.
+"inoremap <Nul> <C-x><C-o>
 
 "set completeopt+=longest
 set completeopt+=menuone,preview
@@ -584,7 +593,7 @@ function! CleverTab()
     endif
 endfunction
 
-inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
+"inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
 
 " NeoSnippet: https://github.com/Shougo/neosnippet.vim
 " Works better with neocomplcache
@@ -593,17 +602,17 @@ inoremap <expr> <Tab> pumvisible()?"<C-R>=CleverTab()\<CR>":"\<Tab>"
 "   snipmate https://github.com/garbas/vim-snipmate
 "
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-k>  <Plug>(neosnippet_expand_or_jump)
+smap <C-k>  <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>  <Plug>(neosnippet_expand_target)
 "
 " SuperTab-like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: "\<TAB>"
+"imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"  \ "\<Plug>(neosnippet_expand_or_jump)"
+"  \: pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"  \ "\<Plug>(neosnippet_expand_or_jump)"
+"  \: "\<TAB>"
 "
 " For snippet_complete marker.
 if has('conceal')
@@ -651,8 +660,8 @@ endif
 map <silent> g[ :cscope find 3 <C-R>=expand("<cword>")<CR><CR>
 
 " http://majutsushi.github.io/tagbar/
-nmap <F4> :TagbarToggle<CR>
-imap <F4> <Esc>:TagbarToggle<CR>a
+nmap <F6>      :TagbarToggle<CR>
+imap <F6> <Esc>:TagbarToggle<CR>a
 
 " hg clone https://bitbucket.org/abudden/taghighlight
 " TagHighlight will highlight ctags from your project and from the standard
@@ -667,10 +676,10 @@ imap <F4> <Esc>:TagbarToggle<CR>a
 "-----------------------------------------------------------
 
 " https://github.com/airblade/vim-gitgutter
-map  <F2> ::GitGutterLineHighlightsToggle<CR>
-imap <F2> <Esc>::GitGutterLineHighlightsToggle<CR>a
-map  <F3> ::GitGutterNextHunk<CR>
-imap <F3> <Esc>::GitGutterNextHunk<CR>i
+map  <silent> <F2>      :GitGutterLineHighlightsToggle<CR>
+imap <silent> <F2> <Esc>:GitGutterLineHighlightsToggle<CR>a
+"map  <F3>      :GitGutterNextHunk<CR>
+"imap <F3> <Esc>:GitGutterNextHunk<CR>i
 "let g:gitgutter_sign_added = '⇒'
 "let g:gitgutter_sign_modified = '⇔'
 "let g:gitgutter_sign_removed = '⇐'
@@ -682,15 +691,17 @@ let g:gitgutter_escape_grep = 1              " vanilla grep
 
 " WiP
 function GitP()
-    :GitGutterPrevHunk
-    :GitGutterPreviewHunk
+    silent :GitGutterPrevHunk
+    silent :GitGutterPreviewHunk
 endfunction
 function GitN()
-    :GitGutterNextHunk
-    :GitGutterPreviewHunk
+    silent :GitGutterNextHunk
+    silent :GitGutterPreviewHunk
 endfunction
 command! GitP GitGutterPrevHunk|GitGutterPreviewHunk
 command! GitN call GitN()
+map  <silent> <F3>      :GitN<CR>
+imap <silent> <F3> <Esc>:GitN<CR>i
 " }}}
 "-----------------------------------------------------------
 
@@ -770,7 +781,7 @@ let g:html_use_css=1
 let g:use_xhtml=1
 
 " When editing a file, always jump to the last cursor position
-augroup from_gentoo
+augroup restore_cursos_pos
     autocmd BufReadPost *
         \ if line("'\"") > 0 && line ("'\"") <= line("$") |
         \     exe "normal g'\"" |
@@ -810,7 +821,7 @@ augroup END
 "-----------------------------------------------------------
 
 " vim -b : edit binary using xxd-format
-augroup Binary
+augroup binary_edit_hex
     au!
     au BufReadPre *.bin,*.hex setlocal binary
     au BufReadPost * if &binary | exe "Hexmode" | endif
@@ -825,8 +836,8 @@ augroup Binary
           \ endif
 augroup END
 
-command! Hexmode call ToggleHex()
-function! ToggleHex()
+command! Hexmode call HexToggle()
+function! HexToggle()
     " Hex mode should be considered a read-only operation.
     " Save modified and read-only flags for restoration later,
     " and clear the read-only flag for now.
