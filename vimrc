@@ -90,7 +90,7 @@ set printoptions+=syntax:y
 set ruler
 set laststatus=2               " bottom status bar, 2=always
 set virtualedit=block          " visual block mode (ctrl-v) goes past EOL
-set wildmode=list:longest,full " <Tab> completion behaviour in ex mode
+set wildmode=list:longest,full " <Tab> completion behavior in ex mode
 set wildmenu
 set wildignore+=*.o,*~,*.class,*.pyc,*.rbc,.svn,.git,tags
 " During tab completion, give those files lower priority
@@ -707,16 +707,16 @@ augroup restore_cursos_pos
 augroup END
 
 " Modelines : show as comments, no syntax highlight.
-augroup y_modeline
-try
-    autocmd Syntax *
-        \ syn match VimModelineLine /^.\{-1,}vim:[^:]\{-1,}:.*/ contains=VimModeline |
-        \ syn match VimModeline contained /vim:[^:]\{-1,}:/
-    hi def link VimModelineLine comment
-    hi def link VimModeline     special
-catch
-endtry
-augroup END
+"augroup y_modeline
+"try
+"    autocmd Syntax *
+"        \ syn match VimModelineLine /^.\{-1,}vim:[^:]\{-1,}:.*/ contains=VimModeline |
+"        \ syn match VimModeline contained /vim:[^:]\{-1,}:/
+"    hi def link VimModelineLine comment
+"    hi def link VimModeline     special
+"catch
+"endtry
+"augroup END
 
 " TODO Compressed files
 "augroup lzma
