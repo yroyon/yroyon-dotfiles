@@ -192,98 +192,6 @@ endif
 "-----------------------------------------------------------
 
 "-----------------------------------------------------------
-"                     fonts & colors {{{
-"-----------------------------------------------------------
-
-" Highlight syntax, but only if the terminal has colors
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" If the terminal is in 88 colors (urxvt default), force to 256.
-" Console supports 8, looks ugly with >8.
-if &t_Co == 88 || (&term =~ "xterm")
-    set t_Co=256
-endif
-
-" patched statusline fonts: https://github.com/bling/vim-airline
-if has("gui_macvim")
-" NOTE: Configure iTerm2 & Terminal to use the patched Powerline fonts.
-"       otherwise: && if has("gui_running")
-    let g:airline_powerline_fonts = 1
-    let g:airline_theme = 'dark'
-"    let g:airline_theme = 'badwolf'
-"    let g:airline_theme = 'minimalist'
-"    let g:airline_theme = 'wombat'
-"    let g:airline_theme = 'zenburn'
-endif
-" but disable tagbar integration (shows current function, takes too much space)
-let g:airline#extensions#tagbar#enabled = 0
-
-" patched statusline fonts: https://github.com/powerlines
-" brew tap caskroom/fonts; brew cask install font-saucecodepro-nerd-font
-if has('gui_macvim')
-    let g:Powerline_symbols = 'fancy'
-    set guifont=Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono:h13
-    " Hack and Roboto have asymmetrical shapes for > in statusline :-(
-"    set guifont=Hack\ Regular\ Nerd\ Font\ Complete\ Mono:h13
-endif
-
-" If you use the solarized vim scheme, but not the solarized Xdefaults
-let g:solarized_termcolors=256
-" If you use molokai from https://github.com/tomasr/molokai/
-let g:rehash256 = 1
-
-" Try to load a nice colorscheme (from ciaranm)
-function! LoadColorScheme(schemes)
-    let l:schemes = a:schemes . ":"
-    while l:schemes != ""
-        let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
-        let l:schemes = strpart(l:schemes, stridx(l:schemes, ":") + 1)
-        try
-            exec "colorscheme" l:scheme
-            break
-        catch
-        endtry
-    endwhile
-endfunction
-
-let s:schemes_gvim = "gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf"
-let s:schemes_termhi = "molokai_y:luna-term:lettuce:ir_black:candycode:wombat_y:molokai:desert"
-let s:schemes_term256 = "luna-term:wombat_y:inkpot:candycode:molokai_y:desert256_y:desert"
-let s:schemes_term = "desert:bluegreen:darkblue"
-let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
-if has('gui_running')
-    call LoadColorScheme(s:schemes_gvim)
-else
-    if has("autocmd")
-        autocmd VimEnter *
-            \ if &t_Co > 256 |
-            \     call LoadColorScheme(s:schemes_termhi) |
-            \ elseif &t_Co == 88 || &t_Co == 256 |
-            \     call LoadColorScheme(s:schemes_term256) |
-            \ else |
-            \     call LoadColorScheme(s:schemes_term) |
-            \ endif
-    else
-        if &t_Co == 88 || &t_Co == 256
-            call LoadColorScheme(s:schemes_term256)
-        else
-            call LoadColorScheme(s:schemes_term)
-        endif
-    endif
-endif
-
-if &diff
-    " TODO luna-term drops syntax coloring inside the diff sections.
-    " Otherwise, its diff colors are nicely clear.
-    call LoadColorScheme(s:schemes_diff)
-endif
-" }}}
-"-----------------------------------------------------------
-
-"-----------------------------------------------------------
 "                    detect filetypes {{{
 "-----------------------------------------------------------
 filetype on
@@ -905,6 +813,114 @@ try
 catch
 endtry
 " }}}
+
+"-----------------------------------------------------------
+"                     fonts & colors {{{
+"-----------------------------------------------------------
+
+" Put his after the pathogen / vundle / plug section.
+" New-ish themes like ayu, badwolf, gruvbox are not finished loading
+" otherwise, and vim will raise an exception.  (Here, it will move on to the
+" next color scheme, thanks to function LoadColorScheme).
+
+" Highlight syntax, but only if the terminal has colors
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" If the terminal is in 88 colors (urxvt default), force to 256.
+" Console supports 8, looks ugly with >8.
+if &t_Co == 88 || (&term =~ "xterm")
+    set t_Co=256
+endif
+
+" patched statusline fonts: https://github.com/bling/vim-airline
+if has("gui_macvim")
+" NOTE: Configure iTerm2 & Terminal to use the patched Powerline fonts.
+"       otherwise: && if has("gui_running")
+    let g:airline_powerline_fonts = 1
+    let g:airline_theme = 'dark'
+"    let g:airline_theme = 'badwolf'
+"    let g:airline_theme = 'minimalist'
+"    let g:airline_theme = 'wombat'
+"    let g:airline_theme = 'zenburn'
+endif
+" but disable tagbar integration (shows current function, takes too much space)
+let g:airline#extensions#tagbar#enabled = 0
+
+" patched statusline fonts: https://github.com/powerlines
+" brew tap caskroom/fonts; brew cask install font-saucecodepro-nerd-font
+if has('gui_macvim')
+    let g:Powerline_symbols = 'fancy'
+    set guifont=Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono:h13
+    " Hack and Roboto have asymmetrical shapes for > in statusline :-(
+"    set guifont=Hack\ Regular\ Nerd\ Font\ Complete\ Mono:h13
+endif
+
+" If you use the solarized vim scheme, but not the solarized Xdefaults
+let g:solarized_termcolors=256
+" If you use molokai from https://github.com/tomasr/molokai/
+let g:rehash256 = 1
+" If you use the ayu theme from https://github.com/ayu-theme/ayu-vim
+let ayucolor="dark"
+"let ayucolor="mirage"
+
+" Try to load a nice colorscheme (from ciaranm)
+function! LoadColorScheme(schemes)
+    let l:schemes = a:schemes . ":"
+    while l:schemes != ""
+        let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
+        let l:schemes = strpart(l:schemes, stridx(l:schemes, ":") + 1)
+        try
+            exec "colorscheme" l:scheme
+            break
+        catch
+        endtry
+    endwhile
+endfunction
+
+if has('termguicolors') && (has('mac') || has('win32'))
+    set termguicolors
+endif
+
+set background=dark
+let s:schemes_gvim = "gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf"
+let s:schemes_truecolor = "ayu:badwolf:candycode:luna:lizard"
+let s:schemes_termhi = "molokai_y:luna-term:wombat_y:lettuce:ir_black:candycode:molokai:desert"
+let s:schemes_term256 = "luna-term:wombat_y:candycode:molokai_y:desert256_y:desert"
+let s:schemes_term = "desert:bluegreen:darkblue"
+let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
+if has('gui_running')
+    call LoadColorScheme(s:schemes_gvim)
+elseif &termguicolors ==# 1
+    call LoadColorScheme(s:schemes_truecolor)
+elseif has("autocmd")
+    autocmd VimEnter *
+        \ if &t_Co > 256 |
+        \     call LoadColorScheme(s:schemes_termhi) |
+        \ elseif &t_Co == 88 || &t_Co == 256 |
+        \     call LoadColorScheme(s:schemes_term256) |
+        \ else |
+        \     call LoadColorScheme(s:schemes_term) |
+        \ endif
+else
+    if &t_Co > 256
+        call LoadColorScheme(s:schemes_termhi)
+    elseif &t_Co == 88 || &t_Co == 256
+        call LoadColorScheme(s:schemes_term256)
+    else
+        call LoadColorScheme(s:schemes_term)
+    endif
+endif
+
+if &diff
+    " TODO luna-term drops syntax coloring inside the diff sections.
+    " Otherwise, its diff colors are nicely clear.
+    call LoadColorScheme(s:schemes_diff)
+endif
+" }}}
+"-----------------------------------------------------------
 
 " -------------------------
 " shortcuts you should know {{{
