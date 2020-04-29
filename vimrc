@@ -134,16 +134,30 @@ set backspace=indent,eol,start
 map  <silent> <F1>      :make!<CR><CR>
 imap <silent> <F1> <Esc>:make!<CR><CR>a
 
-" https://github.com/mhinz/vim-startify
-let g:startify_files_number         = 5
-let g:startify_bookmarks            = ['~/.vimrc', '~/.bashrc', '~/TODO']
-let g:startify_custom_header_quotes = [['moo, I say']]
-let g:startify_list_order           = ['files', 'dir', 'bookmarks', 'sessions']
-let g:startify_skiplist             = ['.*.swp']
-let g:startify_change_to_dir        = 1
-let g:startify_enable_special       = 1
-let g:startify_relative_path        = 1
-let g:startify_update_oldfiles      = 1
+" netrw mode
+let g:netrw_banner = 0                         " no top banner
+let g:netrw_liststyle = 3                      " tree view
+"let g:netrw_browse_split=1                    " open files in hsplit instead of same win
+let g:netrw_browse_split = 4                   " open files in prev win
+let g:netrw_altv = 1                           " right side instead of left
+let g:netrw_winsize = 25                       " type :Vex to open, 25% left side
+
+" Toggle signcolumn
+" The CoC plugin makes you set signcolumn=yes in after/plugin/coc-settings.vim
+" It's useful on occasion to hide the signcolumn, like when copy-pasting with
+" the mouse.
+function SignColumnToggle()
+    if !exists("b:signcolumn_on") || b:signcolumn_on
+        set signcolumn=no
+        let b:signcolumn_on=0
+    else
+        set signcolumn=yes
+        let b:signcolumn_on=1
+    endif
+endfunction
+command! SignColumnToggle call SignColumnToggle()
+map  <silent> <F4>      :SignColumnToggle<CR>
+imap <silent> <F4> <Esc>:SignColumnToggle<CR>a
 
 " Status Bar
 set laststatus=2
@@ -172,13 +186,9 @@ let g:startify_enable_special       = 1
 let g:startify_relative_path        = 1
 let g:startify_update_oldfiles      = 1
 
-" netrw mode
-let g:netrw_banner = 0                         " no top banner
-let g:netrw_liststyle = 3                      " tree view
-"let g:netrw_browse_split=1                    " open files in hsplit instead of same win
-let g:netrw_browse_split = 4                   " open files in prev win
-let g:netrw_altv = 1                           " right side instead of left
-let g:netrw_winsize = 25                       " type :Vex to open, 25% left side
+" https://github.com/scrooloose/nerdtree
+"map  <silent> <F9>      :NERDTreeToggle<CR>:wincmd p<CR>
+"imap <silent> <F9> <Esc>:NERDTreeToggle<CR>:wincmd p<CR>a
 
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
