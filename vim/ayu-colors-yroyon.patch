@@ -1,0 +1,93 @@
+diff --git a/colors/ayu.vim b/colors/ayu.vim
+index 9158e6b5a..028b94196 100644
+--- a/colors/ayu.vim
++++ b/colors/ayu.vim
+@@ -14,9 +14,10 @@ let g:colors_name = "ayu"
+ 
+ let s:palette = {}
+ 
+-let s:palette.bg        = {'dark': "#0F1419",  'light': "#FAFAFA",  'mirage': "#212733"}
++let s:palette.bg        = {'dark': "#0D1217",  'light': "#FAFAFA",  'mirage': "#212733"}
++let s:palette.bg_ui     = {'dark': "#050A0E",  'light': "#FAFAFA",  'mirage': "#111723"}
+ 
+-let s:palette.comment   = {'dark': "#5C6773",  'light': "#ABB0B6",  'mirage': "#5C6773"}
++let s:palette.comment   = {'dark': "#6C8289",  'light': "#ABB0B6",  'mirage': "#5C6773"}
+ let s:palette.markup    = {'dark': "#F07178",  'light': "#F07178",  'mirage': "#F07178"}
+ let s:palette.constant  = {'dark': "#FFEE99",  'light': "#A37ACC",  'mirage': "#D4BFFF"}
+ let s:palette.operator  = {'dark': "#E7C547",  'light': "#E7C547",  'mirage': "#80D4FF"}
+@@ -29,13 +30,16 @@ let s:palette.keyword   = {'dark': "#FF7733",  'light': "#FF7733",  'mirage': "#
+ 
+ let s:palette.error     = {'dark': "#FF3333",  'light': "#FF3333",  'mirage': "#FF3333"}
+ let s:palette.accent    = {'dark': "#F29718",  'light': "#FF6A00",  'mirage': "#FFCC66"}
+-let s:palette.panel     = {'dark': "#14191F",  'light': "#FFFFFF",  'mirage': "#272D38"}
+-let s:palette.guide     = {'dark': "#2D3640",  'light': "#D9D8D7",  'mirage': "#3D4751"}
+-let s:palette.line      = {'dark': "#151A1E",  'light': "#F3F3F3",  'mirage': "#242B38"}
++let s:palette.panel     = {'dark': "#191F24",  'light': "#FFFFFF",  'mirage': "#272D38"}
++let s:palette.guide     = {'dark': "#4D5660",  'light': "#D9D8D7",  'mirage': "#3D4751"}
++let s:palette.line      = {'dark': "#272E34",  'light': "#F3F3F3",  'mirage': "#242B38"}
+ let s:palette.selection = {'dark': "#253340",  'light': "#F0EEE4",  'mirage': "#343F4C"}
+ let s:palette.fg        = {'dark': "#E6E1CF",  'light': "#5C6773",  'mirage': "#D9D7CE"}
+-let s:palette.fg_idle   = {'dark': "#3E4B59",  'light': "#828C99",  'mirage': "#607080"}
++let s:palette.fg_idle   = {'dark': "#6F7D8F",  'light': "#828C99",  'mirage': "#607080"}
+ 
++let s:palette.diff_add  = {'dark': "#003200",  'light': "#AFFFAF",  'mirage': "#D9D7CE"}
++let s:palette.diff_mod  = {'dark': "#000042",  'light': "#AFAFFF",  'mirage': "#D9D7CE"}
++let s:palette.diff_del  = {'dark': "#320000",  'light': "#FFAFAF",  'mirage': "#D9D7CE"}
+ "}}}
+ 
+ " Highlighting Primitives:"{{{
+@@ -80,32 +84,32 @@ exe "let s:fmt_revr = ' gui=NONE".s:r.      " cterm=NONE".s:r.      " term=NONE"
+ exe "let s:fmt_revb = ' gui=NONE".s:r.s:b.  " cterm=NONE".s:r.s:b.  " term=NONE".s:r.s:b."'"
+ "}}}
+ 
+-
+ " Vim Highlighting: (see :help highlight-groups)"{{{
+ " ----------------------------------------------------------------------------
+ exe "hi! Normal"        .s:fg_fg          .s:bg_bg          .s:fmt_none
+-exe "hi! ColorColumn"   .s:fg_none        .s:bg_line        .s:fmt_none
++exe "hi! ColorColumn"   .s:fg_none        .s:bg_bg_ui       .s:fmt_none
+ " Conceal, Cursor, CursorIM
+ exe "hi! CursorColumn"  .s:fg_none        .s:bg_line        .s:fmt_none
+ exe "hi! CursorLine"    .s:fg_none        .s:bg_line        .s:fmt_none
+ exe "hi! CursorLineNr"  .s:fg_accent      .s:bg_line        .s:fmt_none
+-exe "hi! LineNr"        .s:fg_guide       .s:bg_none        .s:fmt_none
++exe "hi! LineNr"        .s:fg_guide       .s:bg_bg_ui       .s:fmt_none
+ 
+ exe "hi! Directory"     .s:fg_fg_idle     .s:bg_none        .s:fmt_none
+-exe "hi! DiffAdd"       .s:fg_string      .s:bg_panel       .s:fmt_none
+-exe "hi! DiffChange"    .s:fg_tag         .s:bg_panel       .s:fmt_none
++exe "hi! DiffAdd"       .s:fg_none        .s:bg_diff_add    .s:fmt_none
++exe "hi! DiffChange"    .s:fg_none        .s:bg_diff_mod    .s:fmt_none
++exe "hi! DiffDelete"    .s:fg_none        .s:bg_diff_del    .s:fmt_none
+ exe "hi! DiffText"      .s:fg_fg          .s:bg_panel       .s:fmt_none
+ exe "hi! ErrorMsg"      .s:fg_fg          .s:bg_error       .s:fmt_stnd
+ exe "hi! VertSplit"     .s:fg_bg          .s:bg_none        .s:fmt_none
+ exe "hi! Folded"        .s:fg_fg_idle     .s:bg_panel       .s:fmt_none
+ exe "hi! FoldColumn"    .s:fg_none        .s:bg_panel       .s:fmt_none
+-exe "hi! SignColumn"    .s:fg_none        .s:bg_panel       .s:fmt_none
++exe "hi! SignColumn"    .s:fg_none        .s:bg_bg_ui       .s:fmt_bold
+ "   Incsearch"
+ 
+ exe "hi! MatchParen"    .s:fg_fg          .s:bg_bg          .s:fmt_undr
+ exe "hi! ModeMsg"       .s:fg_string      .s:bg_none        .s:fmt_none
+ exe "hi! MoreMsg"       .s:fg_string      .s:bg_none        .s:fmt_none
+-exe "hi! NonText"       .s:fg_guide       .s:bg_none        .s:fmt_none
++exe "hi! NonText"       .s:fg_guide       .s:bg_bg_ui       .s:fmt_none
+ exe "hi! Pmenu"         .s:fg_fg          .s:bg_selection   .s:fmt_none
+ exe "hi! PmenuSel"      .s:fg_fg          .s:bg_selection   .s:fmt_revr
+ "   PmenuSbar"
+@@ -241,10 +245,10 @@ exe "hi! NERDTreeDirSlash"          .s:fg_accent     .s:bg_none        .s:fmt_no
+ 
+ " GitGutter
+ " ---------
+-exe "hi! GitGutterAdd"          .s:fg_string     .s:bg_none        .s:fmt_none
+-exe "hi! GitGutterChange"       .s:fg_tag        .s:bg_none        .s:fmt_none
+-exe "hi! GitGutterDelete"       .s:fg_markup     .s:bg_none        .s:fmt_none
+-exe "hi! GitGutterChangeDelete" .s:fg_function   .s:bg_none        .s:fmt_none
++exe "hi! GitGutterAdd"          .s:fg_string     .s:bg_bg_ui       .s:fmt_none
++exe "hi! GitGutterChange"       .s:fg_tag        .s:bg_bg_ui       .s:fmt_none
++exe "hi! GitGutterDelete"       .s:fg_markup     .s:bg_bg_ui       .s:fmt_none
++exe "hi! GitGutterChangeDelete" .s:fg_function   .s:bg_bg_ui       .s:fmt_none
+ 
+ "}}}
+ 

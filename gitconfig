@@ -44,6 +44,7 @@
 #	excludesFile = ~/.gitignore_global
 #	gitProxy = git-http-proxy
 #	pager = less -FRSX
+#	pager = delta --theme=none # --plus-color="#012800" --minus-color="#340001"
 
 [credential]
 #	helper = cache --timeout=3600
@@ -74,6 +75,9 @@
 
 [init]
 	templatedir = ~/.git_template
+
+[interactive]
+#    diffFilter = delta --color-only --theme=none
 
 [merge]
 	tool = vimdiff
