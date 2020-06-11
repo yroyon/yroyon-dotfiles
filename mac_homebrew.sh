@@ -48,10 +48,9 @@ brew install "${gnu[@]}" # --with-default-names
 # 4. Revert /usr/local/Homebrew/Library/Homebrew/brew.sh
 
 taps=(
-caskroom/cask
-caskroom/fonts
+homebrew/cask
+homebrew/cask-fonts
 homebrew/bundle
-homebrew/core
 homebrew/services
 )
 #brew tap "${taps[@]}"
@@ -299,19 +298,19 @@ gx-go
 
 # nerd-font versions (superset of powerline)
 fonts=(
-font-hack-nerd-font
-font-dejavusansmono-nerd-font
-font-saucecodepro-nerd-font
 font-anonymice-nerd-font
-font-robotomono-nerd-font
-font-monofur-nerd-font
 font-arimo-nerd-font
 font-cousine-nerd-font
-font-tinos-nerd-font
+font-dejavusansmono-nerd-font
+font-firacode-nerd-font
+font-hack-nerd-font
+font-monofur-nerd-font
 font-noto-nerd-font
+font-robotomono-nerd-font
+font-saucecodepro-nerd-font
+font-tinos-nerd-font
 font-ubuntu-nerd-font
 font-ubuntumono-nerd-font
-font-firacode-nerd-font
 )
 # roboto replaces droid
 # roboto is preferred over noto, but noto covers more scripts in unicode.  noto is MASSIVE.

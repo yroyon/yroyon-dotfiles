@@ -287,8 +287,13 @@ throttle() {
 
 # ---------- path  {{{
 # MacOS with 'brew install coreutils findutils':
-for d in "/usr/local/opt/coreutils/libexec/gnubin" \
-         "/usr/local/opt/findutils/libexec/gnubin" \
+for d in /usr/local/opt/coreutils/libexec/gnubin \
+         /usr/local/opt/findutils/libexec/gnubin \
+         /usr/local/opt/gnu-indent/libexec/gnubin \
+         /usr/local/opt/gnu-sed/libexec/gnubin \
+         /usr/local/opt/gnu-tar/libexec/gnubin \
+         /usr/local/opt/grep/libexec/gnubin \
+         /usr/local/opt/make/libexec/gnubin \
 ; do
     [[ -d $d ]] && {
         path_prepend "$d"
@@ -473,9 +478,9 @@ function grepport() {
     lsof -n -iTCP:"$1"
 }
 
-# TODO
-# 'route' for MacOS:
-# netstat -nr
+[[ $os_mac ]] && {
+    alias route="netstat -nr"
+}
 
 ## GNU xargs supports --no-run-if-empty
 [[ $os_mac ]] && [[ $os_gnu ]] && {
@@ -500,10 +505,8 @@ alias vi="vim"
     alias vim="mvim"
 }
 
-if ! is_command tree; then
-    if is_command exa; then
-        alias tree="exa -TFa --group-directories-first"
-    fi
+if is_command exa; then
+    alias exa="exa -Fa --group-directories-first -gm --git --time-style=long-iso"
 fi
 
 # Inhibit "non-prefixed coreutils" warning from `brew doctor`
@@ -554,13 +557,15 @@ is_command tokei && alias sloc-details="tokei --hidden --no-ignore --no-ignore-p
 #alias hd='od -Ax -tx1z -v'
 
 ## locale issues
-alias calibre="LC_ALL=en_US calibre"
+is_command calibre && alias calibre="LC_ALL=en_US calibre"
 #alias git="LC_ALL=fr_FR@euro git"
-alias glade="LC_ALL=en_US glade-3"
-alias wicd-curses="LC_ALL=C wicd-curses"
+is_command glade-3 && alias glade="LC_ALL=en_US glade-3"
+is_command wicd-curses && alias wicd-curses="LC_ALL=C wicd-curses"
 ## TERM issues
-alias rxvt="urxvt"
-alias rxvt-unicode="urxvt"
+is_command urxvt && {
+    alias rxvt="urxvt"
+    alias rxvt-unicode="urxvt"
+}
 
 ## colors
 is_command grc && {
@@ -785,6 +790,11 @@ done
             # shellcheck source=/dev/null
             [[ -f $f ]] && source "$f"
         done
+    }
+    brew-upgrade() {
+        brew update
+        brew upgrade
+        brew cask upgrade --greedy
     }
 }
 #

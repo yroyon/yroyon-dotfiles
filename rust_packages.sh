@@ -25,5 +25,5 @@ tokei
 
 cargo install "${cli[@]}" "${tui[@]}" "${misc[@]}"
 cargo install cargo-update
-cargo-install-update install-update --all
+cargo install-update --all
 
