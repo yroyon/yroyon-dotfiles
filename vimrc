@@ -890,7 +890,7 @@ function! LoadColorScheme(schemes)
     endwhile
 endfunction
 
-if has('termguicolors') && (has('mac') || has('win32'))
+if has('termguicolors')
     set termguicolors
 endif
 
@@ -924,11 +924,11 @@ else
     endif
 endif
 
-if &diff
-    " TODO luna-term drops syntax coloring inside the diff sections.
-    " Otherwise, its diff colors are nicely clear.
-    call LoadColorScheme(s:schemes_diff)
-endif
+"if &diff
+"    " TODO luna-term drops syntax coloring inside the diff sections.
+"    " Otherwise, its diff colors are nicely clear.
+"    call LoadColorScheme(s:schemes_diff)
+"endif
 " }}}
 "-----------------------------------------------------------
 
