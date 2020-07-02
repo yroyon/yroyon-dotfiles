@@ -302,13 +302,15 @@ throttle() {
 
 # ---------- path  {{{
 # MacOS with 'brew install coreutils findutils':
-for d in /usr/local/opt/coreutils/libexec/gnubin \
-         /usr/local/opt/findutils/libexec/gnubin \
-         /usr/local/opt/gnu-indent/libexec/gnubin \
-         /usr/local/opt/gnu-sed/libexec/gnubin \
-         /usr/local/opt/gnu-tar/libexec/gnubin \
-         /usr/local/opt/grep/libexec/gnubin \
-         /usr/local/opt/make/libexec/gnubin \
+for d in \
+    /usr/local/opt/ruby/bin \
+    /usr/local/opt/make/libexec/gnubin \
+    /usr/local/opt/gnu-indent/libexec/gnubin \
+    /usr/local/opt/gnu-tar/libexec/gnubin \
+    /usr/local/opt/gnu-sed/libexec/gnubin \
+    /usr/local/opt/grep/libexec/gnubin \
+    /usr/local/opt/findutils/libexec/gnubin \
+    /usr/local/opt/coreutils/libexec/gnubin \
 ; do
     [[ -d $d ]] && {
         path_prepend "$d"
@@ -319,8 +321,9 @@ unset d
 
 path_prepend "${M2}"               # Maven
 path_prepend "${HOME}/.cargo/bin"  # Rust / Cargo
-path_prepend "${HOME}/bin"
 path_prepend "${HOME}/scripts"
+path_prepend "${HOME}/.local/bin"
+path_prepend "${HOME}/bin"
 
 path_append "/usr/local/sbin"
 path_append "/usr/sbin"
