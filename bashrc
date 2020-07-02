@@ -180,8 +180,21 @@ is_command docker && {
 # Python
 is_command pip3 && {
     function pip3-upgrade() {
-        pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
+        pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U -q
     }
+}
+is_command pip2 && {
+    function pip2-upgrade() {
+        pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip2 install -U -q --no-python-version-warning
+    }
+}
+
+# Python3 on Mac
+[[ -f /usr/local/bin/python3 ]] && {
+    alias python=/usr/local/bin/python3
+}
+[[ -f /usr/local/bin/pip3 ]] && {
+    alias pip=/usr/local/bin/pip3
 }
 
 # List directories by size
@@ -330,6 +343,9 @@ fi
 
 # https://github.com/nvbn/thefuck
 is_command thefuck && eval "$(thefuck --alias)"
+
+# pipx for Python packages
+is_command register-python-argcomplete && eval "$(register-python-argcomplete pipx)"
 
 # TODO ugly, and pdftotext not invoked properly:
 #is_command lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
