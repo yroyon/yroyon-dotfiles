@@ -532,7 +532,9 @@ fi
 
 # Inhibit "non-prefixed coreutils" warning from `brew doctor`
 [[ $os_mac ]] && {
-    alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin /usr/local/bin/brew"
+    brew() {
+        PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin /usr/local/bin/brew "$*"
+    }
 }
 
 # GNU parallel
@@ -816,6 +818,7 @@ done
         brew update
         brew upgrade
         brew cask upgrade --greedy
+        brew cleanup
     }
 }
 #
