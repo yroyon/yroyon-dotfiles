@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# -> use 3rd party package 'topgrade' instead
 
 # OS: MacOS Homebrew
 brew-upgrade() {

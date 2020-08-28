@@ -1,111 +1,113 @@
-[submodule "vim/bundle/securemodelines"]
-	path = vim/bundle/securemodelines
+[submodule "home/vim/bundle/securemodelines"]
+	path = home/vim/bundle/securemodelines
 	url = https://github.com/ciaranm/securemodelines
-[submodule "vim/bundle/a"]
-	path = vim/bundle/a
+[submodule "home/vim/bundle/a"]
+	path = home/vim/bundle/a
 	url = https://github.com/vim-scripts/a.vim
-[submodule "vim/bundle/colorscheme-lizard"]
-	path = vim/bundle/colorscheme-lizard
+[submodule "home/vim/bundle/colorscheme-lizard"]
+	path = home/vim/bundle/colorscheme-lizard
 	url = https://github.com/gilsondev/lizard
-[submodule "vim/bundle/ft-dockerfile"]
-	path = vim/bundle/ft-dockerfile
+[submodule "home/vim/bundle/ft-dockerfile"]
+	path = home/vim/bundle/ft-dockerfile
 	url = https://github.com/ekalinin/Dockerfile.vim
-[submodule "vim/bundle/ft-json"]
-	path = vim/bundle/ft-json
+[submodule "home/vim/bundle/ft-json"]
+	path = home/vim/bundle/ft-json
 	url = https://github.com/elzr/vim-json
-[submodule "vim/bundle/ft-scala"]
-	path = vim/bundle/ft-scala
+[submodule "home/vim/bundle/ft-scala"]
+	path = home/vim/bundle/ft-scala
 	url = https://github.com/derekwyatt/vim-scala
-[submodule "vim/bundle/gitgutter"]
-	path = vim/bundle/gitgutter
+[submodule "home/vim/bundle/gitgutter"]
+	path = home/vim/bundle/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
-[submodule "vim/bundle/localvimrc"]
-	path = vim/bundle/localvimrc
+[submodule "home/vim/bundle/localvimrc"]
+	path = home/vim/bundle/localvimrc
 	url = https://github.com/embear/vim-localvimrc
-[submodule "vim/bundle/neosnippet"]
-	path = vim/bundle/neosnippet
+[submodule "home/vim/bundle/neosnippet"]
+	path = home/vim/bundle/neosnippet
 	url = https://github.com/Shougo/neosnippet.vim
-[submodule "vim/bundle/speeddating"]
-	path = vim/bundle/speeddating
+[submodule "home/vim/bundle/speeddating"]
+	path = home/vim/bundle/speeddating
 	url = https://github.com/tpope/vim-speeddating
-[submodule "vim/bundle/startify"]
-	path = vim/bundle/startify
+[submodule "home/vim/bundle/startify"]
+	path = home/vim/bundle/startify
 	url = https://github.com/mhinz/vim-startify
-[submodule "vim/bundle/swapit"]
-	path = vim/bundle/swapit
+[submodule "home/vim/bundle/swapit"]
+	path = home/vim/bundle/swapit
 	url = https://github.com/mjbrownie/swapit
-[submodule "vim/bundle/syntastic"]
-	path = vim/bundle/syntastic
+[submodule "home/vim/bundle/syntastic"]
+	path = home/vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic
-[submodule "vim/bundle/tagbar"]
-	path = vim/bundle/tagbar
+[submodule "home/vim/bundle/tagbar"]
+	path = home/vim/bundle/tagbar
 	url = https://github.com/majutsushi/tagbar
-[submodule "vim/bundle/taghighlight"]
-	path = vim/bundle/taghighlight
+[submodule "home/vim/bundle/taghighlight"]
+	path = home/vim/bundle/taghighlight
 	url = https://github.com/vim-scripts/TagHighlight
-[submodule "vim/bundle/ft-go"]
-	path = vim/bundle/ft-go
+[submodule "home/vim/bundle/ft-go"]
+	path = home/vim/bundle/ft-go
 	url = https://github.com/fatih/vim-go
-[submodule "vim/bundle/ft-haskell-conceal"]
-	path = vim/bundle/ft-haskell-conceal
+[submodule "home/vim/bundle/ft-haskell-conceal"]
+	path = home/vim/bundle/ft-haskell-conceal
 	url = https://github.com/Twinside/vim-haskellConceal
-[submodule "vim/bundle/neosnippet-snippets"]
-	path = vim/bundle/neosnippet-snippets
+[submodule "home/vim/bundle/neosnippet-snippets"]
+	path = home/vim/bundle/neosnippet-snippets
 	url = https://github.com/Shougo/neosnippet-snippets
-[submodule "vim/bundle/airline"]
-	path = vim/bundle/airline
+[submodule "home/vim/bundle/airline"]
+	path = home/vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline
-[submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/vim-surround
+[submodule "home/vim/bundle/vim-surround"]
+	path = home/vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
-[submodule "vim/bundle/surround"]
-	path = vim/bundle/surround
+[submodule "home/vim/bundle/surround"]
+	path = home/vim/bundle/surround
 	url = https://github.com/tpope/vim-surround
-[submodule "vim/bundle/ft-rust"]
-	path = vim/bundle/ft-rust
+[submodule "home/vim/bundle/ft-rust"]
+	path = home/vim/bundle/ft-rust
 	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/bundle/neomake"]
-	path = vim/bundle/neomake
+[submodule "home/vim/bundle/neomake"]
+	path = home/vim/bundle/neomake
 	url = https://github.com/neomake/neomake
-[submodule "vim/bundle/tokei"]
-	path = vim/bundle/tokei
+[submodule "home/vim/bundle/tokei"]
+	path = home/vim/bundle/tokei
 	url = https://github.com/vmchale/tokei-vim
-[submodule "vim/bundle/airline-themes"]
-	path = vim/bundle/airline-themes
+[submodule "home/vim/bundle/airline-themes"]
+	path = home/vim/bundle/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
-[submodule "vim/bundle/ft-slack"]
-	path = vim/bundle/ft-slack
+[submodule "home/vim/bundle/ft-slack"]
+	path = home/vim/bundle/ft-slack
 	url = https://github.com/uptech/vim-slack-format.git
-[submodule "vim/bundle/ft-yaml-fold"]
-	path = vim/bundle/ft-yaml-fold
+[submodule "home/vim/bundle/ft-yaml-fold"]
+	path = home/vim/bundle/ft-yaml-fold
 	url = git@github.com:digitalrounin/vim-yaml-folds
-[submodule "vim/bundle/coc"]
-	path = vim/bundle/coc
+[submodule "home/vim/bundle/coc"]
+	path = home/vim/bundle/coc
 	url = git@github.com:neoclide/coc.nvim
-[submodule "vim/bundle/colorscheme-ayu"]
-	path = vim/bundle/colorscheme-ayu
+[submodule "home/vim/bundle/colorscheme-ayu"]
+	path = home/vim/bundle/colorscheme-ayu
 	url = git@github.com:ayu-theme/ayu-vim
-[submodule "vim/bundle/colorscheme-gruvbox"]
-	path = vim/bundle/colorscheme-gruvbox
+[submodule "home/vim/bundle/colorscheme-gruvbox"]
+	path = home/vim/bundle/colorscheme-gruvbox
 	url = git@github.com:morhetz/gruvbox
-[submodule "vim/bundle/colorscheme-molokai"]
-	path = vim/bundle/colorscheme-molokai
+[submodule "home/vim/bundle/colorscheme-molokai"]
+	path = home/vim/bundle/colorscheme-molokai
 	url = git@github.com:tomasr/molokai
-[submodule "vim/bundle/colorscheme-atom-dark"]
-	path = vim/bundle/colorscheme-atom-dark
+[submodule "home/vim/bundle/colorscheme-atom-dark"]
+	path = home/vim/bundle/colorscheme-atom-dark
 	url = git@github.com:gosukiwi/vim-atom-dark
-[submodule "vim/bundle/colorscheme-badwolf"]
-	path = vim/bundle/colorscheme-badwolf
+[submodule "home/vim/bundle/colorscheme-badwolf"]
+	path = home/vim/bundle/colorscheme-badwolf
 	url = git@github.com:sjl/badwolf
-[submodule "vim/bundle/colorscheme-tender"]
-	path = vim/bundle/colorscheme-tender
+[submodule "home/vim/bundle/colorscheme-tender"]
+	path = home/vim/bundle/colorscheme-tender
 	url = git@github.com:jacoborus/tender.vim
-[submodule "vim/bundle/colorscheme-jellybeans"]
-	path = vim/bundle/colorscheme-jellybeans
+[submodule "home/vim/bundle/colorscheme-jellybeans"]
+	path = home/vim/bundle/colorscheme-jellybeans
 	url = git@github.com:nanotech/jellybeans.vim
-[submodule "vim/bundle/colorscheme-wombat256i"]
-	path = vim/bundle/colorscheme-wombat256i
+[submodule "home/vim/bundle/colorscheme-wombat256i"]
+	path = home/vim/bundle/colorscheme-wombat256i
 	url = git@github.com:dsolstad/vim-wombat256i
-[submodule "vim/bundle/colorscheme-wombat256grf"]
-	path = vim/bundle/colorscheme-wombat256grf
+[submodule "home/vim/bundle/colorscheme-wombat256grf"]
+	path = home/vim/bundle/colorscheme-wombat256grf
 	url = git@github.com:gryf/wombat256grf
+[submodule "securemodelines/"]
+	url = https://github.com/ciaranm/securemodelines

@@ -23,6 +23,8 @@ loc
 tokei
 )
 
+rustup update
+
 cargo install "${cli[@]}" "${tui[@]}" "${misc[@]}"
 cargo install cargo-update
 cargo install-update --all

@@ -1,0 +1,144 @@
+# add.interactive.useBuiltin true  -> use EXPERIMENTAL built-in interactive add, instead of Perl
+
+[alias]
+    ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+    diffgui = difftool --tool=meld
+    filehist = log --patch --stat --follow
+    ignored = ls-files --directory -o
+    l  = log --date=relative --decorate \
+        --pretty=format:'%C(yellow)%h%C(reset) %s%C(bold red)%d %C(green)(%ad) %C(blue)[%an]%C(reset)'
+    lg = log --date=short --graph \
+        --pretty=format:'%Cblue%h%Creset | %C(yellow)%ad%Creset | %Cred%an%Creset | %s%d'
+    outstanding-files = ls-files --other --exclude-standard
+    restore = checkout --
+    sattus = status
+    stats = status
+    todo = grep --untracked -I --heading --break --line-number \
+        --fixed-strings --word-regexp \
+        -e XXX -e TODO -e FIXME -e @bug -e @todo
+        # per-file hits:  -c  (appendable on CLI)
+    unstage = reset HEAD --
+    undo = reset --soft HEAD^ --
+    vimdiff = difftool --tool=vimdiff
+    wdiff   = diff --no-ext-diff --word-diff
+    x = "!gitx"
+
+[blame]
+    date = short
+
+[color]
+    ui = true
+[color "diff"]
+#    meta = yellow bold
+    commit = green bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "diff-highlight"]
+    oldNormal = "red bold"
+    oldHighlight = "red bold 52"
+    newNormal = "green bold"
+    newHighlight = "green bold 22"
+
+[core]
+    abbrev = 9
+    hooksPath = ~/.config/git/hooks
+    # Removed:  default is ~/.config/git/ignore so use that
+#    excludesFile = ~/.gitignore_global
+#    gitProxy = git-http-proxy
+#    pager = less -FRSX
+#    pager = delta --theme=none # --plus-color="#012800" --minus-color="#340001"
+
+[credential]
+#    helper = cache --timeout=3600
+    helper = osxkeychain
+
+[delta]
+    number = true
+    zero-style = dim syntax
+
+[diff]
+    algorithm = histogram
+    guitool = meld
+    tool = vimdiff
+[difftool]
+    prompt = false
+[diff "image"]
+    textconv = identify
+[diff "odf"]
+    textconv = odt2txt
+[diff "pdf"]
+    textconv = ps2ascii
+[diff "zip"]
+    textconv = unzip -c -a
+
+[fetch]
+    prune = true
+
+[github]
+    user = yroyon
+
+[http]
+#    proxy = bluecoat-be02.alcatel.fr:1080
+#    proxy = http://www-proxy.exu.ericsson.se:8080
+#    sslverify = false
+
+[interactive]
+#    diffFilter = delta --color-only --theme=none
+
+[merge]
+    tool = vimdiff
+    #tool = meld
+
+[pager]
+#    -F breaks on MacOS. (auto-quits and shows nothing if log is < 1 screen)
+#    ==> brew install less
+    diff = diff-highlight | less -FSRX --pattern '^(commit|diff) '
+    log  = diff-highlight | less -FSRX --pattern '^(commit|diff) '
+    show = diff-highlight | less -FSRX --pattern '^(commit|diff) '
+#    diff = diff-so-fancy | less --tabs=1,5 -FSRX
+#    log  = diff-so-fancy | less --tabs=1,5 -FSRX
+#    show = diff-so-fancy | less --tabs=1,5 -FSRX
+
+[pull]
+    rebase = true
+
+[push]
+    default = tracking
+
+[rebase]
+    autosquash = true
+    autostash = true
+
+[rerere]
+    enabled = 1
+
+[svn]
+    rmdir = true
+
+[user]
+    name = Royon, Yvan
+    email = yvan.royon@verizon.com
+
+#{{{ sqlite support
+# We want databases checked in as a text version (for meaningful diffs),
+#   and checked out as binary version (for fast/regular access).
+# This example uses COOPY.
+# http://share.find.coop/doc/tutorial_git.html
+#
+# [filter "coopy-filter-sqlite"]
+#   smudge = ssformat dbi:sqlitext:file=- dbi:sqlite:file=-
+#   clean = ssformat dbi:sqlite:file=- dbi:sqlitext:file=-
+#
+# [merge "coopy-merge-sqlite"]
+#   name = coopy sqlite merge
+#   driver = ssmerge --named --unordered --output dbi:sqlitext::file=%A dbi:sqlitext::file=%O dbi:sqlitext::file=%A dbi:sqlitext::file=%B
+#
+# Then add a .gitattributes file:
+#
+# *.sqlite filter=coopy-filter-sqlite
+# *.sqlite merge=coopy-merge-sqlite
+#}}}
+
+# vim: set ft=gitconfig
