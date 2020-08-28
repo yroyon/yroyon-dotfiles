@@ -1,3 +1,5 @@
-proxy-ericsson.sh
+home/vim/node_modules/
+home/vim/yarn.lock
 m2/repository/
+proxy-ericsson.sh
 *.spl
