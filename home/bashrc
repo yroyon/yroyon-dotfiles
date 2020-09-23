@@ -666,6 +666,9 @@ function diff2() { command diff -U3 --minimal "$@" | diff-so-fancy; }
 # ok-ish with diff-highlight, breaks diff-so-fancy.
 # command colordiff -U2 --minimal logs.ori/ logs/ | sed 's/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/$/\x1b[0m/' | diff-highlight
 
+# TODO Configure default options for shfmt
+# shfmt -i 4 -bn -kp -sr -ci -s -d $file
+
 ## KDE display settings (2nd monitor...)
 is_command kcmshell4 && {
     alias kdisplay="kcmshell4 display"
@@ -824,10 +827,13 @@ done
         done
     }
     brew-upgrade() {
-        brew update
-        brew upgrade
-        brew cask upgrade --greedy
-        brew cleanup
+        brew upgrade --greedy
+        # -> No longer needed.  Previously, the steps were:
+        # brew update
+        # brew upgrade
+        # brew cask upgrade --greedy
+        # brew cleanup
+        # -> but now, all those steps are included in 'brew upgrade'.
     }
 }
 #
