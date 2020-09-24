@@ -903,7 +903,7 @@ let s:schemes_term = "desert:bluegreen:darkblue"
 let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
 if has('gui_running')
     call LoadColorScheme(s:schemes_gvim)
-elseif &termguicolors ==# 1
+elseif has('termguicolors') && &termguicolors ==# 1
     call LoadColorScheme(s:schemes_truecolor)
 elseif has("autocmd")
     autocmd VimEnter *
