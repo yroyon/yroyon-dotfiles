@@ -785,6 +785,9 @@ case $TERM in
 esac
 export PS1
 unset c1 c2 c3 c4 cx id pr
+
+# Fancy prompt written in Rust, config in ~/.config/starship.toml
+is_command starship && eval "$(starship init bash)"
 # }}}
 
 # ---------- readline {{{

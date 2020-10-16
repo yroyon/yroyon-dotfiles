@@ -1,0 +1,32 @@
+add_newline = true
+
+#format = """
+#[┌───────────────────>](bold green)
+#[│](bold green)$all
+#[└─>](bold green) """
+
+[character]
+success_symbol = "[❯](bold green)"  # default; could use "[➜](bold green)"
+error_symbol = ""  # [✗](bold red)"
+
+[directory]
+style = "bold blue"
+
+[git_branch]
+style = "bold red"
+
+[nodejs]
+disabled = true
+
+[package]
+#disabled = true
+
+[status]
+disabled = false
+format = """
+[$status $symbol]($style)"""
+
+[username]
+show_always = true
+style_user = "bold green"
+
