@@ -111,3 +111,6 @@
 	url = git@github.com:gryf/wombat256grf
 [submodule "securemodelines/"]
 	url = https://github.com/ciaranm/securemodelines
+[submodule "home/vim/bundle/ft-toml"]
+	path = home/vim/bundle/ft-toml
+	url = git@github.com:cespare/vim-toml.git
