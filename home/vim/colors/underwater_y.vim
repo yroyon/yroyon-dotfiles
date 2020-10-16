@@ -21,7 +21,7 @@ if version >= 700
   " cursor's colour
   hi CursorColumn guibg=#ffffff ctermbg=15
   hi MatchParen   guifg=#ffffff guibg=#439ea9 gui=bold ctermfg=15 ctermbg=73
-  hi Pmenu 		    guifg=#dfeff6 guibg=#1E415E ctermfg=195 ctermbg=23
+  hi Pmenu 		  guifg=#dfeff6 guibg=#1E415E ctermfg=195 ctermbg=23
   hi PmenuSel 	  guifg=#dfeff6 guibg=#2D7889 ctermfg=195 ctermbg=30
 
   " Search

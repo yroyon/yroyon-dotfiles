@@ -1,20 +1,9 @@
 " Name: Luna vim colorscheme
 " Author: Pratheek
-" URL: http://github.com/Pychimp/vim-luna
-" (see this url for latest release & screenshots)
+" URL: http://github.com/notpratheek/vim-luna
 " License: MIT (see LICENSE.rst in the root of project)
-" Created: In the middle of Earth's Rotation
-" Version: 0.0.7
-"
-"
-" TODO: {{{
-" ---------------------------------------------------------------------
-" -- Clean up !
-" -- create a terminal version
-" -- add more lang specifics
-" -- (Will think of some more sutff !)
-" }}}
-"
+" Version: 0.0.7-modified
+
 " Usage and Requirements "{{{
 " ---------------------------------------------------------------------
 " REQUIREMENTS:
@@ -25,46 +14,8 @@
 " - gVim >= 7.3 for Linux, Mac and Windows. (Since, all colours are in hex
 "   values, hence works with gvim. Terminal vim will be supported in future)
 "
-" ---------------------------------------------------------------------
-" INSTALLATION:
-" ---------------------------------------------------------------------
-" Two options for installation: manual or pathogen
-"
-" ---------------------------------------------------------------------
-" MANUAL INSTALLATION OPTION:
-" ---------------------------------------------------------------------
-"
-" 1. Download the luna distribution (as a zip archive, available on the github page)
-" and unarchive the file.
-" 2. Move `colors/luna.vim` to your `.vim/colors` directory.
-" 3. Enjoy !
-"
-" ---------------------------------------------------------------------
-" HIGHLY RECOMMENDED PATHOGEN INSTALLATION OPTION:
-" ---------------------------------------------------------------------
-"
-" 1. Download and install Tim Pope's Pathogen from:
-" https://github.com/tpope/vim-pathogen
-"
-" 2. Next, move or clone the `vim-luna` directory so that it is
-" a subdirectory of the `.vim/bundle` directory.
-"
-" a. **clone with git:**
-"
-" $ cd ~/.vim/bundle
-" $ git clone git://github.com/Pychimp/vim-luna.git
-"
-" ---------------------------------------------------------------------
-" MODIFY VIMRC:
-" ---------------------------------------------------------------------
-"
-" After either manual or pathogen installation, put the following two lines in your
-" .vimrc:
-"
-" syntax enable
-" colorscheme luna
 " }}}
-"
+
 " Colorscheme initialization "{{{
 " ---------------------------------------------------------------------
 set background=dark
@@ -74,7 +25,7 @@ if exists("syntax_on")
 endif
 let g:colors_name = "luna"
 " }}}
-"
+
 " Gvim Highlighting: (see :help highlight-groups)"{{{
 " ---------------------------------------------------------------------
 " First, the Normal
@@ -191,7 +142,7 @@ hi ColorColumn   guifg=NONE    guibg=#3e3739 gui=NONE
 hi WildMenu      guifg=#002b2b guibg=#ffffff gui=NONE
 hi SignColumn    guifg=NONE    guibg=#212121 gui=NONE
 " }}}
-"
+
 " Language Specifics: {{{
 " ---------------------------------------------------------------------
 " These are language specifics. These are set explicitly to override the group
@@ -220,7 +171,7 @@ hi rubyArrayDelimiter     guifg=#00bcbc guibg=NONE gui=NONE
 "
 " ---------------------------------------------------------------------
 " }}}
-"
+
 " Extras: {{{
 " ---------------------------------------------------------------------
 " These are extra parts for highlighting certain external plugins
@@ -250,6 +201,5 @@ hi SignifySignDelete guifg=#ff0000 guibg=#212121 gui=NONE
 "
 " ---------------------------------------------------------------------
 " }}}
-"
+
 " vim:foldmethod=marker:foldlevel=0:textwidth=79
-"

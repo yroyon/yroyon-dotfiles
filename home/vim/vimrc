@@ -897,10 +897,10 @@ endif
 set background=dark
 let s:schemes_gvim = "gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf"
 let s:schemes_truecolor = "ayu:badwolf:candycode:luna:lizard"
-let s:schemes_termhi = "molokai_y:luna-term:wombat_y:lettuce:ir_black:candycode:molokai:desert"
-let s:schemes_term256 = "luna-term:wombat_y:candycode:molokai_y:desert256_y:desert"
-let s:schemes_term = "desert:bluegreen:darkblue"
-let s:schemes_diff = "wombat_y:molokai_y:luna-term:lettuce:jellybeans"
+let s:schemes_termhi = "molokai_y:luna:wombat_y:lettuce:ir_black:candycode:molokai:desert"
+let s:schemes_term256 = "wombat_y:luna-term:candycode:molokai_y:desert256_y:desert"
+let s:schemes_term = "desert:darkblue"
+let s:schemes_diff = "molokai_y:luna:jellybeans:badwolf:candycode:wombat256grf"
 if has('gui_running')
     call LoadColorScheme(s:schemes_gvim)
 elseif has('termguicolors') && &termguicolors ==# 1
@@ -925,7 +925,7 @@ else
 endif
 
 "if &diff
-"    " TODO luna-term drops syntax coloring inside the diff sections.
+"    " TODO luna drops syntax coloring inside the diff sections.
 "    " Otherwise, its diff colors are nicely clear.
 "    call LoadColorScheme(s:schemes_diff)
 "endif
