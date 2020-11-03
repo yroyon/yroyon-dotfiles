@@ -17,15 +17,15 @@ scriptencoding utf-8
 "                     terminal setup {{{
 "-----------------------------------------------------------
 
-if (&term =~ "rxvt") || (&term =~ "xterm")
+if (&term =~ 'rxvt') || (&term =~ 'xterm')
     if has('title')
         set title
     endif
-    if &termencoding == ""
+    if &termencoding == ''
         set termencoding=utf-8
     endif
     " Change cursor shape between insert and normal mode
-    if $TERM_PROGRAM =~ "iTerm"
+    if $TERM_PROGRAM =~ 'iTerm'
         let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
         let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
     else
@@ -33,7 +33,7 @@ if (&term =~ "rxvt") || (&term =~ "xterm")
     endif
 endif
 
-if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
+if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && v:version >= 700
     let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
     let &fillchars = "vert:\u259a,fold:\u00b7"
 else
@@ -147,7 +147,7 @@ let g:netrw_winsize = 25                       " type :Vex to open, 25% left sid
 " It's useful on occasion to hide the signcolumn, like when copy-pasting with
 " the mouse.
 function SignColumnToggle()
-    if !exists("b:signcolumn_on") || b:signcolumn_on
+    if !exists('b:signcolumn_on') || b:signcolumn_on
         set signcolumn=no
         let b:signcolumn_on=0
     else
@@ -192,8 +192,8 @@ let g:startify_update_oldfiles      = 1
 
 " Focus back to Mac's Terminal on exit (macvim configured to keep running in bg).
 " Really not robust.
-if has("gui_macvim") && has("gui_running")
-    if $TERM_PROGRAM =~ "iTerm"
+if has('gui_macvim') && has('gui_running')
+    if $TERM_PROGRAM =~ 'iTerm'
         autocmd VimLeave * :!open -a iTerm
     endif
 endif
@@ -231,7 +231,7 @@ function! NeatFoldText()
     let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
     let foldtextend = lines_count_text
     let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
-    let foldpercent = printf(" | %.1f", (foldtextlength*1.0)/line("$")*100) . "% "
+    let foldpercent = printf(" | %.1f", (foldtextlength*1.0)/line("$")*100) . '% '
     return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength-strwidth(foldpercent)-3) . foldtextend . foldpercent
 endfunction
 
@@ -310,8 +310,8 @@ command! TrimWhiteSpace call TrimWhiteSpace()
 function! TrimWhiteSpace()
     " Preparation: save last search, and cursor position.
     let l:s = @/
-    let l:l = line(".")
-    let l:c = col(".")
+    let l:l = line('.')
+    let l:c = col('.')
     " Do the business:
     %s/\s\+$//e
     " Clean up: restore previous search history, and cursor position
@@ -551,18 +551,18 @@ endif
 "                      ctags, cscope {{{
 "-----------------------------------------------------------
 
-if has("cscope")
+if has('cscope')
     set cscopeprg=cscope
     set cscopetagorder=0
     " Make :tag, Ctrl-] etc use cscope+ctags instead of just ctags
     "set cscopetag
     set nocscopeverbose
     " Add any database in current directory
-    if filereadable("cscope.out")
+    if filereadable('cscope.out')
         cscope add cscope.out
     endif
     " Add database pointed to by environment
-    if $CSCOPE_DB != ""
+    if $CSCOPE_DB != ''
         cscope add $CSCOPE_DB
     endif
     set cscopeverbose
@@ -632,30 +632,30 @@ imap <silent> <F3> <Esc>:GitN<CR>i
 let g:go_version_warning = 0
 
 " https://github.com/embear/vim-localvimrc/
-let g:localvimrc_name=[ ".vimrc.local" ]
-"let g:localvimrc_ask=0
-let g:localvimrc_persistent=2
-"let g:localvimrc_whitelist='/home/user/projects/\(foo\|bar\)/.*'
+let g:localvimrc_name = [ '.vimrc.local' ]
+"let g:localvimrc_ask = 0
+let g:localvimrc_persistent = 2
+"let g:localvimrc_whitelist = '/home/user/projects/\(foo\|bar\)/.*'
 
 " Assume the shell is Bash (:help sh.vim)
-if filereadable("/usr/local/bin/bash")
+if filereadable('/usr/local/bin/bash')
     " Thanks Apple for the old Bash
     set shell=/usr/local/bin/bash
-    let g:syntastic_shell="/usr/local/bin/bash"
+    let g:syntastic_shell = '/usr/local/bin/bash'
 else
     set shell=/bin/bash
-    let g:syntastic_shell="/bin/bash"
+    let g:syntastic_shell = '/bin/bash'
 endif
-let g:is_bash=1
-let g:sh_fold_enabled=3
+let g:is_bash = 1
+let g:sh_fold_enabled = 3
 
-let g:c_gnu=1
+let g:c_gnu = 1
 
 " For clang-complete
 "let g:clang_use_library = 1
 
 " Default .tex to LaTeX instead of ConTeXt
-let g:tex_flavor = "latex"
+let g:tex_flavor = 'latex'
 
 " Java : do not highlight 'delete' and such as errors.
 let g:java_allow_cpp_keywords = 0
@@ -673,30 +673,31 @@ let g:java_allow_cpp_keywords = 0
 " Uncomment to disable.
 "let g:no_haskell_conceal = 1
 
-let g:haddock_browser = "/usr/bin/firefox"
+let g:haddock_browser = '/usr/bin/firefox'
 
 " Syntastic
 " Navigate with :lnext and :lprevious
 "
 " Use :SyntasticToggleMode to toggle active/passive (meaning run on :w)
-let b:syntastic_mode = "passive"
+let b:syntastic_mode = 'passive'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_error_symbol = "✗"
-let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_ansible_checkers = ['ansible_lint']
 let g:syntastic_c_checkers = ['make']  " default is gcc
-let g:syntastic_sh_shellcheck_args = "-x"
+let g:syntastic_sh_shellcheck_args = '-x'
 let g:syntastic_yaml_checkers = ['yamllint']
+let g:syntastic_vim_checkers = ['vint']
 
 " TagBar
 let g:tagbar_autofocus = 1
 
 " :TOhtml
-let g:html_number_lines=1  " 0/1, don't/show line numbers
-let g:html_use_css=1
-let g:use_xhtml=1
+let g:html_number_lines = 1  " 0/1, don't/show line numbers
+let g:html_use_css = 1
+let g:use_xhtml = 1
 
 " When editing a file, always jump to the last cursor position
 augroup restore_cursos_pos
@@ -762,13 +763,13 @@ function! HexToggle()
     let l:modified=&mod
     let l:oldreadonly=&readonly
     let &readonly=0
-    if !exists("b:editHex") || !b:editHex
+    if !exists('b:editHex') || !b:editHex
         " Save old options
         let b:oldft=&ft
         let b:oldbin=&bin
         " Set new options
         setlocal binary " Make sure it overrides any textwidth, etc.
-        let &ft="xxd"
+        let &ft='xxd'
         " Set status
         let b:editHex=1
         " Switch to hex editor
@@ -834,19 +835,19 @@ endtry
 " next color scheme, thanks to function LoadColorScheme).
 
 " Highlight syntax, but only if the terminal has colors
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2 || has('gui_running')
   syntax on
   set hlsearch
 endif
 
 " If the terminal is in 88 colors (urxvt default), force to 256.
 " Console supports 8, looks ugly with >8.
-if &t_Co == 88 || (&term =~ "xterm")
+if &t_Co == 88 || (&term =~ 'xterm')
     set t_Co=256
 endif
 
 " patched statusline fonts: https://github.com/bling/vim-airline
-if has("gui_macvim")
+if has('gui_macvim')
 " NOTE: Configure iTerm2 & Terminal to use the patched Powerline fonts.
 "       otherwise: && if has("gui_running")
     let g:airline_powerline_fonts = 1
@@ -869,21 +870,21 @@ if has('gui_macvim')
 endif
 
 " If you use the solarized vim scheme, but not the solarized Xdefaults
-let g:solarized_termcolors=256
+let g:solarized_termcolors = 256
 " If you use molokai from https://github.com/tomasr/molokai/
 let g:rehash256 = 1
 " If you use the ayu theme from https://github.com/ayu-theme/ayu-vim
-let ayucolor="dark"
-"let ayucolor="mirage"
+let ayucolor = 'dark'
+"let ayucolor = 'mirage'
 
 " Try to load a nice colorscheme (from ciaranm)
 function! LoadColorScheme(schemes)
-    let l:schemes = a:schemes . ":"
-    while l:schemes != ""
-        let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
-        let l:schemes = strpart(l:schemes, stridx(l:schemes, ":") + 1)
+    let l:schemes = a:schemes . ':'
+    while l:schemes != ''
+        let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ':'))
+        let l:schemes = strpart(l:schemes, stridx(l:schemes, ':') + 1)
         try
-            exec "colorscheme" l:scheme
+            exec 'colorscheme' l:scheme
             break
         catch
         endtry
@@ -895,17 +896,17 @@ if has('termguicolors')
 endif
 
 set background=dark
-let s:schemes_gvim = "gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf"
-let s:schemes_truecolor = "ayu:badwolf:candycode:luna:lizard"
-let s:schemes_termhi = "molokai_y:luna:wombat_y:lettuce:ir_black:candycode:molokai:desert"
-let s:schemes_term256 = "wombat_y:luna-term:candycode:molokai_y:desert256_y:desert"
-let s:schemes_term = "desert:darkblue"
-let s:schemes_diff = "molokai_y:luna:jellybeans:badwolf:candycode:wombat256grf"
+let s:schemes_gvim = 'gruvbox:ayu:luna:candycode:ir_black:lettuce:wombat256mod:badwolf'
+let s:schemes_truecolor = 'ayu:badwolf:candycode:luna:lizard'
+let s:schemes_termhi = 'molokai_y:luna:wombat_y:lettuce:ir_black:candycode:molokai:desert'
+let s:schemes_term256 = 'wombat_y:luna-term:candycode:molokai_y:desert256_y:desert'
+let s:schemes_term = 'desert:darkblue'
+let s:schemes_diff = 'molokai_y:luna:jellybeans:badwolf:candycode:wombat256grf'
 if has('gui_running')
     call LoadColorScheme(s:schemes_gvim)
 elseif has('termguicolors') && &termguicolors ==# 1
     call LoadColorScheme(s:schemes_truecolor)
-elseif has("autocmd")
+elseif has('autocmd')
     autocmd VimEnter *
         \ if &t_Co > 256 |
         \     call LoadColorScheme(s:schemes_termhi) |
