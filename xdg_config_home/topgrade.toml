@@ -63,7 +63,9 @@ arguments = "--rebase --autostash"
 "pip3 packages" = "pip3 freeze --local | cut -d = -f 1 | xargs -n1 pip3 install -U -q"
 
 [brew]
-greedy_cask = true
+# I used to use --greedy.  I'm having problems upgrading Chrome and Firefox.
+# => Remove --greedy, and let the browsers self-update.
+#greedy_cask = true
 
 [linux]
 # Arguments to pass yay when updating packages
