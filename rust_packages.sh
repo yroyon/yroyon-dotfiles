@@ -12,11 +12,13 @@ ripgrep
 tui=(
 bandwhich
 broot
+gping
 procs
 )
 # kmon
 
 misc=(
+git-delta
 hexyl
 hyperfine
 loc
