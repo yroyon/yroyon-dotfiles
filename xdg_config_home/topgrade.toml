@@ -11,7 +11,7 @@ disable = ["git_repos"]
 #only = ["system", "emacs"]
 
 # Do not ask to retry failed steps (default: false)
-#no_retry = true
+no_retry = true
 
 # Run inside tmux
 #run_in_tmux = true
@@ -74,6 +74,7 @@ arguments = "--rebase --autostash"
 #enable_tlmgr = true
 #emerge_sync_flags = "-q"
 #emerge_update_flags = "-uDNa --with-bdeps=y world"
+#redhat_distro_sync = false
 
 [windows]
 # Manually select Windows updates
