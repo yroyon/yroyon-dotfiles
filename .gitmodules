@@ -114,3 +114,6 @@
 [submodule "home/vim/bundle/ft-toml"]
 	path = home/vim/bundle/ft-toml
 	url = git@github.com:cespare/vim-toml.git
+[submodule "home/vim/bundle/editorconfig-vim"]
+	path = home/vim/bundle/editorconfig-vim
+	url = git@github.com:editorconfig/editorconfig-vim.git
