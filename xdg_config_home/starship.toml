@@ -1,8 +1,10 @@
+# See: `starship print-config`
 # See https://starship.rs/config/
 # Custom symbols (which respect text color), replacing emojis, are from:
 # https://starship.rs/presets/#nerd-font-symbols
 
 add_newline = true
+command_timeout = 0
 
 #format = """
 #[┌───────────────────>](bold green)
@@ -13,13 +15,19 @@ add_newline = true
 symbol = " "
 
 [battery]
-full_symbol = ""
+#full_symbol = ""  # unknown key, this got removed?
 charging_symbol = ""
 discharging_symbol = ""
 
 [character]
 success_symbol = "[❯](bold blue)"  # [❯](bold green) is default.  Could use [➜]
 error_symbol = ""  # Was [✗](bold red).  Replaced by status module
+
+[cmd_duration]
+#min_time = 2000
+#disabled = false
+#show_notifications = false
+#min_time_to_notify = 45000
 
 [conda]
 symbol = " "
@@ -29,8 +37,9 @@ symbol = " "
 
 [directory]
 style = "bold blue"
+read_only = " "
 
-[docker]
+[docker_context]
 symbol = " "
 
 [elixir]
@@ -50,8 +59,8 @@ style = "bold black"
 [golang]
 symbol = " "
 
-[haskell]
-symbol = " "
+#[haskell]
+#symbol = " "
 
 [hg_branch]
 symbol = " "
@@ -92,7 +101,11 @@ symbol = " "  # default is 🐍
 symbol = " "
 
 [rust]
-symbol = " "
+#symbol = " "
+symbol = " "
+
+[scala]
+symbol = " "
 
 [status]
 disabled = false
