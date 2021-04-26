@@ -719,6 +719,21 @@ augroup END
 "endtry
 "augroup END
 
+" ~/.editorconfig (https://github.com/editorconfig/editorconfig-vim)
+let g:EditorConfig_max_line_indicator = "line"
+"let g:EditorConfig_preserve_formatoptions = 1
+" Uncomment if you want to use the external C program.
+"   https://github.com/editorconfig/editorconfig-core-c
+" Note: you then must install it on your machines.
+"   brew install editorconfig
+"   apt install editorconfig
+"let g:EditorConfig_core_mode = 'external_command'
+"
+" don't break fugitive plugin, or remote editing
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+" don't break git commit editing
+au FileType gitcommit let b:EditorConfig_disable = 1
+
 " TODO Compressed files
 "augroup lzma
 "    au!

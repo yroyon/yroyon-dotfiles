@@ -1,0 +1,29 @@
+# EditorConfig: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+# latin1|utf-8|utf-16be|utf-16le|utf-8-bom
+charset = utf-8
+
+# tab|space
+indent_style = space
+# tab|<integer>
+indent_size = 4
+# <integer> (default indent_size)
+#tab_width = 4
+
+# lf|crlf|cr
+end_of_line = lf
+# true|false
+insert_final_newline = true
+# true|false
+trim_trailing_whitespace = true
+# off|<integer>
+max_line_length = off
+
+[Makefile]
+indent_style = tab
+tab_width = 8
+
