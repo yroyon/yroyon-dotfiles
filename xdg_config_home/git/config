@@ -82,6 +82,9 @@
 #    proxy = http://www-proxy.exu.ericsson.se:8080
 #    sslverify = false
 
+[init]
+	defaultBranch = main
+
 [interactive]
 #    diffFilter = delta --color-only --theme=none
 
