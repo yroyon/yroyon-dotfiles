@@ -44,8 +44,6 @@
 [core]
     abbrev = 9
     hooksPath = ~/.config/git/hooks
-    # Removed:  default is ~/.config/git/ignore so use that
-#    excludesFile = ~/.gitignore_global
 #    gitProxy = git-http-proxy
 #    pager = less -FRSX
 #    pager = delta --theme=none # --plus-color="#012800" --minus-color="#340001"

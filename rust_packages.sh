@@ -2,6 +2,7 @@
 
 cli=(
 bat
+dua-cli
 exa
 fd-find
 mdcat

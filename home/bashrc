@@ -341,6 +341,7 @@ path_append "/sbin"
 path_append "/opt/bin"
 path_append "${HOME}/scripts/games"
 path_append "${HOME}/.krew/bin"
+path_append "/Applications/VSCodium.app/Contents/Resources/app/bin"
 
 export PATH
 # }}}
