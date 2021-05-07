@@ -4,7 +4,7 @@
 # https://starship.rs/presets/#nerd-font-symbols
 
 add_newline = true
-command_timeout = 0
+#command_timeout = 0
 
 #format = """
 #[┌───────────────────>](bold green)
