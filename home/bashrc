@@ -557,7 +557,6 @@ fi
 [[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
 [[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
 [[ -x /usr/libexec/locate.updatedb ]] && alias updatedb="sudo /usr/libexec/locate.updatedb"
-is_command glances && alias top=glances
 
 ## new commands
 alias dvdplay="mplayer -nocache dvdnav://"
