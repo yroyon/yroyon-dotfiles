@@ -11,11 +11,11 @@ ripgrep
 # ht -> curl replacement
 
 tui=(
-bandwhich
-broot
-gping
-procs
 )
+# bandwhich
+# broot
+# gping
+# procs
 
 misc=(
 git-delta
@@ -29,8 +29,8 @@ tokei
 
 # If not on crates.io...
 additional_repos=(
-https://github.com/jez/as-tree
 )
+# https://github.com/jez/as-tree
 
 rustup update
 
