@@ -472,6 +472,10 @@ f="/usr/bin/ssh-askpass-fullscreen"
 # SC2164: Ignore "'cd ... || return' in case cd fails"
 export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002 --exclude=SC2164'
 
+# Colors for shfmt
+# fd -e sh --exec shfmt -s -i 4 -ci -sr -bn -d
+export FORCE_COLOR=true
+
 # Tell xmllint to find asciidoc's catalog files
 f="/usr/local/etc/xml/catalog"
 [[ -f "$f" ]] && export XML_CATALOG_FILES="$f"
