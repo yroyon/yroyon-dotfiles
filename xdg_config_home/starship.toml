@@ -4,7 +4,7 @@
 # https://starship.rs/presets/#nerd-font-symbols
 
 add_newline = true
-#command_timeout = 0
+command_timeout = 5000
 
 #format = """
 #[┌───────────────────>](bold green)
@@ -15,7 +15,6 @@ add_newline = true
 symbol = " "
 
 [battery]
-#full_symbol = ""  # unknown key, this got removed?
 charging_symbol = ""
 discharging_symbol = ""
 
@@ -26,7 +25,7 @@ error_symbol = ""  # Was [✗](bold red).  Replaced by status module
 [cmd_duration]
 #min_time = 2000
 #disabled = false
-#show_notifications = false
+show_notifications = true
 #min_time_to_notify = 45000
 
 [conda]
