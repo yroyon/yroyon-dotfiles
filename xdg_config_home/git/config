@@ -24,10 +24,10 @@
     x = "!gitx"
 
 [blame]
-    date = short
+	date = short
 
 [color]
-    ui = true
+	ui = true
 [color "diff"]
 #    meta = yellow bold
     commit = green bold
@@ -42,22 +42,21 @@
     newHighlight = "green bold 22"
 
 [core]
-    abbrev = 9
-    hooksPath = ~/.config/git/hooks
+	abbrev = 9
 #    gitProxy = git-http-proxy
 #    pager = less -FRSX
 #    pager = delta --theme=none # --plus-color="#012800" --minus-color="#340001"
 
 [credential]
 #    helper = cache --timeout=3600
-    helper = osxkeychain
+	helper = osxkeychain
 
 [delta]
     number = true
     zero-style = dim syntax
 
 [diff]
-    algorithm = histogram
+	algorithm = histogram
     guitool = meld
     tool = vimdiff
 [difftool]
@@ -76,11 +75,6 @@
 
 [github]
     user = yroyon
-
-[http]
-#    proxy = bluecoat-be02.alcatel.fr:1080
-#    proxy = http://www-proxy.exu.ericsson.se:8080
-#    sslverify = false
 
 [init]
 	defaultBranch = main
@@ -110,17 +104,17 @@
 
 [rebase]
     autosquash = true
-    autostash = true
+	autostash = true
 
 [rerere]
     enabled = 1
 
 [svn]
-    rmdir = true
+	rmdir = true
 
 [user]
-    name = Royon, Yvan
-    email = yvan.royon@verizon.com
+	name = Yvan Royon
+	email =
 
 #{{{ sqlite support
 # We want databases checked in as a text version (for meaningful diffs),

@@ -55,3 +55,8 @@ hs_err_pid*
 local.properties
 tags
 
+# Logs and databases
+.log
+#.sql
+#.sqlite
+
