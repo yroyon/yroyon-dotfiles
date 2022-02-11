@@ -4,26 +4,27 @@
 root = true
 
 [*]
-# latin1|utf-8|utf-16be|utf-16le|utf-8-bom
 charset = utf-8
-
-# tab|space
-indent_style = space
-# tab|<integer>
-indent_size = 4
-# <integer> (default indent_size)
-#tab_width = 4
-
-# lf|crlf|cr
 end_of_line = lf
-# true|false
+indent_size = 4
+indent_style = space
 insert_final_newline = true
-# true|false
-trim_trailing_whitespace = true
-# off|<integer>
 max_line_length = off
+trim_trailing_whitespace = true
 
 [Makefile]
 indent_style = tab
 tab_width = 8
+
+[*.js]
+indent_size = 2
+
+[*.py]
+max_line_length = 180
+
+[*.scala]
+indent_size = 2
+
+[*.yaml]
+indent_size = 2
 
