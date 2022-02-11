@@ -7,4 +7,3 @@ setlocal foldmethod=indent nofoldenable
 
 " Skip re-indenting lines after inserting a comment (#) at the beginning of a line, or a colon.
 setlocal indentkeys-=0# indentkeys-=<:>
-

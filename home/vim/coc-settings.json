@@ -10,6 +10,7 @@
   "yaml.schemas": {
       "kubernetes": "/*.yaml"
   },
+
   "cSpell.userWords": [
     "addbr",
     "addrs",
