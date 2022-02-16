@@ -29,7 +29,7 @@
 [color]
 	ui = true
 [color "diff"]
-#    meta = yellow bold
+    meta = yellow #bold
     commit = green bold
     frag = magenta bold
     old = red bold
@@ -45,14 +45,17 @@
 	abbrev = 9
 #    gitProxy = git-http-proxy
 #    pager = less -FRSX
-#    pager = delta --theme=none # --plus-color="#012800" --minus-color="#340001"
 
 [credential]
 #    helper = cache --timeout=3600
 	helper = osxkeychain
 
 [delta]
-    number = true
+    color-only = true
+    minus-style = "normal maroon"
+    plus-emph-style = "syntax rebeccapurple"
+    plus-style = "syntax darkgreen"
+    syntax-theme = none
     zero-style = dim syntax
 
 [diff]
@@ -80,7 +83,7 @@
 	defaultBranch = main
 
 [interactive]
-#    diffFilter = delta --color-only --theme=none
+    diffFilter = delta
 
 [merge]
     tool = vimdiff
