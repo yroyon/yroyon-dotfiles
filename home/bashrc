@@ -309,7 +309,7 @@ throttle() {
 # }}}
 
 # ---------- path  {{{
-# MacOS with 'brew install coreutils findutils':
+# MacOS with 'brew install coreutils findutils util-linux':
 for d in \
     /usr/local/opt/ruby/bin \
     /usr/local/opt/make/libexec/gnubin \
@@ -321,6 +321,7 @@ for d in \
     /usr/local/opt/grep/libexec/gnubin \
     /usr/local/opt/findutils/libexec/gnubin \
     /usr/local/opt/coreutils/libexec/gnubin \
+    /usr/local/opt/util-linux/bin \
 ; do
     [[ -d $d ]] && {
         path_prepend "$d"
