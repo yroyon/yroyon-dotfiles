@@ -35,6 +35,29 @@ ssh_arguments = "-o ConnectTimeout=2"
 # Cleanup temporary or old files
 cleanup = true
 
+[brew]
+# I used to use --greedy.  I'm having problems upgrading Chrome and Firefox.
+# => Remove --greedy, and let the browsers self-update.
+#greedy_cask = true
+
+# Custom commands
+[commands]
+"Rust bash-completion" = "rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
+"Cargo bash-completion" = "rustup completions bash cargo >> ~/.local/share/bash-completion/completions/cargo"
+"pip3 itself" = "pip3 install -U pip"
+"pip3 packages" = "pip3 freeze --local | cut -d = -f 1 | xargs -n1 pip3 install -U -q"
+
+[composer]
+#self_update = true
+
+[firmware]
+# Offer to update firmware; if false just check for and display available updates
+#upgrade = true
+
+[flatpak]
+# Use sudo for updating the system-wide installation
+#use_sudo = true
+
 [git]
 #max_concurrency = 5
 # Additional git repositories to pull
@@ -49,24 +72,9 @@ cleanup = true
 # Arguments to pass Git when pulling Repositories
 arguments = "--rebase --autostash"
 
-[composer]
-#self_update = true
-
-# Commands to run before anything
-[pre_commands]
-#"Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-
-# Custom commands
-[commands]
-"Rust bash-completion" = "rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
-"Cargo bash-completion" = "rustup completions bash cargo >> ~/.local/share/bash-completion/completions/cargo"
-"pip3 itself" = "pip3 install -U pip"
-"pip3 packages" = "pip3 freeze --local | cut -d = -f 1 | xargs -n1 pip3 install -U -q"
-
-[brew]
-# I used to use --greedy.  I'm having problems upgrading Chrome and Firefox.
-# => Remove --greedy, and let the browsers self-update.
-#greedy_cask = true
+# Go
+# NOTE: To update Go programs, topgrade needs 3rd party tool go-global-update
+#       go install https://github.com/Gelio/go-global-update
 
 [linux]
 # Arch Package Manager to use. Allowed values: autodetect, trizen, paru, yay, pacman.
@@ -81,6 +89,14 @@ arguments = "--rebase --autostash"
 #redhat_distro_sync = false
 #rpm_ostree = false
 
+[npm]
+# Use sudo if the NPM directory isn't owned by the current user
+#use_sudo = true
+
+# Commands to run before anything
+[pre_commands]
+#"Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
+
 [windows]
 # Manually select Windows updates
 #accept_all_updates = false
@@ -90,16 +106,4 @@ arguments = "--rebase --autostash"
 # to upgrade it. Use this only if you installed Topgrade by using a package
 # manager such as Scoop to Cargo
 #self_rename = true
-
-[npm]
-# Use sudo if the NPM directory isn't owned by the current user
-#use_sudo = true
-
-[firmware]
-# Offer to update firmware; if false just check for and display available updates
-#upgrade = true
-
-[flatpak]
-# Use sudo for updating the system-wide installation
-#use_sudo = true
 
