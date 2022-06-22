@@ -137,13 +137,6 @@ function rule_msg()  {
 	printf -v _hr "%*s" "$(tput cols)" && echo -en "${_hr// /${2-─}}" && echo -e "\r\033[2C$1"
 }
 
-# Docker
-is_command docker-machine && {
-    function docker-enable() {
-        eval "$(docker-machine env default)"
-    }
-}
-
 is_command docker && {
 
     function docker-cleanup-containers() {
@@ -168,6 +161,7 @@ is_command docker && {
         docker-cleanup-volumes
     }
 
+    # I suppose this was intended for :latest tags?
     function docker-pull-all() {
         docker images | awk '/^REPOSITORY|\<none\>/ {next} {print $1":"$2}' | xargs -n 1 docker pull
     }
@@ -195,15 +189,7 @@ is_command pip2 && {
 }
 
 # Python3 on Mac
-#  => removed
-#     instead of aliases I now use symlinks in /usr/local/bin/
-#     or, I could place /usr/local/opt/python@3.8/bin/ in PATH
-#[[ -f /usr/local/bin/python3 ]] && {
-#    alias python=/usr/local/bin/python3
-#}
-#[[ -f /usr/local/bin/pip3 ]] && {
-#    alias pip=/usr/local/bin/pip3
-#}
+#  => cd /usr/local/bin; ln -snf python3 python; ln -snf pip3 pip
 
 # List directories by size
 # Use nicest 'du' and 'sort' available
@@ -251,15 +237,6 @@ elif is_command ruby; then
     function calc() {
         echo "puts $*" | ruby
     }
-elif is_command python2; then
-    function calc() {
-        echo " print $*" | python2
-    }
-fi
-
-if [[ -x ${HOME}/bin/clippy.sh ]] ; then
-    function command_not_found_handle() { "${HOME}/bin/clippy.sh" "$1" ; }
-    export COWPATH="${HOME}/bin/cows"
 fi
 
 # Consume stdin and spit it out at some rate-limited time interval.
@@ -311,9 +288,7 @@ throttle() {
 # ---------- path  {{{
 # MacOS with 'brew install coreutils findutils util-linux':
 for d in \
-    /usr/local/opt/ruby/bin \
     /usr/local/opt/make/libexec/gnubin \
-    /usr/local/opt/gnu-indent/libexec/gnubin \
     /usr/local/opt/gnu-sed/libexec/gnubin \
     /usr/local/opt/gnu-tar/libexec/gnubin \
     /usr/local/opt/gnu-time/libexec/gnubin \
@@ -321,8 +296,8 @@ for d in \
     /usr/local/opt/grep/libexec/gnubin \
     /usr/local/opt/findutils/libexec/gnubin \
     /usr/local/opt/coreutils/libexec/gnubin \
-    /usr/local/opt/curl/bin \
     /usr/local/opt/util-linux/bin \
+    /usr/local/opt/util-linux/sbin \
 ; do
     [[ -d $d ]] && {
         path_prepend "$d"
@@ -330,10 +305,11 @@ for d in \
     }
 done
 unset d
-# /usr/local/opt/util-linux/bin
-# /usr/local/opt/util-linux/sbin
 
-path_prepend "${M2}"               # Maven
+path_prepend /usr/local/opt/ruby/bin
+path_prepend /usr/local/opt/gnu-indent/libexec/gnubin
+path_prepend /usr/local/opt/curl/bin
+
 path_prepend "${HOME}/.cargo/bin"  # Rust / Cargo
 path_prepend "${HOME}/scripts"
 path_prepend "${HOME}/.local/bin"
@@ -359,20 +335,11 @@ if [[ -z $(pidof ssh-agent) ]]; then
     is_command ssh-agent && eval "$(ssh-agent -s)"
 fi
 
-# https://github.com/nvbn/thefuck
-is_command thefuck && eval "$(thefuck --alias)"
-
 # pipx for Python packages
 is_command register-python-argcomplete && eval "$(register-python-argcomplete pipx)"
-
-# TODO ugly, and pdftotext not invoked properly:
-#is_command lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 # }}}
 
 # ---------- environment {{{1
-## FIGNORE is a list of *suffixes*, not exact matches. So abc.git/ will be filtered out!
-#FIGNORE=".git:.svn:CVS"
-
 # Use 'export' for the case where you run 'bash --norc'
 export HISTIGNORE="&:l:ll:ls:pwd:[bf]g:exit:clear:[ ]*"
 export HISTSIZE=  # 1048576
@@ -381,21 +348,8 @@ export HISTSIZE=  # 1048576
 export HISTFILE=~/.bash_eternal_history
 unset HISTFILESIZE  #export HISTFILESIZE=524288000
 export HISTTIMEFORMAT="[%F %T] "
-# ----
-## Undocumented feature which sets the size to "unlimited".
-## https://stackoverflow.com/questions/9457233/unlimited-bash-history
-#export HISTFILESIZE=
-#export HISTSIZE=
-#export HISTTIMEFORMAT="[%F %T] "
-# ----
-# Force prompt to write history after every command.
-# http://superuser.com/questions/20900/bash-history-loss
-# PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-# PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND} ;}history -a; history -c; history -r";
-# Note: this will mingle histories from all shells currently open
 
 export BROWSER="firefox '%s' &"
-export CVS_RSH="$(which ssh)"
 export EDITOR="$(which vim)"
 export GREP_COLOR=32
 export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
@@ -408,28 +362,12 @@ export LESSOPEN='|$HOME/.lessfilter %s'
 }
 
 is_command vimmanpager && export MANPAGER=vimmanpager
-# For Mac OS X with 'brew install coreutils':
-#d="/usr/local/opt/coreutils/libexec/gnuman"
-#[[ -d "$d" ]] && export MANPATH="$d:$MANPATH"
 
 ## bash 4: trim (nested) dirnames that are too long
 #PROMPT_DIRTRIM=2
 
-## ooffice is veeery slow to start if the print server is unreachable
-## (ServerName in /etc/cups/client.conf).  => set to any non-empty value.
-#export SAL_DISABLE_SYNCHRONOUS_PRINTER_DETECTION="a"
-
-## TERM setting.
-## Tell konsole it can use 256 colors. Konsole is not very smart.
-#[[ -n $KONSOLE_PROFILE_NAME ]] && export TERM=konsole-256color
-# The konsole TERM is racist. It won't show colors as root. Pretend to be xterm.
-[[ $EUID == 0 ]] && export TERM=xterm-256color
-
 ## /usr/bin/time format (pass '-v' for exhaustive output)
 export TIME="--\\n%C  [exit %x]\\nreal %e\\tCPU: %P  \\t\\tswitches: %c forced, %w waits\\nuser %U\\tMem: %M kB maxrss\\tpage faults: %F major, %R minor\\nsys  %S\\tI/O: %I/%O"
-
-## VMware segfaults @work without this:
-#export VMWARE_USE_SHIPPED_GTK=force
 
 [[ -z $DISPLAY ]] && export DISPLAY=:0.0
 
@@ -455,7 +393,6 @@ is_command go && {
         mkdir -p "$GOPATH"
         path_append "$GOPATH/bin"
     fi
-    #path_append $GOROOT
 }
 
 # TODO clang/llvm on MacOS
@@ -478,39 +415,46 @@ f="/usr/bin/ssh-askpass-fullscreen"
 export SHELLCHECK_OPTS='--shell=bash --exclude=SC2002 --exclude=SC2164'
 
 # Colors for shfmt
-# fd -e sh --exec shfmt -s -i 4 -ci -sr -bn -d
 export FORCE_COLOR=true
+# TODO Default options for shfmt
+# fd -e sh --exec shfmt -d -s -i 4 -bn -ci -kp -sr
 
-# Tell xmllint to find asciidoc's catalog files
+# Tell xmllint where to find asciidoc's catalog files
 f="/usr/local/etc/xml/catalog"
 [[ -f "$f" ]] && export XML_CATALOG_FILES="$f"
 
 # }}}
 
 # ---------- aliases  {{{
-## ls family new commands
+alias rm="rm -i --one-file-system"
+
+## propagate (sub-)command completion
+alias sudo='sudo '
+alias watch='watch '
+
+## ls & tree family
 [[ $os_gnu ]] && ls_opts="--color --group-directories-first" && ls_sort="-Xv"
 [[ $os_mac ]] && [[ ! $os_gnu ]] && ls_opts="-G"
-alias      d="ls ${ls_opts}"
 alias      l="ls ${ls_opts} ${ls_sort} -F"
 alias     ll="ls ${ls_opts} ${ls_sort} -F -A -lh"
-alias    lsa="ls ${ls_opts} ${ls_sort} -F -A"
 alias    lsd="ls ${ls_opts} -d */"
-alias llsize="ls ${ls_opts} -S         -F -A -lh"
 alias  lsdir="tree -d -L 1 -i"
 alias lsdirs="tree -d"
 unset ls_opts ls_sort
 
-## grep family new commands
-# mac: brew tap homebrew/dupes; brew install grep
+if [[ $os_mac ]]; then
+    alias tree="tree --dirsfirst -C"
+else
+    alias tree="tree --dirsfirst"
+fi
+
+## grep & lsof family
 [[ $os_mac ]] && is_command "ggrep" && grep="ggrep --color=auto" || grep="\\grep --color=auto"
 alias grep="$grep --color=auto --exclude={tags,cscope.out} --binary-files=without-match --exclude-dir={CVS,.bzr,.git,.hg,.svn,_darcs}"
 alias grepbash="$grep -R --exclude=* --include=*.{bash,sh}"
 alias grepcode="$grep -R --exclude=* --include=*.{c,C,cc,CC,cpp,go,h,H,hs,java,pl,properties,py,rb,s,S,scala,sh}"
 alias grepdoc="$grep -R --exclude=* --include=*.{adoc,asciidoc,bib,howto,info,markdown,md,text,txt,htm,html,rst,tex,todo,wip}"
 alias grepbuild="$grep -R --exclude=* --include=*.{ac,am,in,m4,mk,properties,sh,xml} --include={*akefile,*configure*,GNUmake*}"
-alias grepwhite="$grep --binary-files=without-match '[[:space:]]\\+$' -R"
-alias g=grepcode
 unset grep
 
 function grepport() {
@@ -521,9 +465,11 @@ function grepport() {
     lsof -n -iTCP:"$1"
 }
 
-[[ $os_mac ]] && {
-    alias route="netstat -nr"
-}
+# Use GNU when available
+[[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
+[[ -x /usr/local/bin/time ]] && alias time="/usr/local/bin/time"
+[[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
+[[ -x /usr/libexec/locate.updatedb ]] && alias updatedb="sudo /usr/libexec/locate.updatedb"
 
 ## GNU xargs supports --no-run-if-empty
 [[ $os_mac ]] && [[ $os_gnu ]] && {
@@ -531,64 +477,45 @@ function grepport() {
     is_command gxargs && alias xargs=gxargs
 }
 
-## propagate (sub-)command completion when using sudo
-alias sudo='sudo '
+## new commands
+alias path='echo -e ${PATH//:/\\n}'
+alias quickweb='python3 -m http.server'
 
-## default options to common commands
-alias rm="rm -i --one-file-system"
-[[ $os_mac ]] && alias pstree="pstree -w -g3"
-if [[ $os_mac ]]; then
-    alias tree="tree --dirsfirst -C"
-else
-    alias tree="tree --dirsfirst"
-fi
-alias vi="vim"
-[[ $os_mac ]] && {
+is_command vim && alias vi="vim"
+is_command mvim && {
     alias vi="mvim -v"
     alias vim="mvim"
 }
 
-if is_command exa; then
-    alias exa="exa -Fa --group-directories-first -gm --git --time-style=long-iso"
-fi
-
-# Inhibit "non-prefixed coreutils" warning from `brew doctor`
-#[[ $os_mac ]] && {
-#    brew() {
-#        PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin /usr/local/bin/brew $@
-#    }
-#}
-## Commented out 2020-07-10 because it broke brew
-
-# GNU parallel
-#is_command parallel && alias parallel="parallel --will-cite"
-
-[[ -x /usr/bin/time ]] && alias time="/usr/bin/time"
-[[ -x /usr/local/bin/time ]] && alias time="/usr/local/bin/time"
-[[ $os_mac ]] && [[ $os_gnu ]] && is_command gtime && alias time=gtime
-[[ -x /sbin/ifconfig ]] && alias ifconfig="/sbin/ifconfig"
-[[ -x /usr/libexec/locate.updatedb ]] && alias updatedb="sudo /usr/libexec/locate.updatedb"
-
-## new commands
-alias dvdplay="mplayer -nocache dvdnav://"
-alias emptytrash="rm -rf ~/.local/share/Trash/*; rm -rf ~/.Trash/*"
-alias loffice="libreoffice"
-alias manga="thunar &>/dev/null &"
-alias path='echo -e ${PATH//:/\\n}'
-alias quickweb='python2 -m SimpleHTTPServer'
-alias qweb='python3 -m http.server'
-#alias suspend="pm-suspend"  # suspend is a bash builtin
+is_command exa && alias exa="exa -Fa --group-directories-first -gm --git --time-style=long-iso"
 is_command ncdu && alias cdu="ncdu --color dark -rr --exclude .git"
 is_command tokei && alias sloc="tokei" #\$(find . -type f)"
 is_command tokei && alias sloc-all="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs"
 is_command tokei && alias sloc-details="tokei --hidden --no-ignore --no-ignore-parent --no-ignore-vcs -f"
+is_command viddy && alias watch='viddy '
+
+# Unused
+#is_command parallel && alias parallel="parallel --will-cite"
+#alias hd='od -Ax -tx1z -v'
 
 [[ $os_linux ]] && {
+    # on older versions of ip(8):  "ip -oneline"
     alias ipa="ip -brief -color address"
     alias ipl="ip -brief -color link"
-    # on older versions of ip(8):  "ip -oneline"
+    alias emptytrash="rm -rf ~/.local/share/Trash/*; rm -rf ~/.Trash/*"
+    alias manga="thunar &>/dev/null &"
 }
 
+[[ $os_mac ]] && {
+    alias pstree="pstree -w -g3"
+    alias route="netstat -nr"
+    [[ -f /Applications/Meld.app/Contents/MacOS/Meld ]] &&
+        alias meld=/Applications/Meld.app/Contents/MacOS/Meld
+}
+
+## More esoteric stuff
+
+# PDF reader on Linux
 [[ $os_linux ]] && {
     # ordered, most favorite first
     pdf_readers="okular mupdf pdf-presenter-console zathura pdfcube qpdfview"
@@ -597,68 +524,8 @@ is_command tokei && alias sloc-details="tokei --hidden --no-ignore --no-ignore-p
     done
     unset reader pdf_readers
 }
-[[ $os_mac ]] && alias xpdf="open"
 
-#alias hd='od -Ax -tx1z -v'
-
-## locale issues
-is_command calibre && alias calibre="LC_ALL=en_US calibre"
-#alias git="LC_ALL=fr_FR@euro git"
-is_command glade-3 && alias glade="LC_ALL=en_US glade-3"
-is_command wicd-curses && alias wicd-curses="LC_ALL=C wicd-curses"
-## TERM issues
-is_command urxvt && {
-    alias rxvt="urxvt"
-    alias rxvt-unicode="urxvt"
-}
-
-## colors
-is_command grc && {
-    alias cvs="grc cvs"
-    alias netstat="grc netstat"
-    alias ping="grc ping"
-    alias svn="grc svn"
-    alias traceroute="grc traceroute"
-}
-
-## colorized cat
-# 'ccat' conflicts with package ccrypt, which I don't use so far.
-# Pick one of these tools, most preferred first.
-#   - speed: ccat > src-hilite-lesspipe.sh (x2) >>> vimcat (x30) >>> pygmentize (x60)
-#   - pygmentize takes only one file parameter.
-#     src-hilite-lesspipe.sh takes many, prints with no visual separator.
-#     ccat same.
-#     vimcat takes many, prints with visual separator.
-if is_command pygmentize; then
-    # 'pip3 install Pygments':
-    ccat() {
-        # Simulate support for multiple files in argument
-        for f in "$@"; do
-            # Show file name like vimcat does
-            [[ $# -gt 1 ]] && echo "==> $f <=="
-            # Suggested color schemes: emacs fruity monokai perldoc
-            pygmentize -O style=emacs -f console256 -g "$f"
-        done
-    }
-elif is_command ccat; then
-    # from package ccat:
-    alias ccat='ccat --bg=dark'
-elif is_command vimcat; then
-    # from package vimpager:
-    alias ccat='vimcat'
-elif is_command src-hilite-lesspipe.sh; then
-    # from package source-highlight:
-    alias ccat='src-hilite-lesspipe.sh'
-#elif is_command lesspipe.sh; then
-    # from package lesspipe: color doesn't work for me following man page
-    #alias ccat='lesspipe.sh'
-else
-    alias ccat='cat'
-fi
-
-# TODO try out 'mdv' to view Markdown
-
-## diff
+# diff
 is_command colordiff && diffprog="colordiff" || diffprog="diff"
 alias diff="$diffprog -NrbB -x .git"
 unset diffprog
@@ -670,25 +537,9 @@ function diff1() {
     command diff -U1 --minimal "$@" |
     sed "$regex"
 }
-# not good, diff1 is better?
 function diff2() { command diff -U3 --minimal "$@" | diff-so-fancy; }
 
-# not good
-#regex='s/^--- /\x1b[0;31m--- /;s/^\+\+\+ /\x1b[0;32m\+\+\+ /;s/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/^Only in/\x1b[1;36mOnly in/;s/^diff /\x1b[1;36mdiff /;s/$/\x1b[0m/'
-
-# ok-ish with diff-highlight, breaks diff-so-fancy.
-# command colordiff -U2 --minimal logs.ori/ logs/ | sed 's/^-/\x1b[1;31m-/;s/^+/\x1b[1;32m+/;s/^@/\x1b[1;34m@/;s/$/\x1b[0m/' | diff-highlight
-
-# TODO Configure default options for shfmt
-# shfmt -i 4 -bn -kp -sr -ci -s -d $file
-
-## KDE display settings (2nd monitor...)
-is_command kcmshell4 && {
-    alias kdisplay="kcmshell4 display"
-    alias xdisplay="kcmshell4 display"
-}
-
-## fuzzy-finder
+# fuzzy-finder
 is_command fzf && {
     # ctr-o opens the file in vim
     export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
@@ -702,8 +553,6 @@ is_command fzf && {
     #[[ $os_mac ]] && alias xdg-open=open # does it work?
 }
 
-[[ -f /Applications/Meld.app/Contents/MacOS/Meld ]] && alias meld=/Applications/Meld.app/Contents/MacOS/Meld
-
 # }}}
 
 # ---------- shopts {{{
@@ -712,8 +561,7 @@ shopt -s dotglob
 shopt -s extglob
 shopt -s histappend
 shopt -s no_empty_cmd_completion
-# shellcheck disable=SC2071  # This is indeed a string comparison
-[[ $BASH_VERSION > 4 ]] && shopt -s globstar
+(( BASH_VERSINFO[0] >= 4 )) && shopt -s globstar
 # }}}
 
 # ---------- ansi colors {{{
@@ -830,8 +678,7 @@ done
     #f="$(brew --prefix)/etc/bash_completion"
     ## shellcheck source=/dev/null
     #[[ -f $f ]] && source "$f"
-    # shellcheck disable=SC2071  # This is indeed a string comparison
-    [[ $BASH_VERSION > 4 ]] && {
+    (( BASH_VERSINFO[0] >= 4 )) && {
         export BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d"
         # Tip: replace function _have() with 'true'. Will load more things, but faster.
         for f in \
@@ -841,15 +688,6 @@ done
             # shellcheck source=/dev/null
             [[ -f $f ]] && source "$f"
         done
-    }
-    brew-upgrade() {
-        brew upgrade --greedy
-        # -> No longer needed.  Previously, the steps were:
-        # brew update
-        # brew upgrade
-        # brew cask upgrade --greedy
-        # brew cleanup
-        # -> but now, all those steps are included in 'brew upgrade'.
     }
 }
 #
