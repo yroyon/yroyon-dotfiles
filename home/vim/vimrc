@@ -675,6 +675,11 @@ let g:java_allow_cpp_keywords = 0
 
 let g:haddock_browser = '/usr/bin/firefox'
 
+" CoC
+let g:coc_filetype_map = {
+  \ 'yaml.ansible': 'ansible',
+  \ }
+
 " Syntastic
 " Navigate with :lnext and :lprevious
 "
