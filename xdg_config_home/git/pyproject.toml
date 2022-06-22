@@ -1,0 +1,11 @@
+[tool.isort]
+profile = "black"
+
+[tool.vulture]
+exclude = ["old/"]
+#ignore_decorators = ["@app.route", "@require_*"]
+#ignore_names = ["visit_*", "do_*"]
+#make_whitelist = true
+min_confidence = 70
+paths = ["."]
+#sort_by_size = true
