@@ -117,3 +117,6 @@
 [submodule "home/vim/bundle/editorconfig-vim"]
 	path = home/vim/bundle/editorconfig-vim
 	url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule "home/vim/bundle/polyglot"]
+	path = home/vim/bundle/polyglot
+	url = git@github.com:sheerun/vim-polyglot
