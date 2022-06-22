@@ -2,8 +2,7 @@
 #assume_yes = true
 
 # Disable specific steps - same options as the command line flag
-# system -> spins forever on my work MacOS that's stuck on BigSur
-disable = ["git_repos", "gnome_shell_extensions", "system"]
+disable = ["containers", "git_repos", "gnome_shell_extensions"]
 
 # Ignore failures for these steps
 #ignore_failures = ["powershell"]
