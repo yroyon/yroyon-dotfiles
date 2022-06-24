@@ -15,8 +15,7 @@ command_timeout = 5000
 symbol = " "
 
 [battery]
-charging_symbol = ""
-discharging_symbol = ""
+disabled = true
 
 [character]
 success_symbol = "[❯](bold blue)"  # [❯](bold green) is default.  Could use [➜]
@@ -27,12 +26,6 @@ error_symbol = ""  # Was [✗](bold red).  Replaced by status module
 #disabled = false
 show_notifications = true
 #min_time_to_notify = 45000
-
-[conda]
-symbol = " "
-
-[dart]
-symbol = " "
 
 [directory]
 style = "bold blue"
@@ -54,12 +47,14 @@ symbol = " "
 
 [git_status]
 style = "bold black"
+# `starship timings` says it takes 750 ms in git_status module.  Too slow!
+disabled = true
 
 [golang]
 symbol = " "
 
-#[haskell]
-#symbol = " "
+[haskell]
+symbol = " "
 
 [hg_branch]
 symbol = " "
