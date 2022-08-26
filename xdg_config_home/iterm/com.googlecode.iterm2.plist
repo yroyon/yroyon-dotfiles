@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AlternateMouseScroll</key>
-	<true/>
+	<false/>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>Snazzy</key>
@@ -359,6 +359,8 @@
 	<key>DisableFullscreenTransparency</key>
 	<true/>
 	<key>DoubleClickPerformsSmartSelection</key>
+	<true/>
+	<key>FixMouseWheel</key>
 	<true/>
 	<key>GlobalKeyMap</key>
 	<dict>
@@ -1900,7 +1902,7 @@
 				<real>0.023</real>
 			</dict>
 			<key>Mouse Reporting</key>
-			<true/>
+			<false/>
 			<key>Name</key>
 			<string>No Tab Bar</string>
 			<key>Non Ascii Font</key>
