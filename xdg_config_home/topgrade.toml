@@ -2,7 +2,7 @@
 #assume_yes = true
 
 # Disable specific steps - same options as the command line flag
-disable = ["containers", "git_repos", "gnome_shell_extensions"]
+disable = ["containers", "gnome_shell_extensions", "vim"]
 
 # Ignore failures for these steps
 #ignore_failures = ["powershell"]
@@ -41,10 +41,11 @@ cleanup = true
 
 # Custom commands
 [commands]
-"Rust bash-completion" = "rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
-"Cargo bash-completion" = "rustup completions bash cargo >> ~/.local/share/bash-completion/completions/cargo"
+"bash-completion for rustup" = "rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
+"bash-completion for cargo" = "rustup completions bash cargo >> ~/.local/share/bash-completion/completions/cargo"
 "pip3 itself" = "pip3 install -U pip"
 "pip3 packages" = "pip3 freeze --local | cut -d = -f 1 | xargs -n1 pip3 install -U -q"
+"vim plugins" = "~/.vim/update_bundles.sh"
 
 [composer]
 #self_update = true
@@ -58,15 +59,11 @@ cleanup = true
 #use_sudo = true
 
 [git]
-#max_concurrency = 5
+max_concurrency = 5
 # Additional git repositories to pull
-#repos = [
-#    "~/src/*/",
-#    "~/.config/something"
-#]
-
-# Don't pull the predefined git repos
-#predefined_repos = false
+repos = [
+    "~/yroyon-dotfiles/",
+]
 
 # Arguments to pass Git when pulling Repositories
 arguments = "--rebase --autostash"
