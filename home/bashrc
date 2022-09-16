@@ -351,7 +351,8 @@ export HISTTIMEFORMAT="[%F %T] "
 
 export BROWSER="firefox '%s' &"
 export EDITOR="$(which vim)"
-export GREP_COLOR=32
+export GREP_COLOR=32        # obsolete in newer GNU grep
+export GREP_COLORS='mt=32'  # recommended in newer GNU grep
 export LESS="--ignore-case --RAW-CONTROL-CHARS --squeeze-blank-lines"
 # shellcheck disable=SC2016  # we don't want to expand
 export LESSOPEN='|$HOME/.lessfilter %s'
