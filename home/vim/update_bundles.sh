@@ -13,6 +13,7 @@ pushd "$here" &> /dev/null
 
 ## rebase method, preferred:
 git submodule foreach git fetch
+git submodule foreach git checkout master
 git submodule foreach git rebase
 
 ## The CoC plugin needs a heavyweight update mechanism:
