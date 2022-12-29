@@ -103,6 +103,7 @@ symbol = " "
 
 [status]
 disabled = false
+symbol = "[✗](bold red)"
 format = """
 [$status $symbol]($style)"""
 
