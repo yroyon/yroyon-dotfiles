@@ -3,23 +3,33 @@
 exclude: old/|previous/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.4.0
     hooks:
       - id: trailing-whitespace  # < 1s
       ## Conflicts with jsonlint style
       - id: end-of-file-fixer  # < 1s
       - id: check-added-large-files  # < 1s
 
+  ## spelling
+
+  # brew install typos-cli
+  - repo: https://github.com/crate-ci/typos
+    rev: typos-dict-v0.9.16
+    hooks:
+      - id: typos
+
   ## shell
 
+  # brew install shfmt
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.4.2-1
+    rev: v3.6.0-1
     hooks:
       - id: shfmt  # < 1s
         args: [-s, -i, "4", -ci, -sr, -bn, -w]
 
+  # brew install shellcheck tflint tfsec
   - repo: https://github.com/hadenlabs/pre-commit-hooks
-    rev: 33801d5af598d97ee3c4cc017e54aa4a168f6287
+    rev: e50751c9323b0a03f27271c57513f5c389f6591b
     hooks:
       - id: shellcheck  # < 1s
         args: [-x, --shell=bash, --exclude=SC2002, --exclude=SC2164]
@@ -39,15 +49,17 @@ repos:
   #        types: [yaml]
   #        args: ["--schemafile", "https://json.schemastore.org/github-workflow"]
 
+  # brew install yamllint
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.26.3
+    rev: v1.29.0
     hooks:
       - id: yamllint  # < 4s
         args: [-c=.yamllint]
         exclude: "/templates/|.tmpl.yml|ansible/terraform/modules/app_portworx/manifests/portworx-etcd.yml|ansible/terraform/modules/app_portworx/manifests/portworx.yml"
 
+  # brew install hadolint
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.8.0
+    rev: v2.12.1-beta
     hooks:
       - id: hadolint  # < 1s
         args: [--ignore, DL3008, --ignore, DL3013]
@@ -55,12 +67,11 @@ repos:
 
   ## python
 
-  # No pycodestyle
-  # No pyright
-  # No ssort
+  # No pycodestyle, pyright, ssort
 
+  # pipx install black
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 23.1.0
     hooks:
       - id: black
       # It is recommended to specify the latest version of Python
@@ -75,12 +86,13 @@ repos:
       - id: flake8
 
   - repo: https://github.com/jendrikseipp/vulture
-    rev: v2.3
+    rev: v2.7
     hooks:
       - id: vulture
 
+  # pipx install mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.931
+    rev: v1.0.0
     hooks:
       - id: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
