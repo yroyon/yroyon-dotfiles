@@ -80,11 +80,7 @@ repos:
       # https://pre-commit.com/#top_level-default_language_version
       # language_version: python3.9
 
-  - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1
-    hooks:
-      - id: flake8
-
+  # pipx install vulture
   - repo: https://github.com/jendrikseipp/vulture
     rev: v2.7
     hooks:
@@ -98,31 +94,49 @@ repos:
         args: [--no-strict-optional, --ignore-missing-imports]
         additional_dependencies: [types-six, types-PyYAML]
 
-  - repo: https://github.com/pycqa/isort
-    rev: 5.6.4
+  # ruff replaces flake8, isort, pydocstyle, pylint
+  # brew install ruff
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.244'
     hooks:
-      - id: isort
-        args: [--profile, black, --filter-files]
+      - id: ruff
+        # Respect `exclude` and `extend-exclude` settings.
+        args: ["--force-exclude"]
 
-  - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.1.1
-    hooks:
-      - id: pydocstyle
-        args:
-          - --ignore=D103,D212
+  # pipx install flake8
+  #- repo: https://github.com/pycqa/flake8
+  #  rev: 6.0.0
+  #  hooks:
+  #    - id: flake8
 
-  - repo: local
-    hooks:
-      - id: pylint
-        name: pylint
-        entry: pylint
-        language: system
-        types: [python]
-        args:
-          [
-            -rn,
-            # --rcfile=~/.config/pylintrc,
-            --output-format=colorized,
-            --fail-under=7,
-          ]
+  # pipx install isort
+  #- repo: https://github.com/pycqa/isort
+  #  rev: 5.11.4
+  #  hooks:
+  #    - id: isort
+  #      args: [--profile, black, --filter-files]
+
+  # pipx install pydocstyle
+  #- repo: https://github.com/pycqa/pydocstyle
+  #  rev: 6.1.1
+  #  hooks:
+  #    - id: pydocstyle
+  #      args:
+  #        - --ignore=D103,D212
+
+  # pipx install pylint
+  #- repo: local
+  #  hooks:
+  #    - id: pylint
+  #      name: pylint
+  #      entry: pylint
+  #      language: system
+  #      types: [python]
+  #      args:
+  #        [
+  #          -rn,
+  #          # --rcfile=~/.config/pylintrc,
+  #          --output-format=colorized,
+  #          --fail-under=7,
+  #        ]
 
