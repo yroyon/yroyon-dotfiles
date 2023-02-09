@@ -46,6 +46,7 @@ cleanup = true
 "pip3 itself" = "pip3 install -U pip"
 "pip3 packages" = "pip3 freeze --local | cut -d = -f 1 | xargs -n1 pip3 install -U -q"
 "vim plugins" = "~/.vim/update_bundles.sh"
+"pre-commit" = "cd ~/.config/git && pre-commit autoupdate && pre-commit install-hooks"
 
 [composer]
 #self_update = true
