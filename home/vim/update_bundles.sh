@@ -12,9 +12,9 @@ pushd "$here" &> /dev/null
 #git submodule foreach git pull
 
 ## rebase method, preferred:
-git submodule foreach git fetch
-git submodule foreach git checkout master
-git submodule foreach git rebase
+git submodule foreach 'git fetch || :'
+git submodule foreach 'git checkout master || :'
+git submodule foreach 'git rebase || :'
 
 ## The CoC plugin needs a heavyweight update mechanism:
 [[ -d bundle/coc/ ]] && {
