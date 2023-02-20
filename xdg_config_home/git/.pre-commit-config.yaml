@@ -88,7 +88,7 @@ repos:
 
   # pipx install mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
@@ -97,7 +97,7 @@ repos:
   # ruff replaces flake8, isort, pydocstyle, pylint
   # brew install ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.244'
+    rev: 'v0.0.249'
     hooks:
       - id: ruff
         # Respect `exclude` and `extend-exclude` settings.
