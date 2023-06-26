@@ -1,3 +1,6 @@
+# Silence bug https://github.com/topgrade-rs/topgrade/issues/288
+skip_notify = true
+
 # Don't ask for confirmations
 #assume_yes = true
 

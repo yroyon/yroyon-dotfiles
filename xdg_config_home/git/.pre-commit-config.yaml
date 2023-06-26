@@ -14,7 +14,7 @@ repos:
 
   # brew install typos-cli
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.9.16
+    rev: typos-dict-v0.10.3
     hooks:
       - id: typos
 
@@ -22,7 +22,7 @@ repos:
 
   # brew install shfmt
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.6.0-1
+    rev: v3.7.0-1
     hooks:
       - id: shfmt  # < 1s
         args: [-s, -i, "4", -ci, -sr, -bn, -w]
@@ -51,7 +51,7 @@ repos:
 
   # brew install yamllint
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.29.0
+    rev: v1.32.0
     hooks:
       - id: yamllint  # < 4s
         args: [-c=.yamllint]
@@ -71,7 +71,7 @@ repos:
 
   # pipx install black
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
       # It is recommended to specify the latest version of Python
@@ -88,7 +88,7 @@ repos:
 
   # pipx install mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.1
+    rev: v1.4.1
     hooks:
       - id: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
@@ -97,7 +97,7 @@ repos:
   # ruff replaces flake8, isort, pydocstyle, pylint
   # brew install ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.249'
+    rev: 'v0.0.275'
     hooks:
       - id: ruff
         # Respect `exclude` and `extend-exclude` settings.

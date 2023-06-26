@@ -20,5 +20,7 @@ git submodule foreach 'git rebase || :'
 [[ -d bundle/coc/ ]] && {
     pushd bundle/coc/ &> /dev/null
     yarn install --frozen-lockfile
+    # yarn upgrade-interactive --latest
+    # yarn upgrade
     popd &> /dev/null
 }
