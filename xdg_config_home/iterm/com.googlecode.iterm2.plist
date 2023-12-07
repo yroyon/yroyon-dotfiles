@@ -360,6 +360,8 @@
 	<true/>
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
+	<key>EnableAPIServer</key>
+	<true/>
 	<key>FixMouseWheel</key>
 	<true/>
 	<key>GlobalKeyMap</key>

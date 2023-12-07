@@ -3,7 +3,7 @@
 exclude: old/|previous/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace  # < 1s
       ## Conflicts with jsonlint style
@@ -14,7 +14,7 @@ repos:
 
   # brew install typos-cli
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.10.3
+    rev: v1.16.23
     hooks:
       - id: typos
 
@@ -71,7 +71,7 @@ repos:
 
   # pipx install black
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.10.1
     hooks:
       - id: black
       # It is recommended to specify the latest version of Python
@@ -82,13 +82,13 @@ repos:
 
   # pipx install vulture
   - repo: https://github.com/jendrikseipp/vulture
-    rev: v2.7
+    rev: v2.10
     hooks:
       - id: vulture
 
   # pipx install mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
+    rev: v1.6.1
     hooks:
       - id: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
@@ -97,7 +97,7 @@ repos:
   # ruff replaces flake8, isort, pydocstyle, pylint
   # brew install ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.275'
+    rev: 'v0.1.4'
     hooks:
       - id: ruff
         # Respect `exclude` and `extend-exclude` settings.
