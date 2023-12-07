@@ -819,16 +819,16 @@ endfunction
 "-----------------------------------------------------------
 "                      OS detection {{{
 "-----------------------------------------------------------
-let os=substitute(system('uname -s'), '\n', '', '')
-if os == 'Darwin' || os == 'Mac'
-    "set guifont=Inconsolata-dz:h12
-    " more Mac OS stuff
-" Might need set ignorecase
-elseif os == 'Linux'
-    "set guifont=Inconsolata-dz\ Medium\ 10
-    " more Linux stuff
-endif
-" }}}
+"let os=substitute(system('uname -s'), '\n', '', '')
+"if os == 'Darwin' || os == 'Mac'
+"    "set guifont=Inconsolata-dz:h12
+"    " more Mac OS stuff
+"" Might need set ignorecase
+"elseif os == 'Linux'
+"    "set guifont=Inconsolata-dz\ Medium\ 10
+"    " more Linux stuff
+"endif
+"" }}}
 "-----------------------------------------------------------
 
 "-----------------------------------------------------------
