@@ -306,6 +306,7 @@ for d in \
 done
 unset d
 
+path_prepend /usr/local/go/bin
 path_prepend /usr/local/opt/ruby/bin
 path_prepend /usr/local/opt/gnu-indent/libexec/gnubin
 path_prepend /usr/local/opt/curl/bin
@@ -703,4 +704,4 @@ unset f d
 #exec 2>&3 3>&-
 ##
 
-is_command direnv && eval "$(direnv hook bash)"
+is_command direnv && eval "$(direnv hook bash)" || true
