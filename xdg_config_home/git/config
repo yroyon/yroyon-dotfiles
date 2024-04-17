@@ -47,8 +47,8 @@
 #    pager = less -FRSX
 
 [credential]
-#    helper = cache --timeout=3600
-	helper = osxkeychain
+    helper = cache --timeout=3600
+#	helper = osxkeychain
 
 [delta]
     color-only = true
@@ -117,7 +117,7 @@
 
 [user]
 	name = Yvan Royon
-	email =
+	email = yvan.royon@gmail.com
 
 #{{{ sqlite support
 # We want databases checked in as a text version (for meaningful diffs),
@@ -140,3 +140,8 @@
 #}}}
 
 # vim: set ft=gitconfig
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
