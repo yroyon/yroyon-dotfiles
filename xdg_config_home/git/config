@@ -1,5 +1,3 @@
-# add.interactive.useBuiltin true  -> use EXPERIMENTAL built-in interactive add, instead of Perl
-
 [alias]
     ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
     diffgui = difftool --tool=meld
@@ -66,6 +64,8 @@
     prompt = false
 [diff "image"]
     textconv = identify
+[diff "man"]
+    xfuncname = '^\.S[SHsh] .*$'
 [diff "odf"]
     textconv = odt2txt
 [diff "pdf"]
@@ -75,6 +75,15 @@
 
 [fetch]
     prune = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[format]
+    thread = true
 
 [github]
     user = yroyon
@@ -112,6 +121,10 @@
 [rerere]
     enabled = 1
 
+[sendemail]
+#    sendmailcmd = 'neomutt -C -H - && true'
+#    sendmailcmd = 'mutt -H - && true'
+
 [svn]
 	rmdir = true
 
@@ -140,8 +153,3 @@
 #}}}
 
 # vim: set ft=gitconfig
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true

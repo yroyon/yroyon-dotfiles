@@ -1,5 +1,6 @@
+*.[0-9]* diff=man
 *.odf diff=odf
 *.odt diff=odf
 *.odp diff=odf
-*.zip diff=zip
 *.pdf diff=pdf
+*.zip diff=zip
